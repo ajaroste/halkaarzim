@@ -14,6 +14,24 @@ const socialProviders: Array<{ provider: SocialAuthProvider; label: string; mark
   { provider: "spotify", label: "Spotify ile devam et", mark: "♪" }
 ];
 
+function authErrorMessage(error: unknown): string {
+  const raw = error instanceof Error ? error.message : "İşlem tamamlanamadı.";
+  const normalized = raw.toLowerCase();
+  if (normalized.includes("failed to fetch") || normalized.includes("networkerror") || normalized.includes("load failed")) {
+    return "Giriş hizmetine şu anda ulaşılamıyor. Lütfen kısa süre sonra tekrar dene.";
+  }
+  if (normalized.includes("email not confirmed")) {
+    return "E-posta adresin henüz doğrulanmamış. Gelen kutundaki doğrulama bağlantısını kullan.";
+  }
+  if (normalized.includes("invalid login credentials")) {
+    return "E-posta adresi veya parola hatalı.";
+  }
+  if (normalized.includes("user already registered")) {
+    return "Bu e-posta adresiyle daha önce hesap oluşturulmuş.";
+  }
+  return raw;
+}
+
 export function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [mode, setMode] = useState<Mode>("signin");
   const [message, setMessage] = useState("");
@@ -73,17 +91,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
       setMessage("Giriş başarılı.");
       window.setTimeout(onClose, 450);
     } catch (error) {
-      const raw = error instanceof Error ? error.message : "İşlem tamamlanamadı.";
-      const normalized = raw.toLowerCase();
-      if (normalized.includes("email not confirmed")) {
-        setMessage("E-posta adresin henüz doğrulanmamış. Gelen kutundaki doğrulama bağlantısını kullan.");
-      } else if (normalized.includes("invalid login credentials")) {
-        setMessage("E-posta adresi veya parola hatalı.");
-      } else if (normalized.includes("user already registered")) {
-        setMessage("Bu e-posta adresiyle daha önce hesap oluşturulmuş.");
-      } else {
-        setMessage(raw);
-      }
+      setMessage(authErrorMessage(error));
     } finally {
       setBusyAction(null);
     }
@@ -99,7 +107,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
     try {
       await signInWithSocialProvider(provider);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Sosyal giriş başlatılamadı.");
+      setMessage(authErrorMessage(error));
       setBusyAction(null);
     }
   }
