@@ -5,6 +5,7 @@ import "./account-notifications.css";
 import "./premium.css";
 import "./home-v2.css";
 import "./detail-refresh.css";
+import "./detail-v3.css";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 import { NotificationManager } from "@/components/NotificationManager";
