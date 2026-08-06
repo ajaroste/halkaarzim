@@ -1,0 +1,19 @@
+name: Check bootstrap chunks
+
+on:
+  push:
+    paths:
+      - ".github/workflows/bootstrap-checksum.yml"
+
+jobs:
+  checksum:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          wc -c .bootstrap2/chunk_*
+          sha256sum .bootstrap2/chunk_*
+          cat .bootstrap2/chunk_* | sha256sum
