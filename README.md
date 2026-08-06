@@ -1,46 +1,32 @@
-# HalkaArzım — v1.0.0-rc.3
+# HalkaArzım
 
-Gerçek SPK/KAP kaynaklarına dayalı, Vercel ve Cloudflare Workers/OpenNext uyumlu Next.js halka arz platformu. Kurgusal şirket kaydı içermez.
+HalkaArzım; SPK bültenlerinden halka arz kayıtlarını toplayan, kaynakları görünür tutan ve yatırımcıya sade bir arayüz sunan Next.js uygulamasıdır.
 
-## Mevcut veri kapsamı
+## Özellikler
 
-- **33 gerçek halka arz kaydı**
-- **30 kayıt**, 2026 yılına ait **15 resmî SPK bülteninden** ayrıştırıldı
-- **3 kayıt**, önceki yıl onaylanıp 2026'da talep gören resmî KAP kaynaklı devreden kayıttır
-- 33 kaydın tamamında en az bir resmî SPK veya KAP bağlantısı bulunur
+- Gerçek SPK halka arz kayıtları
+- Halka arz filtreleri ve şirket detay sayfaları
+- TradingView sembol bağlantıları
+- Lot tahmin aracı
+- Google hesabıyla Supabase Auth
+- Takip listesi ve yorum altyapısı
+- Yeni halka arz firmaları için tarayıcı ve Web Push bildirimleri
+- Dark tema ve mobil uyum
 
-## Yerel kurulum
+## Kurulum
 
 ```bash
 npm install
 npm run dev
 ```
 
-Üretim doğrulaması:
+Supabase, Google OAuth, migration ve bildirim kurulumu için `docs/SUPABASE_SETUP.md` dosyasını kullan.
+
+## Test
 
 ```bash
-npm run test:all
+npm run typecheck
 npm run build
 ```
 
-## Veri güncelleme
-
-```bash
-pip install -r requirements.txt
-python scripts/update_all.py
-```
-
-GitHub Actions içindeki `SPK data sync` işi günlük olarak resmî kaynakları kontrol eder. Supabase, Cloudflare AI ve Web Push anahtarları tanımlı değilse bu entegrasyonlar güvenli biçimde atlanır.
-
-## Dağıtım
-
-Proje Vercel ile uyumludur. Reklamlı ücretsiz ticari yayın için Cloudflare Workers/OpenNext yapılandırması da bulunur.
-
-Gerekli değişkenlerin örnekleri `.env.example` dosyasındadır.
-
-## Veri ilkesi
-
-- Kaynaksız finansal veri üretilmez.
-- Açıklanmayan alanlar `Henüz açıklanmadı` olarak kalır.
-- AI özeti yatırım tavsiyesi değildir.
-- Otomatik belge çıkarımları insan onayı sayılmaz.
+İçerikler bilgilendirme amaçlıdır; yatırım danışmanlığı değildir.
