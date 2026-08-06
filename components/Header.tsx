@@ -40,7 +40,7 @@ export function Header() {
   return <>
     <header className="siteHeader"><div className="container headerInner"><Brand />
       <nav className={menuOpen ? "desktopNav open" : "desktopNav"} aria-label="Ana menü">
-        <Link href="/halka-arzlar" onClick={() => setMenuOpen(false)}>Halka arzlar</Link><Link href="/gundem" onClick={() => setMenuOpen(false)}>Şirket gündemi</Link><Link href="/metodoloji" onClick={() => setMenuOpen(false)}>Metodoloji</Link><Link href="/hakkimizda" onClick={() => setMenuOpen(false)}>Hakkımızda</Link>
+        <Link href="/halka-arzlar" onClick={() => setMenuOpen(false)}>Halka arzlar</Link><Link href="/gundem" onClick={() => setMenuOpen(false)}>Şirket gündemi</Link>
       </nav>
       <div className="headerActions"><button type="button" className="iconButton" onClick={toggleTheme} aria-label={theme === "light" ? "Koyu temayı aç" : "Açık temayı aç"} title={theme === "light" ? "Koyu tema" : "Açık tema"}>{theme === "light" ? "☾" : "☀"}</button>
         <Link className="secondaryButton desktopOnly" href="/profil">{session ? (profile?.display_name || "Hesabım") : "Takip listem"}</Link>

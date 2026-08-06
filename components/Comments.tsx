@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { ChangeEvent } from "react";
 import { moderateComment } from "@/lib/domain";
 import { createComment, isSupabaseConfigured, listComments, reportComment, voteComment } from "@/lib/supabase-rest";
 import { useAuth } from "./AuthProvider";
@@ -35,8 +34,8 @@ export function Comments({ ipoId }: { ipoId: string; slug: string }) {
     catch (error) { setMessage(error instanceof Error ? error.message : "Bildirim gönderilemedi."); } finally { setBusyId(null); }
   }
   return <section className="commentsPanel" id="yorumlar"><div className="sectionHeading compactHeading"><div><span className="eyebrow">Topluluk</span><h2>Yatırımcı yorumları</h2></div><span className="commentCount">{comments.length} yayımlanmış yorum</span></div>
-    <div className="commentComposer"><textarea maxLength={500} value={draft} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => { setDraft(e.target.value); setMessage(""); }} placeholder="Belgeye dayalı görüşünü paylaş…" aria-label="Yorum" disabled={!isSupabaseConfigured()} /><div className="composerFooter"><small>{remaining} karakter</small><button className="primaryButton" onClick={() => void submitComment()} disabled={!isSupabaseConfigured() || !draft.trim()}>Yorum yap</button></div></div>
-    <p className="moderationNote">Kesin kazanç vaadi, organize alım çağrısı, iletişim grubu reklamı, kişisel veri ve hakaret sunucu tarafında da engellenir. Yeni yorumlar yönetici onayıyla görünür.</p>{!isSupabaseConfigured() && <p className="formMessage">Supabase bağlanana kadar yorum alanı salt okunur.</p>}{message && <p className="formMessage" role="status">{message}</p>}
+    <div className="commentComposer"><textarea maxLength={500} value={draft} onChange={(e) => { setDraft(e.target.value); setMessage(""); }} placeholder="Belgeye dayalı görüşünü paylaş…" aria-label="Yorum" disabled={!isSupabaseConfigured()} /><div className="composerFooter"><small>{remaining} karakter</small><button className="primaryButton" onClick={() => void submitComment()} disabled={!isSupabaseConfigured() || !draft.trim()}>Yorum yap</button></div></div>
+    <p className="moderationNote">Kesin kazanç vaadi, organize alım çağrısı, iletişim grubu reklamı, kişisel veri ve hakaret sunucu tarafında da engellenir. Yeni yorumlar yönetici onayıyla görünür.</p>{!isSupabaseConfigured() && <p className="formMessage">Yorum alanı şu anda salt okunur.</p>}{message && <p className="formMessage" role="status">{message}</p>}
     {loading ? <p>Yorumlar yükleniyor…</p> : <div className="commentList">{comments.map((comment) => <article className="comment" key={comment.id}><div className="avatar">{comment.name.charAt(0).toUpperCase()}</div><div><div className="commentMeta"><strong>{comment.name}</strong><span>{comment.time}</span></div><p>{comment.text}</p><div className="commentActions"><button className="textButton" disabled={busyId === comment.id} onClick={() => void vote(comment.id)}>△ Faydalı · {comment.likes}</button><button className="textButton dangerText" disabled={busyId === comment.id} onClick={() => void report(comment.id)}>Bildir</button></div></div></article>)}{!comments.length && <div className="emptyState"><strong>Henüz yayımlanmış yorum yok</strong><p>İlk belgeye dayalı görüşü sen paylaşabilirsin.</p></div>}</div>}
   </section>;
 }
