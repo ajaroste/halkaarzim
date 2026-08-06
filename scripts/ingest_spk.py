@@ -84,7 +84,9 @@ def _section(text: str) -> str:
 def parse_initial_public_offerings(text: str, source_url: str) -> list[dict[str, Any]]:
     bulletin_no, approval_date = parse_bulletin_meta(text, source_url)
     section = re.sub(r"\s+", " ", _section(text)).strip()
-    company_pattern = re.compile(r"([A-ZÇĞİÖŞÜ0-9][A-Za-zÇĞİÖŞÜçğıöşü0-9 .,&'()/-]+?A\.?Ş\.?)\s+", re.I)
+    # Şirket eşleşmesinin bir önceki satırdaki sayısal değerlerden başlamasını engelle.
+    # Şirket unvanları harfle başlatılır; sayılar unvanın devamında yine desteklenir.
+    company_pattern = re.compile(r"([A-ZÇĞİÖŞÜ][A-Za-zÇĞİÖŞÜçğıöşü0-9 .,&'()/-]+?A\.?Ş\.?)\s+", re.I)
     matches = list(company_pattern.finditer(section))
     items: list[dict[str, Any]] = []
     for index, match in enumerate(matches):
