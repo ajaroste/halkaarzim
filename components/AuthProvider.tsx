@@ -65,9 +65,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const handler = () => void reload();
     window.addEventListener("halkaarzim-auth-changed", handler);
     const browser = getSupabaseBrowserClient();
-    const subscription = browser?.auth.onAuthStateChange((_event, nextSession) => {
+    const subscription = browser?.auth.onAuthStateChange((event, nextSession) => {
       if (nextSession) storeSession(mapSupabaseSession(nextSession));
-      else clearStoredSession();
+      else if (event === "SIGNED_OUT" || event === "USER_DELETED") clearStoredSession();
       window.setTimeout(() => void reload(), 0);
     }).data.subscription;
     return () => {
