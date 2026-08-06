@@ -3,7 +3,13 @@ export type AuthSession = {
   refresh_token: string;
   expires_in: number;
   expires_at?: number;
-  user: { id: string; email?: string; email_confirmed_at?: string };
+  user: {
+    id: string;
+    email?: string;
+    email_confirmed_at?: string;
+    app_metadata?: Record<string, unknown>;
+    user_metadata?: Record<string, unknown>;
+  };
 };
 
 export type PublicProfile = {
