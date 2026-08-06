@@ -11,6 +11,18 @@ function getPublicKey(): string | undefined {
   return process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 }
 
+function getAuthCallbackUrl(): string {
+  const configuredSite = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const vercelSite = process.env.NEXT_PUBLIC_VERCEL_URL?.trim();
+  let baseUrl = configuredSite || (vercelSite ? `https://${vercelSite}` : window.location.origin);
+
+  if (!baseUrl.startsWith("http://") && !baseUrl.startsWith("https://")) {
+    baseUrl = `https://${baseUrl}`;
+  }
+
+  return `${baseUrl.replace(/\/$/, "")}/auth/callback`;
+}
+
 export function getSupabaseBrowserClient(): SupabaseClient | null {
   if (typeof window === "undefined") return null;
   if (browserClient !== undefined) return browserClient;
@@ -61,7 +73,7 @@ export async function signInWithSocialProvider(provider: SocialAuthProvider): Pr
   const { error } = await client.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: getAuthCallbackUrl(),
       skipBrowserRedirect: false
     }
   });
