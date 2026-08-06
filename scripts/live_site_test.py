@@ -51,9 +51,13 @@ def track_console(page: Page) -> None:
     page.on("console", on_console)
 
 
+def auth_modal(page: Page):
+    return page.locator("section.authModalCard")
+
+
 def open_auth(page: Page) -> None:
     page.get_by_role("button", name="Giriş yap", exact=True).click()
-    page.get_by_role("dialog").wait_for(state="visible", timeout=10_000)
+    auth_modal(page).wait_for(state="visible", timeout=10_000)
 
 
 def test_social_redirect(browser: Browser, provider_label: str) -> None:
@@ -62,7 +66,7 @@ def test_social_redirect(browser: Browser, provider_label: str) -> None:
     try:
         page.goto(BASE_URL, wait_until="domcontentloaded", timeout=30_000)
         open_auth(page)
-        page.get_by_role("button", name=provider_label, exact=True).click()
+        auth_modal(page).get_by_role("button", name=provider_label, exact=True).click()
         try:
             page.wait_for_url(lambda url: urlparse(url).netloc not in {"halkaarzim.vercel.app", ""}, timeout=20_000)
         except Exception:
@@ -105,7 +109,7 @@ def run() -> None:
         page.screenshot(path=OUT / "02-home-dark.png", full_page=True)
 
         open_auth(page)
-        dialog = page.get_by_role("dialog")
+        dialog = auth_modal(page)
         add_check("Giriş penceresi", dialog.is_visible())
         for label in ["GitHub ile devam et", "LinkedIn ile devam et", "Spotify ile devam et"]:
             add_check(label, dialog.get_by_role("button", name=label, exact=True).count() == 1)
@@ -122,7 +126,7 @@ def run() -> None:
         add_check("Güvenli sahte giriş yanıtı", invalid_login_handled, dialog_text[-300:])
         page.screenshot(path=OUT / "04-login-result.png", full_page=True)
 
-        page.get_by_role("button", name="Kapat").click()
+        dialog.get_by_role("button", name="Kapat").click()
         page.goto(f"{BASE_URL}/halka-arzlar", wait_until="domcontentloaded", timeout=30_000)
         page.wait_for_timeout(1000)
         filters = ["Tümü", "SPK onaylı", "Talep topluyor", "Yaklaşan", "Arzı tamamlanan", "İşlem gören", "Ertelenen"]
