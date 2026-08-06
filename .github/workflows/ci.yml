@@ -1,0 +1,37 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install -r requirements-dev.txt
+      - run: npm install --no-audit --no-fund
+      - run: npm run test:parser
+      - run: npm run test
+      - run: npm run test:contracts
+      - run: npm run typecheck
+      - run: npm run test:source
+      - run: npm run build
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/build_qa_site.py
+      - name: Browser QA
+        run: |
+          python -m http.server 8765 --directory qa-site > /tmp/qa-http.log 2>&1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          sleep 2
+          python tests/e2e_qa.py
