@@ -1,0 +1,39 @@
+name: Live site test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/live_site_test.py"
+      - ".github/workflows/live-site-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright
+        run: |
+          pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Run live browser test
+        env:
+          LIVE_SITE_URL: https://halkaarzim.vercel.app
+          LIVE_TEST_OUTPUT: live-test-artifacts
+        run: python scripts/live_site_test.py
+      - name: Upload screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: halkaarzim-live-test
+          path: live-test-artifacts
+          if-no-files-found: error
+          retention-days: 14
