@@ -23,7 +23,7 @@ def main() -> None:
     items = payload.get("items", [])
     (OUTPUT / "index.html").write_text(page("HalkaArzım", "<h1>Gerçek halka arz verileri</h1><p><a id='open-list' href='/halka-arzlar/'>Tüm halka arzları görüntüle</a></p>", "document.getElementById('theme-toggle').onclick=()=>document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';"), encoding="utf-8")
 
-    filters = ["all", "approved", "collecting", "upcoming", "completed", "trading", "postponed"]
+    filters = ["all", "approved", "active", "upcoming", "completed", "listed", "delayed"]
     cards = []
     for item in items:
         ticker = html.escape(item.get("ticker") or "Kod bekleniyor")
