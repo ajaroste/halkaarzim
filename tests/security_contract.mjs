@@ -38,6 +38,18 @@ test("AI route is server-only, authenticated and bounded", () => {
   assert.doesNotMatch(route, /NEXT_PUBLIC_(?:GEMINI|AI_ADMIN|CLOUDFLARE_API|SERVICE_ROLE|VAPID_PRIVATE)/);
 });
 
+test("REST login session is synchronized into Supabase browser auth", () => {
+  const provider = read("components/AuthProvider.tsx");
+  for (const expected of [
+    "validSession()",
+    "browser.auth.setSession",
+    "access_token: stored.access_token",
+    "refresh_token: stored.refresh_token",
+    "mapSupabaseSession(data.session)",
+    "reloadPromise"
+  ]) assert.ok(provider.includes(expected), `Auth session synchronization missing: ${expected}`);
+});
+
 test("private routes are excluded from robots", () => {
   const robots = read("app/robots.ts");
   for (const path of ["/admin", "/profil", "/auth", "/api"]) assert.ok(robots.includes(path));
