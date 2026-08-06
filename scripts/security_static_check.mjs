@@ -5,6 +5,7 @@ import process from "node:process";
 const root = process.cwd();
 const roots = ["app", "components", "lib", "scripts"].filter((path) => existsSync(join(root, path)));
 const extensions = new Set([".ts", ".tsx", ".js", ".mjs", ".cjs"]);
+const scannerPath = "scripts/security_static_check.mjs";
 const allowedDangerousHtml = new Set(["app/layout.tsx", "components/JsonLd.tsx"]);
 const privateEnvNames = [
   "GEMINI_API_KEY",
@@ -46,6 +47,7 @@ for (const sourceRoot of roots) {
     const content = readFileSync(file, "utf8");
     const firstCodeLine = content.split(/\r?\n/).find((line) => line.trim() && !line.trim().startsWith("//"))?.trim();
     const isClient = firstCodeLine === '"use client";' || firstCodeLine === "'use client';";
+    const isScanner = path === scannerPath;
 
     if (isClient) {
       for (const name of privateEnvNames) {
@@ -53,17 +55,19 @@ for (const sourceRoot of roots) {
       }
     }
 
-    if ((content.includes("eval(") || content.includes("new Function(")) && !path.endsWith("security_static_check.mjs")) {
+    if (!isScanner && (content.includes("eval(") || content.includes("new Function("))) {
       failures.push(`${path}: dynamic code execution detected`);
     }
 
-    if (content.includes("dangerouslySetInnerHTML") && !allowedDangerousHtml.has(path)) {
+    if (!isScanner && content.includes("dangerouslySetInnerHTML") && !allowedDangerousHtml.has(path)) {
       failures.push(`${path}: dangerouslySetInnerHTML is not in the reviewed allowlist`);
     }
 
-    for (const { name, pattern } of secretPatterns) {
-      pattern.lastIndex = 0;
-      if (pattern.test(content)) failures.push(`${path}: possible hard-coded ${name}`);
+    if (!isScanner) {
+      for (const { name, pattern } of secretPatterns) {
+        pattern.lastIndex = 0;
+        if (pattern.test(content)) failures.push(`${path}: possible hard-coded ${name}`);
+      }
     }
   }
 }
