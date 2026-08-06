@@ -29,7 +29,7 @@ type ModelResult = {
   confidence?: number;
 };
 
-function json(body: unknown, status = 200, extraHeaders: HeadersInit = {}) {
+function json(body: unknown, status = 200, extraHeaders: Record<string, string> = {}) {
   return NextResponse.json(body, {
     status,
     headers: {
