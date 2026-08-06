@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const browser = getSupabaseBrowserClient();
     const subscription = browser?.auth.onAuthStateChange((event, nextSession) => {
       if (nextSession) storeSession(mapSupabaseSession(nextSession));
-      else if (event === "SIGNED_OUT" || event === "USER_DELETED") clearStoredSession();
+      else if (event === "SIGNED_OUT") clearStoredSession();
       window.setTimeout(() => void reload(), 0);
     }).data.subscription;
     return () => {
