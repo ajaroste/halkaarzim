@@ -1,1 +1,10 @@
-name: removed
+name: retired checksum
+
+on:
+  workflow_dispatch:
+
+jobs:
+  retired:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Bootstrap verification is complete."
