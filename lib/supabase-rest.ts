@@ -63,8 +63,16 @@ export function clearStoredSession() {
 
 export async function signUp(email: string, password: string, displayName?: string): Promise<AuthSession | { user: unknown }> {
   if (!url) throw new Error("Giriş sistemi adresi eksik");
+  const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/auth/confirm` : undefined;
   const result = await parseResponse<AuthSession | { user: unknown }>(await fetch(`${url}/auth/v1/signup`, {
-    method: "POST", headers: headers(), body: JSON.stringify({ email, password, data: { display_name: displayName || email.split("@")[0] } })
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({
+      email,
+      password,
+      data: { display_name: displayName || email.split("@")[0] },
+      email_redirect_to: redirectTo
+    })
   }));
   return "access_token" in result ? storeSession(result) : result;
 }
@@ -100,7 +108,7 @@ export async function signOut(session?: AuthSession | null) {
 
 export async function requestPasswordReset(email: string) {
   if (!url) throw new Error("Giriş sistemi adresi eksik");
-  const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/profil` : undefined;
+  const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/auth/confirm?mode=recovery` : undefined;
   await parseResponse(await fetch(`${url}/auth/v1/recover`, { method: "POST", headers: headers(), body: JSON.stringify({ email, redirect_to: redirectTo }) }));
 }
 
@@ -178,6 +186,7 @@ export type AdminIpoPatch = {
   firstTradeDate?: string;
   intermediary?: string;
 };
+
 export async function adminPatchIpo(input: AdminIpoPatch, token: string) {
   return rpc<boolean>("admin_patch_ipo", {
     p_ipo_id: input.ipoId,
@@ -189,6 +198,7 @@ export async function adminPatchIpo(input: AdminIpoPatch, token: string) {
     p_intermediary: input.intermediary || null
   }, token);
 }
+
 export async function adminAddDocument(input: { ipoId: string; title: string; documentType: string; sourceKind: string; sourceUrl: string }, token: string) {
   return rpc<string>("admin_add_document", {
     p_ipo_id: input.ipoId,
