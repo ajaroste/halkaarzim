@@ -8,7 +8,7 @@ assert.ok(items.length >= 30, `En az 30 gerçek kayıt bekleniyordu, bulunan: ${
 assert.equal(new Set(items.map((item) => item.id)).size, items.length, "IPO id değerleri benzersiz olmalı");
 assert.equal(new Set(items.map((item) => item.slug)).size, items.length, "IPO slug değerleri benzersiz olmalı");
 
-const allowedStatuses = new Set(["approved", "collecting", "upcoming", "completed", "trading", "postponed"]);
+const allowedStatuses = new Set(["approved", "active", "upcoming", "completed", "listed", "delayed"]);
 for (const item of items) {
   assert.ok(item.company, "Şirket adı zorunlu");
   assert.ok(item.price > 0, `${item.company}: fiyat pozitif olmalı`);
@@ -19,7 +19,7 @@ for (const item of items) {
 
 const quick = items.find((item) => item.ticker === "QUICK");
 if (quick) {
-  assert.equal(quick.status, "trading");
+  assert.equal(quick.status, "listed");
   assert.equal(quick.firstTradeDate, "2026-08-06");
 }
 
