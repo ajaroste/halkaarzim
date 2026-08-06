@@ -1,0 +1,42 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { AiScore } from "@/components/AiScore";
+import { Comments } from "@/components/Comments";
+import { PromiseTracker } from "@/components/PromiseTracker";
+import { FinancialTable } from "@/components/FinancialTable";
+import { TradingViewChart } from "@/components/TradingViewChart";
+import { LiveAgenda } from "@/components/LiveAgenda";
+import { LotCalculator } from "@/components/LotCalculator";
+import { WatchButton } from "@/components/WatchButton";
+import { AdSlot } from "@/components/AdSlot";
+import { formatTry } from "@/lib/domain";
+import { getIpoBySlug, ipos } from "@/data/ipos";
+
+export function generateStaticParams() { return ipos.map((ipo) => ({ slug: ipo.slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params; const ipo = getIpoBySlug(slug);
+  return ipo ? { title: `${ipo.ticker || "Halka arz"} ${ipo.company}`, description: ipo.aiSummary } : {};
+}
+
+export default async function IpoDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params; const ipo = getIpoBySlug(slug); if (!ipo) notFound();
+  const code = ipo.ticker || "Kod bekleniyor";
+  return <><Header /><main className="detailPage"><div className="container">
+    <nav className="breadcrumb"><Link href="/">Ana sayfa</Link><span>/</span><Link href="/halka-arzlar">Halka arzlar</Link><span>/</span><span>{code}</span></nav>
+    <section className="detailHero"><div className="detailIdentity"><div className="companyLogo xlarge">{ipo.company.slice(0,2).toLocaleUpperCase("tr-TR")}</div><div><div className="cardTopline left"><span className={`statusBadge ${ipo.status}`}>{ipo.statusLabel}</span><span className="ticker">{code}</span></div><h1>{ipo.company}</h1><p>{ipo.sector}</p></div></div><WatchButton ipoId={ipo.id} slug={ipo.slug} /></section>
+    <div className="detailGrid"><div className="detailMain">
+      <article className="panel aiReportPanel"><div className="panelHeader"><div><span className="eyebrow">Kaynak sınırlı değerlendirme</span><h2>Otomatik halka arz ön analizi</h2></div><span className="versionBadge">{ipo.reportVersion} · {ipo.aiProvider}</span></div><div className="reportLead"><AiScore score={ipo.aiScore} /><p>{ipo.aiSummary}</p></div><div className="signalGrid detailSignals"><div><span>Sermaye artırımı</span><strong className="positive">{ipo.capitalIncreaseShares.toLocaleString("tr-TR")} lot</strong></div><div><span>Ortak satışı</span><strong>{ipo.shareholderSaleShares.toLocaleString("tr-TR")} lot</strong></div><div><span>Ek satış</span><strong>{ipo.extraSaleShares.toLocaleString("tr-TR")} lot</strong></div><div><span>Analiz kapsamı</span><strong className="warning">Ön analiz</strong></div></div><div className="twoColumns"><div className="findingBox positiveBox"><h3>İlk güçlü sinyaller</h3><ul>{ipo.highlights.map((item) => <li key={item}>{item}</li>)}</ul></div><div className="findingBox riskBox"><h3>Eksik bilgi ve riskler</h3><ul>{ipo.risks.map((item) => <li key={item}>{item}</li>)}</ul></div></div><div className="sourceList"><div className="sourceListTitle"><strong>Kullanılan kaynaklar</strong><span>{ipo.sources.length} belge</span></div>{ipo.sources.map((source) => source.url ? <a className="sourceEntry" key={`${source.title}-${source.url}`} href={source.url} target="_blank" rel="noreferrer"><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span><b>↗</b></a> : <div className="sourceEntry" key={`${source.title}-${source.page}`}><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span></div>)}</div><p className="reportStamp">Kapsam: {ipo.analysisScope}. Bu puan finansal kalite veya getiri tahmini değildir; yalnız mevcut resmî verinin kapsam puanıdır.</p></article>
+      <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_DETAIL_SLOT} label="Şirket detayı reklam alanı" />
+      <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Arz yapısı</span><h2>Sermaye ve satış dağılımı</h2></div></div><div className="fundUseList"><div className="fundUseRow"><div><span>Sermaye artırımı</span><strong>{ipo.capitalIncreaseShares.toLocaleString("tr-TR")}</strong></div><div className="progress"><span style={{ width: `${ipo.lotCount ? ipo.capitalIncreaseShares / ipo.lotCount * 100 : 0}%` }} /></div></div><div className="fundUseRow"><div><span>Mevcut ortak satışı</span><strong>{ipo.shareholderSaleShares.toLocaleString("tr-TR")}</strong></div><div className="progress"><span style={{ width: `${ipo.lotCount ? ipo.shareholderSaleShares / ipo.lotCount * 100 : 0}%` }} /></div></div>{ipo.extraSaleShares > 0 && <div className="fundUseRow"><div><span>Olası ek satış</span><strong>{ipo.extraSaleShares.toLocaleString("tr-TR")}</strong></div><div className="progress"><span style={{ width: `${ipo.maxLotCount ? ipo.extraSaleShares / ipo.maxLotCount * 100 : 0}%` }} /></div></div>}</div></article>
+      <article className="panel"><div className="panelHeader"><div><span className="eyebrow">İzahname verisi</span><h2>Fon kullanım planı</h2></div></div>{ipo.fundUse.length ? <div className="fundUseList">{ipo.fundUse.map((item) => <div className="fundUseRow" key={item.label}><div><span>{item.label}</span><strong>{item.min != null && item.max != null ? `%${item.min}–${item.max}` : `%${item.value}`}</strong></div><div className="progress"><span style={{ width: `${Math.min(100, item.value)}%` }} /></div></div>)}</div> : <div className="chartEmpty"><strong>Fon kullanım belgesi henüz işlenmedi.</strong><p>İzahname bağlantısı bulunduğunda bu alan kaynağıyla birlikte doldurulacak.</p></div>}</article>
+      <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Finansal belgeler</span><h2>Finansal görünüm</h2></div></div><FinancialTable rows={ipo.financials} /></article>
+      <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Gerçek piyasa verisi</span><h2>TradingView fiyat grafiği</h2></div></div><TradingViewChart ticker={ipo.ticker} /></article>
+      <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Verilen sözler</span><h2>Halka arz vaatleri</h2></div></div>{ipo.promises.length ? <PromiseTracker promises={ipo.promises} /> : <div className="chartEmpty"><strong>Vaat takibi henüz başlamadı.</strong><p>Fon kullanım planı yayımlandığında hedefler kayıt altına alınacak.</p></div>}</article>
+      <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Sürekli güncellenir</span><h2>Şirket gündemi</h2></div></div><LiveAgenda company={ipo.company} officialEvents={ipo.agenda} /></article>
+      <Comments ipoId={ipo.id} slug={ipo.slug} />
+    </div><aside className="detailSidebar"><article className="panel stickyPanel"><h2>Halka arz bilgileri</h2><dl className="facts"><div><dt>Arz fiyatı</dt><dd>{formatTry(ipo.price)}</dd></div><div><dt>{ipo.approvalLabel || "SPK onay tarihi"}</dt><dd>{ipo.approvalDate}</dd></div><div><dt>Talep tarihleri</dt><dd>{ipo.dates}</dd></div><div><dt>Temel arz</dt><dd>{ipo.lotCount.toLocaleString("tr-TR")}</dd></div><div><dt>Azami arz</dt><dd>{(ipo.maxLotCount || ipo.lotCount).toLocaleString("tr-TR")}</dd></div><div><dt>Dağıtım</dt><dd>{ipo.distribution}</dd></div>{ipo.firstTradeDate && <div><dt>İlk işlem tarihi</dt><dd>{new Date(ipo.firstTradeDate).toLocaleDateString("tr-TR")}</dd></div>}{Boolean(ipo.participantCount) && <div><dt>Katılımcı</dt><dd>{ipo.participantCount!.toLocaleString("tr-TR")}</dd></div>}{Boolean(ipo.offerSize) && <div><dt>Arz büyüklüğü</dt><dd>{formatTry(ipo.offerSize!)}</dd></div>}{ipo.intermediary && <div><dt>Aracı kurum</dt><dd>{ipo.intermediary}</dd></div>}{Boolean(ipo.publicFloat) && <div><dt>Halka açıklık</dt><dd>%{ipo.publicFloat}</dd></div>}<div><dt>Veri kapsamı</dt><dd>%{ipo.dataCompleteness || 0}</dd></div></dl>{ipo.retailLots > 0 ? <><hr /><h3>Lot tahmin aracı</h3><LotCalculator price={ipo.price} retailLots={ipo.retailLots} /></> : <p className="moderationNote">Bireysel tahsisat açıklanmadığı için lot tahmini kapalıdır.</p>}</article></aside></div>
+  </div></main><Footer /></>;
+}

@@ -1,0 +1,692 @@
+{
+  "generatedAt": "2026-08-06T08:32:44.824133+00:00",
+  "documentCount": 18,
+  "errorCount": 6,
+  "documents": [
+    {
+      "id": "55d6cacd037381022f058e1526358ded",
+      "ipoId": "289e3024-2ae6-517e-9798-e6986266ccd2",
+      "title": "SPK Bülteni 2026/49",
+      "sourceUrl": "https://spk.gov.tr/data/6a7395628f95db1c20deaf20/2026-49.pdf",
+      "sha256": "04cf2aaceba9cb032739edfc1c226198e8369f196ed6bc2e46c810b28011eb7b",
+      "pageCount": 6,
+      "textCharacters": 16617,
+      "evidence": [],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "77d7fe9f352741d061666259b94aba9c",
+      "ipoId": "982fe2b3-8f30-505f-8c80-4d9e9d10f145",
+      "title": "SPK Bülteni 2026/47",
+      "sourceUrl": "https://spk.gov.tr/data/6a62701d8f95db0c500ba5eb/2026-47.pdf",
+      "sha256": "5b80d5de51ebbbb433f8d50edc2c43bd089090d664c1b57c771d5a681b46a3cb",
+      "pageCount": 6,
+      "textCharacters": 14184,
+      "evidence": [
+        {
+          "factKey": "financials",
+          "sourcePage": 2,
+          "sourceExcerpt": "nmasına karar verilmiştir. 2. Gayrimenkul Dışındaki Varlıkları Değerlemeye Yetkili Kuruluşlar Önder Bağımsız Denetim ve Danışmanlık AŞ, Kurulumuzun “Gayrimenkul Dışındaki Varlıkları Değerlemeye Yetkili Kuruluşlar” listesine alınmış olup, söz konusu listenin güncel haline ( https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari- ve-makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar/gayrimenkul-disindaki-varliklari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir.",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "financials",
+          "sourcePage": 3,
+          "sourceExcerpt": " Oytun PASTIRMA 55*******80 Fiktif işlemlerin muhasebeleştirilmesi suretiyle Şirket’in ilgili dönem finansal tablo ve raporlarının gerçeği yansıtmayan şekilde düzenlenmesi veya söz konusu fiilin işlenmesine iştirak edilmesi. SPKn’nun 112 nci maddesinin ikinci fıkrasının (a) bendi. Hasan YALÇIN 63*******18 Tuncay OKALİN 50*******04 SPKn’nun 112 nci maddesinin ikinci fıkrasının (a) bendi ile 5237 sayılı Türk Ceza Kanunu’nun 39 uncu maddesi. Timuçin Devrim YALI 27*******22 Selahattin ŞAMDANLI 37*******88 Fatih BİLECEN 60*******64 H",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "financials",
+          "sourcePage": 4,
+          "sourceExcerpt": ". 2. a) MİA Teknoloji AŞ (Şirket) tarafından , Lider Sistem Teknolojileri AŞ’nin 31.12.2025 tarihli finansal tablolar esas alınarak tüm aktif ve pasifiyle bir bütün halinde devralınması suretiyle Şirket bünyesinde birleşilmesi için hazırlanan duyuru metnine onay verilmesi talebinin, ayrılma hakkının 38,48 TL bedel üzerinden kullandırılması suretiyle olumlu karşılanmasına karar verilmiştir. b) Şirket’in esas sözleşmesinin “Sermaye” başlıklı 6 ncı maddesinin değiştirilmesine ilişkin hazırlanan tadil metnine Kurulumuzca uygun görüş",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "88bf55e707eeb2b8715c8850969bb014",
+      "ipoId": "bf461898-bb75-535d-9bfa-7b0b12f20c25",
+      "title": "SPK Bülteni 2026/45",
+      "sourceUrl": "https://spk.gov.tr/data/6a5945168f95db16247cf9e9/2026-45.pdf",
+      "sha256": "8f7ade59728ada9815b3cc996c82e0a0da5c4a31734532046fd1f5c18a75176a",
+      "pageCount": 7,
+      "textCharacters": 17010,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 3,
+          "sourceExcerpt": "faaliyet izni verilmesi talebinin olumlu karşılanmasına karar verilmiştir. 3. Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar Arıkan Taşınmaz Değerleme ve Danışmanlık AŞ, Kurulumuzun “Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar” listesine alınmış olup, söz konusu listenin güncel haline (https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari-ve-makine-ve- ekipmanlari-degerlemeye-yetkili-kuruluslar/makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir. C. SUÇ DUYURUSU, İDARİ P",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "4920330160e34f883bfa1b209df4f97f",
+      "ipoId": "a3b48d73-d4d9-5953-b1a0-e151ec65f3d3",
+      "title": "SPK Bülteni 2026/43",
+      "sourceUrl": "https://spk.gov.tr/data/6a455a8c8f95db2b441cf5e6/2026-43.pdf",
+      "sha256": "1e27226bccb51a8f6069f1a1c423fa2f43f62160dc6d38d9a231b465158feead",
+      "pageCount": 5,
+      "textCharacters": 13599,
+      "evidence": [
+        {
+          "factKey": "financials",
+          "sourcePage": 3,
+          "sourceExcerpt": "masına karar verilmiştir. 3. Rönesans Gayrimenkul Yatırım AŞ’nin birleşmeye esas 31.12.2025 tarihli finansal tabloları itibarıyla sermayesinin ve oy hakkı veren paylarının tamamına sahip olduğu Altunizade Gayrimenkul Yatırım İnşaat Turizm Sanayi ve Ticaret AŞ ile Kurtköy Gayrimenkul Yatırım İnşaat Turizm Sanayi ve Ticaret AŞ’yi devralması suretiyle gerçekleştireceği kolaylaştırılmış usulde birleşme işlemlerine ilişkin olarak hazırlanan duyuru metinlerine K urulumuzca onay verilmesi talebinin olumlu karşılanmasına karar verilmişt",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "3e0bec77e7e436e2ca1cf8e72d881ad0",
+      "ipoId": "fdab77f8-dc76-5365-83e4-32f530744cec",
+      "title": "SPK Bülteni 2026/41",
+      "sourceUrl": "https://spk.gov.tr/data/6a3c2ff88f95db1cd82c27ed/2026-41.pdf",
+      "sha256": "94f5b674136598cf214a8fbd23de7bdcdf96e8b0bcd0301df812ba127b5a4b69",
+      "pageCount": 6,
+      "textCharacters": 15424,
+      "evidence": [],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "e15cdb9eaaff1391eb8d8f05b93ec72b",
+      "ipoId": "57837dcb-53f5-55af-a05b-8b0da7a59cf3",
+      "title": "SPK Bülteni 2026/36",
+      "sourceUrl": "https://spk.gov.tr/data/6a29cbee8f95db0600c60c5d/2026-36.pdf",
+      "sha256": "cda6a2ea523f3de1863455df27c0dec4531c5098401dfc5e93be25de974c273a",
+      "pageCount": 6,
+      "textCharacters": 14514,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 2,
+          "sourceExcerpt": "nedi Şemsiye Fonu Büyükdemir Portföy Yönetimi AŞ Serbest Şemsiye Fon 2. Gayrimenkul Dışı Varlıkları Değerlemeye Yetkili Kuruluşlar ICBC Turkey Yatırım Menkul Değerler AŞ, Kurulumuzun “Gayrimenkul Dışındaki Varlıkları Değerlemeye Yetkili Kuruluşlar” listesine alınmış olup, söz konusu listenin güncel haline (https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari-ve-makine-ve- ekipmanlari-degerlemeye-yetkili-kuruluslar/gayrimenkul-disindaki-varliklari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir.",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 3,
+          "sourceExcerpt": " verilmesine ilişkin başvurusunun olumlu karşılanmasına karar verilmiştir. 4. Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar Varlık Taşınmaz Değerleme ve Danışmanlık AŞ, Kurulumuzun “Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar” listesine alınmış olup, söz konusu listenin güncel haline (https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari-ve-makine-ve- ekipmanlari-degerlemeye-yetkili-kuruluslar/makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir. C. SUÇ DUYURUSU, İDARİ P",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "c1c30b0f13fadd7d83e18c701be9a982",
+      "ipoId": "50ba01ab-86fa-56cc-b411-0a34ca486512",
+      "title": "SPK Bülteni 2026/29",
+      "sourceUrl": "https://spk.gov.tr/data/69fcef228f95db1f60022a15/2026-29.pdf",
+      "sha256": "496288a3d951cee5bf2574d5af1eae10a2ea8c61919592c1e3eb1a9cf3cafcab",
+      "pageCount": 8,
+      "textCharacters": 21352,
+      "evidence": [],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "640fa8936ecbd18b9f5fb169fbac14e3",
+      "ipoId": "f2e0b009-119e-572e-94d8-ce959590a666",
+      "title": "SPK Bülteni 2026/18",
+      "sourceUrl": "https://spk.gov.tr/data/69c595a68f95db1e4440bc26/2026-18.pdf",
+      "sha256": "7fae6f2ce17ad65bcbad355ff1b640a0677e5446b4261fb27ccc3d17df5752f2",
+      "pageCount": 6,
+      "textCharacters": 15387,
+      "evidence": [],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "b3aaf135cf0a41bb5e69b66fc3af6ab9",
+      "ipoId": "617b50b2-ccfc-5bb4-926f-14c251ee3f01",
+      "title": "SPK Bülteni 2026/10",
+      "sourceUrl": "https://spk.gov.tr/data/699f4e0b8f95db1d6403395e/2026-10.pdf",
+      "sha256": "21c4600c3eec1ba59bbb04f5326fceef75ea9783136bbca842234cb831417598",
+      "pageCount": 5,
+      "textCharacters": 12579,
+      "evidence": [],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "599353cf74aa52fb4c2c3e79c8f17604",
+      "ipoId": "a7516e80-cea4-5e85-8ed4-b888361f3690",
+      "title": "SPK Bülteni 2026/9",
+      "sourceUrl": "https://spk.gov.tr/data/699607778f95db06d4a07a32/2026-9.pdf",
+      "sha256": "c32a1f2c21835800ea6f1660852b0281191dd49105b506d5310322b8ab8fb4db",
+      "pageCount": 4,
+      "textCharacters": 9175,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 4,
+          "sourceExcerpt": "ilmesi talebiyle yapmış olduğu başvuru olumlu karşılanmıştır. 5. Diğer Başvurular Mahal Gayrimenkul Değerleme ve Danışmanlık AŞ, “Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar” listesinden çıkarılmış olup, yetkili kuruluşlar listesine ( https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari-ve-makine-ve-ekipmanlari- degerlemeye-yetkili-kuruluslar/makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir. E. DİĞER ÖZEL DURUMLAR İhraç ettiği sermaye piyasası araçları bir borsada işlem gö",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "4085ccbe1b9342bd964d2cb1802a23a7",
+      "ipoId": "0d7931b8-ba29-58f2-9661-6cbaf893cab5",
+      "title": "SPK Bülteni 2026/8",
+      "sourceUrl": "https://spk.gov.tr/data/698e2e3c8f95db3a58d0319c/2026-8.pdf",
+      "sha256": "241311841192a28a9b22948fcf6195dc488b02b75d248f4a808b0e5ba0dbe0d7",
+      "pageCount": 6,
+      "textCharacters": 16449,
+      "evidence": [
+        {
+          "factKey": "fund_use",
+          "sourcePage": 3,
+          "sourceExcerpt": "rımının sonuçlarını içeren ilk finansal tabloların ilanını takip eden on iş günü içinde elde edilen fonun kullanımına ilişkin rapor hazırlanmaması VII-128.1 sayılı Pay Tebliği’nin 33 üncü maddesi 246.511,47 Bülent SAVAŞ 19*******44 246.511,47 Ahmet Fatih TAMAY 14*******04 246.511,47 1) Şirket'in yapılacak ilk genel kurul toplantısında, Şirket hakkında idari para cezası uygulanmasını gerektiren aykırılıkta sor umluluğu bulunan yönetim kurulu üyelerine söz konusu idari para cezasının rücu edilip edilmeyeceği hususunda karar alınma",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "f3da894141ee38fb27d5ecc3d062026d",
+      "ipoId": "c0796fb5-9487-5b43-b3c7-3cde1c413c5e",
+      "title": "SPK Bülteni 2026/6",
+      "sourceUrl": "https://spk.gov.tr/data/6984fc598f95db1600e0dc19/2026-6.pdf",
+      "sha256": "cce1ee1c5f7c9b3dd0e860edc3736cbd47d1b852151d91bd0c637966dfb509d2",
+      "pageCount": 8,
+      "textCharacters": 22782,
+      "evidence": [
+        {
+          "factKey": "fund_use",
+          "sourcePage": 3,
+          "sourceExcerpt": "e Verilen İPC Tutarı Hidropar Hareket Kontrol Teknolojileri Merkezi Sanayi ve Ticaret AŞ 46******52 Fon kullanım yeri değişikliğine ilişkin Kurul Kararı’nın gecikmeli açıklanması II-15.1 sayılı Özel Durumlar Tebliği’nin 23 üncü maddesinin ikinci fıkrası 246.511,47 Bağlı ortaklık alımına ilişkin olarak Kamuyu Aydınlatma Platformu’nda güncellemenin gecikmeli yapılması II-15.1 sayılı Özel Durumlar Tebliği’nin 16 ncı maddesinin dördüncü fıkrası 155.567,00 b) Bulls Yatırım Menkul Değerler AŞ hakkında 6362 sayılı Sermaye Piyasası Ka",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 7,
+          "sourceExcerpt": "ale plerinin olumlu karşılanmasına karar verilmiştir. 3. Diğer Başvurular Yeditepe Grup Gayrimenkul Değerleme ve Danışmanlık AŞ , “Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar” listesinden çıkartılmış olup, yetkili kuruluşlar listesine (https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari-ve-makine-ve- ekipmanlari-degerlemeye-yetkili-kuruluslar/makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir.",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "73d3589c6200c04e5b47d46931a69a45",
+      "ipoId": "bcccfc22-6589-537f-9440-a0d67aafaf58",
+      "title": "SPK Bülteni 2026/5",
+      "sourceUrl": "https://spk.gov.tr/data/697ba5458f95db0d00a003c6/2026-5.docx.pdf",
+      "sha256": "c57917a2b21860472d8f26f0e9a83bf3e16007edcc5a2140453bf78d2643b5c7",
+      "pageCount": 7,
+      "textCharacters": 15544,
+      "evidence": [],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "ef9272f376272c9d5f6984fbe89d89ba",
+      "ipoId": "527fec4c-6005-5824-b008-b153726fc5c5",
+      "title": "SPK Bülteni 2026/4",
+      "sourceUrl": "https://spk.gov.tr/data/6973dc0f8f95db1e2cc911e1/2026-4.pdf",
+      "sha256": "ba0ade9f7e6dd49466f3c8fc1a8b0696c639065fc75e80d818da6584310c1652",
+      "pageCount": 22,
+      "textCharacters": 53515,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 3,
+          "sourceExcerpt": " belgesinin onaylanması talebinin olumlu karşılanmasına karar verilmiştir. 4. Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar Düzey Gayrimenkul Değerleme ve Danışmanlık AŞ, Kurulumuzun “Makine ve Ekipmanları Değerlemeye Yetkili Kuruluşlar” listesine alınmış olup, yetkili kuruluşlar listesinin güncel haline ( https://spk.gov.tr/kurumlar/gayrimenkul-disindaki-varliklari-ve- makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar/makine-ve-ekipmanlari-degerlemeye-yetkili-kuruluslar) adresinden ulaşılabilmektedir. C. SUÇ DUYU",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "6827465be8570f21bd4c159df0610686",
+      "ipoId": "541ca1ef-9dc0-5b83-8a90-c7e5d72147de",
+      "title": "SPK Bülteni 2026/1",
+      "sourceUrl": "https://spk.gov.tr/data/69600a298f95db2a74bff6ed/2026-1.pdf",
+      "sha256": "9212d294a00e6d8e85ec54368d0079f2418a47d1ee189d9a6fe96c3a4cb91aeb",
+      "pageCount": 8,
+      "textCharacters": 20931,
+      "evidence": [
+        {
+          "factKey": "financials",
+          "sourcePage": 2,
+          "sourceExcerpt": "A CEZASI İLE DİĞER YAPTIRIM VE TEDBİRLER 1. İdari Para Cezaları a) III-62.2 sayılı Bilgi Sistemleri Bağımsız Denetim Tebliği (BSBD Tebliği) ve VII -128.9 sayılı Bilgi Sistemleri Yönetimi Tebliği (BSY Tebliği) kapsamında hazırlanan Aracı kurumların 2024 yılına ait bilgi sistemleri bağımsız denetim raporları ile ilgili yapılan inceleme sonucunda, aşağıdaki tabloda yer alan idari para cezalarının uygulanmasına karar verilmiştir. İPC Uygulanan Şirket Vergi Kimlik No İPC Uygulanmasına Neden Olan Eylem Eylemin Aykırılık Teşkil Ettiği ",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "fund_use",
+          "sourcePage": 7,
+          "sourceExcerpt": "Enerji Yatırımları A Ş’nin paylarının ilk halka arzın a ilişkin izahname ve ekinde kamuya duyurulan Fon Kullanım Raporu’nda yer ala n kalemlerden “İnorganik Büyümenin Finansmanı”, “Elektrik Enerjisi Üretim Kapasitesi Artırımı” ve “Yenileme Yatırımları” için ayrılan fonun harcanmayan kısmının “İşletme Sermayesinin Güçlendirilmesi” kaleminde kullanılmasına ilişkin fon kullanım yerindeki değişiklik talebinin olumsuz karşılanmasına karar verilmiştir. 6. Aşağıda ünvanlarına yer verilen fonların katılma paylarının ihracına ilişkin i",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [],
+        "promises": []
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "fa5522f70537553b16dc7ce29d4173d7",
+      "ipoId": "bcccfc22-6589-537f-9440-a0d67aafaf58",
+      "title": "Best Brands halka arz bilgilendirme dokümanı",
+      "sourceUrl": "https://kap.org.tr/tr/api/file/download/4028328c9b82727b019c1e6e63286694",
+      "sha256": "25ed16b6b87a9a03aa1cf5f66f63b010980cdd4216296f5602a1711d24773f2d",
+      "pageCount": 8,
+      "textCharacters": 17884,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 1,
+          "sourceExcerpt": "Best Brands Grup Enerji Yatırım A.Ş. “FİYAT TESPİT RAPORU” ANALİZİ 2 Şubat 2026",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 2,
+          "sourceExcerpt": "ANSAL BİLGİLER ................................................................................ 4 - DEĞERLEME HAKKINDA ÖZET BİLGİ ................................................... 5 - NİHAİ GÖRÜŞ ............................................................................................. HALK YATIRIM/ARAŞTIRMA İşbu rapor, Halk Yatırım Menkul Değerler A.Ş. (‘HALK YATIRIM’) tarafından, Sermaye Piyasası Kurulu’nun 12/02/2013 tarihli ve 5/145 sayılı kararında yer alan; payların ilk kez halka arzı öncesi uygulanacak esasların",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 3,
+          "sourceExcerpt": "ands Grup Enerji Yatırım A.Ş. – Şubat 2026 Kaynak: Best Brands Grup Enerji Yatırım A.Ş. – İzahname, Fiyat Tespit Raporu Halka Arz Hakkında Özet Bilgi İhraçcı: Best Brands Grup Enerji Yatırım A.Ş. İhraçcı Hakkında: Best Brands Grup Enerji Yatırım A.Ş. (\"Şirket\"), Mehmet SÜRKİT ve Anar HAMZAYEV ortaklığında kurulmuş ve mevcut durumda Sürkit Holding A.Ş.’nin tek pay sahibi olduğu enerji sektörü profesyonelleri tarafından yönetilen bir enerji şirketidir. Şirket’in herhangi bir bağlı ortaklığı bulunmamakla beraber halen faaliyette ",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 4,
+          "sourceExcerpt": "ame Best Brands Grup Enerji Yatırım A.Ş. – Şubat 2026 Kaynak: Best Brands Grup Enerji Yatırım A.Ş - Fiyat Tespit Raporu Gelir Tablosu (TL) 31/12/2022 31/12/2023 30/12/2024 30/09/2024 30/09/2025 Hasılat 178.947.454 287.515.179 345.482.207 265.504.087 346.581.538 Satışların Maliyeti (-) -81.596.607 -188.330.683 -257.480.356 -149.830.831 -246.495.873 BRÜT KAR/ZARAR (+/-) 97.350.847 99.184.496 88.001.851 115.673.256 100.085.665 Genel Yönetim Giderleri (-) -10.691.285 -15.872.106 -25.065.759 -6.792.315 -12.695.234 Esas Faaliyetlerd",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 5,
+          "sourceExcerpt": "nds Grup Enerji Yatırım A.Ş – Karşılaştırmalı Bilanço Kaynak: Best Brands Grup Enerji Yatırım A.Ş - Fiyat Tespit Raporu Best Brands Grup Enerji Yatırım A.Ş. – Şubat 2026 Bilanço (TL) 31/12/2022 31/12/2023 31/12/2024 30/09/2025 (Konsolide) (Solo) (Solo) (Solo) Dönen Varlıklar Nakit ve Benzerleri 10.051.791 22.318.833 11.262.460 8.638.520 Ticari Alacaklar 24.357.849 37.220.175 33.806.359 82.188.321 İlişkili Olmayan Taraflardan Ticari Alacaklar 24.357.849 37.220.175 33.806.359 82.188.321 Diğer Alacaklar 5.224.402 239.795 1.207.99",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 6,
+          "sourceExcerpt": "4- Değerleme Hakkında Özet Bilgi Global Menkul Değerler A.Ş. tarafından hazırlanan, Best Brands Grup Enerji Yatırım A.Ş. halka arz fiyatının tespitinde indirgenmiş nakit akımı ve çarpan analizi kullanılarak elde edilen sonuçlar ağırlıklandırılarak nihai değer hesaplanmıştır. 1. Pazar Yaklaşımı: Piyasa Çarpanları Analizi (“Çarpan Analizi”) 2. Gelir Yaklaşımı: İndirgenmiş Nakit Akımı Analizi (“İNA Analizi”) 4.1- Çarpan Analizi Yön",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 7,
+          "sourceExcerpt": "4.2- İndirgenmiş Nakit Akışı Modeli Global Menkul Değerler A.Ş. tarafından hazırlanan Fiyat Tespit Raporu’nun İndirgenmiş Nakit Akımı Modeli’ne aşağıdaki varsayımlar uygulanmıştır: ✓ İNA, 4Ç25 - 2049 dönemini kapsayan projeksiyonları içermektedir. ✓ AOSM hesaplamasında; risksiz faiz oranı %7,50, ülke risk primi %6,00, beta 1,0, sermaye maliyeti %13,50, borçlanma maliyeti %8,00 ve vergi oranı %24,00 olarak belirlenmiştir. Borç ve özkaynak oranı %50 olarak alınırken, AOSM %9,79 seviyesinde hesaplanmıştır. ✓ Yapılan",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "risk_factors",
+          "sourcePage": 8,
+          "sourceExcerpt": "r kaldığını değerlendiriyoruz. ✓ Sonuç olarak, yapılan incelemeler sonucunda ve izahnamede yer alan riskler de saklı kalmak kaydıyla, Şirket için ulaşılan 14,70 TL halka arz fiyatının makul olduğu kanaatini taşıyoruz. ÇEKİNCE Bu rapor ve yorumlardaki yazılar, bilgiler ve grafikler yalnızca bilgi edinilmesi amacıyla derlenmiştir. Burada yer alan yatırım bilgi, yorum ve tavsiyeleri yatırım danışmanlığı kapsamında değildir. Yatırım danışmanlığı hizmeti, yetkili kuruluşlar tarafından kişilerin risk ve getiri tercihleri dikkat",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [
+          {
+            "label": "Yurt içi/yurt dışı yeni enerji tesislerinin kurulumu ve satın alınması",
+            "value": 100
+          }
+        ],
+        "financials": [
+          {
+            "period": "2022",
+            "revenue": 178.9,
+            "netProfit": 69.7,
+            "debt": null
+          },
+          {
+            "period": "2023",
+            "revenue": 287.5,
+            "netProfit": 52.9,
+            "debt": null
+          },
+          {
+            "period": "2024",
+            "revenue": 345.5,
+            "netProfit": 122.0,
+            "debt": null
+          }
+        ],
+        "promises": [
+          {
+            "title": "Halka arz fonunun yeni enerji tesisleri için kullanılması",
+            "status": "in-progress",
+            "note": "Bilgilendirme dokümanında net fonun %100’ü bu amaç için belirtilmiştir; gerçekleşme KAP fon kullanım raporlarıyla izlenecektir."
+          },
+          {
+            "title": "Bir yıl boyunca dolaşımdaki payı artıracak işlem yapılmaması",
+            "status": "in-progress",
+            "note": "Şirket taahhüdü, ilk işlem tarihinden itibaren bir yıl izlenecektir."
+          }
+        ]
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "e51c01ec68fec37d43c68c42cb8affe4",
+      "ipoId": "c0796fb5-9487-5b43-b3c7-3cde1c413c5e",
+      "title": "Ata Turizm halka arz bilgilendirme dokümanı",
+      "sourceUrl": "https://kap.org.tr/tr/api/file/download/4028328d9b827481019c474d38527865",
+      "sha256": "691d79f08ff9ec80459cf6f58f0de7417d6da8a0f58a09c6390ecc36c1e86a57",
+      "pageCount": 9,
+      "textCharacters": 25509,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 1,
+          "sourceExcerpt": "Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. “FİYAT TESPİT RAPORU” ANALİZİ 10 Şubat 2026",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 2,
+          "sourceExcerpt": "ANSAL BİLGİLER ................................................................................ 4 - DEĞERLEME HAKKINDA ÖZET BİLGİ ................................................... 5 - NİHAİ GÖRÜŞ ............................................................................................. HALK YATIRIM/ARAŞTIRMA İşbu rapor, Halk Yatırım Menkul Değerler A.Ş. (‘HALK YATIRIM’) tarafından, Sermaye Piyasası Kurulu’nun 12/02/2013 tarihli ve 5/145 sayılı kararında yer alan; payların ilk kez halka arzı öncesi uygulanacak esasların",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "fund_use",
+          "sourcePage": 3,
+          "sourceExcerpt": "ya halka arz yapılmasına dair bir karar alınmayacağını kabul, beyan ve taahhüt etmişlerdir. Şirket, halka arzdan elde edilecek gelirin büyük bölümünü, sahip olduğu opsiyon sözleşmeleri kapsamında halihazırda kiracı sıfatıyla faaliyetlerini sürdürdüğü taşınmazların satın alımında kullanmayı planlamaktadır. Bu kalem için ayrılması öngörülen pay %80–90 aralığındadır. Bunun yanında, otel ve restoranların renovasyonu için %0–10, taş ocağı kapasite artırımı için %5–10 ve işletme sermayesi ihtiyacı için %5–10 oranında kaynak tahsis edilmesi öngörü",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 5,
+          "sourceExcerpt": "su 3 Kaynak: Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. - Fiyat Tespit Raporu Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. – Şubat 2026 Gelir Tablosu (TL) 31/12/2022 31/12/2023 31/12/2024 30/09/2024 30/09/2025 Hasılat 1.509.710.649 1.765.138.781 2.412.878.578 1.610.240.745 1.835.788.141 Satışların maliyeti (-) -697.731.178 -912.253.863 -1.309.961.408 -922.749.494 -989.811.934 Ticari Faaliyetlerden Brüt Kar 811.979.471 852.884.918 1.102.917.170 68",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 6,
+          "sourceExcerpt": "anço Kaynak: Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. - Fiyat Tespit Raporu Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. – Şubat 2026 Bilanço (TL) 31/12/2022 31/12/2023 31/12/2024 30/09/2025 VARLIKLAR Dönen Varlıklar 330.830.015 633.976.447 613.632.830 1.229.142.894 Nakit ve nakit benzerleri 12.847.907 24.172.200 238.794.569 439.990.039 Ticari alacaklar 34.367.522 236.917.171 161.921.057 320.645.352 Diğer alacaklar 163.261.732 92.660.143 52.353",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 7,
+          "sourceExcerpt": "4- Değerleme Hakkında Özet Bilgi Tera Yatırım Menkul Değerler A.Ş. tarafından hazırlanan, Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. halka arz fiyatının tespitinde indirgenmiş nakit akımı ve çarpan analizi yöntemleri kullanılarak elde edilen sonuçlar ağırlıklandırılarak nihai değer hesaplanmıştır. 1. Pazar Yaklaşımı: Piyasa Çarpanları Analizi (“Çarpan Analizi”) 2. Gelir Yaklaşımı: İndirg",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 8,
+          "sourceExcerpt": "e Dış Ticaret A.Ş. – İNA Tablosu 4.3- Sonuç Tera Yatırım Menkul Değerler A.Ş. tarafından hazırlanan değerleme çalışmasında, İNA ve Çarpan Analizi yöntemleri kullanılarak elde edilen sonuçlar eşit ağırlıklandırılarak nihai değer tespit edilmiştir. Halka arz fiyatı belirlenirken tespit edilen değere %38,45 oranında halka arz iskontosu uygulanmıştır. Şirket için pay başına iskontolu pay değeri 11,20 TL olarak tespit edilmiştir. Tablo 7 - Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. - Değ",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "risk_factors",
+          "sourcePage": 9,
+          "sourceExcerpt": "ul olduğunu değerlendiriyoruz. ✓ Sonuç olarak, yapılan incelemeler sonucunda ve izahnamede yer alan riskler de saklı kalmak kaydıyla, Şirket için ulaşılan 11,20 TL halka arz fiyatının makul olduğu kanaatini taşıyoruz. ÇEKİNCE Bu rapor ve yorumlardaki yazılar, bilgiler ve grafikler yalnızca bilgi edinilmesi amacıyla derlenmiştir. Burada yer alan yatırım bilgi, yorum ve tavsiyeleri yatırım danışmanlığı kapsamında değildir. Yatırım danışmanlığı hizmeti, yetkili kuruluşlar tarafından kişilerin risk ve getiri tercihleri dikkat",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [
+          {
+            "label": "Kiralanan taşınmazların satın alınması",
+            "value": 85,
+            "min": 80,
+            "max": 90
+          },
+          {
+            "label": "Otel ve restoran renovasyonu",
+            "value": 5,
+            "min": 0,
+            "max": 10
+          },
+          {
+            "label": "Taş ocağı kapasite artırımı",
+            "value": 7.5,
+            "min": 5,
+            "max": 10
+          },
+          {
+            "label": "İşletme sermayesi",
+            "value": 7.5,
+            "min": 5,
+            "max": 10
+          }
+        ],
+        "financials": [
+          {
+            "period": "2022",
+            "revenue": 1509.7,
+            "netProfit": 365.6,
+            "debt": null
+          },
+          {
+            "period": "2023",
+            "revenue": 1765.1,
+            "netProfit": 375.9,
+            "debt": null
+          },
+          {
+            "period": "2024",
+            "revenue": 2412.9,
+            "netProfit": 603.9,
+            "debt": null
+          }
+        ],
+        "promises": [
+          {
+            "title": "Opsiyonlu/kiralanan taşınmazların satın alınması",
+            "status": "in-progress",
+            "note": "Net halka arz fonunun %80-90 aralığı bu amaç için planlanmıştır."
+          },
+          {
+            "title": "Otel ve restoran renovasyonu",
+            "status": "not-started",
+            "note": "Planlanan fon aralığı %0-10’dur."
+          },
+          {
+            "title": "Taş ocağı kapasite artışı",
+            "status": "not-started",
+            "note": "Planlanan fon aralığı %5-10’dur."
+          }
+        ]
+      },
+      "reviewStatus": "extracted_unreviewed"
+    },
+    {
+      "id": "c1bc100dbd5d3d6cda26308f0709fee1",
+      "ipoId": "541ca1ef-9dc0-5b83-8a90-c7e5d72147de",
+      "title": "Üçay Mühendislik halka arz bilgilendirme dokümanı",
+      "sourceUrl": "https://kap.org.tr/tr/api/file/download/4028328d9b827483019bb2bb9a0d3ddb",
+      "sha256": "9b3e79d8c0824e108e8aa2bac269ff63d6569afd0abb03c53f5ee891962daed6",
+      "pageCount": 9,
+      "textCharacters": 21902,
+      "evidence": [
+        {
+          "factKey": "valuation",
+          "sourcePage": 1,
+          "sourceExcerpt": "ÜÇAY Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş. “FİYAT TESPİT RAPORU” ANALİZİ 12 Ocak 2026",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 2,
+          "sourceExcerpt": "ANSAL BİLGİLER ................................................................................ 4 - DEĞERLEME HAKKINDA ÖZET BİLGİ ................................................... 5 - NİHAİ GÖRÜŞ ............................................................................................. HALK YATIRIM/ARAŞTIRMA İşbu rapor, Halk Yatırım Menkul Değerler A.Ş. (‘HALK YATIRIM’) tarafından, Sermaye Piyasası Kurulu’nun 12/02/2013 tarihli ve 5/145 sayılı kararında yer alan; payların ilk kez halka arzı öncesi uygulanacak esasların",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 3,
+          "sourceExcerpt": "eknolojileri A.Ş. – Ocak 2026 Kaynak: ÜÇAY Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş. - Fiyat Tespit Raporu Halka Arz Hakkında Özet Bilgi İhraçcı: Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş. İhraçcı Hakkında: Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş. (\"Üçay Mühendislik\", “Ana Ortaklık” veya “Şirket\") 24 Kasım 2000 tarihinde Türkiye’de kurulmuştur. Ana Ortaklık; konutlarda ve küçük işletmelerde ısıtma, soğutma, havalandırma, klima ve iklimlendirme sistemlerinin kurulumu (İklimlendir",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 4,
+          "sourceExcerpt": "026 Tablo 2 – Ortaklık Yapısı Kaynak: ÜÇAY Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş. - Fiyat Tespit Raporu",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 5,
+          "sourceExcerpt": "eknolojileri A.Ş. – Ocak 2026 Kaynak: ÜÇAY Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş. - Fiyat Tespit Raporu Gelir Tablosu (TL) 31/12/2022 31/12/2023 31/12/2024 30/09/2024 30/09/2025 Hasılat 3.290.596.506 3.924.234.497 3.711.066.155 2.650.538.007 1.939.082.893 Satışların Maliyeti (-) (2.533.092.835) (2.890.875.965) (2.727.194.417) (1.930.100.912) (1.493.524.398) BRÜT KAR 757.503.671 1.033.358.532 983.871.738 720.437.095 445.558.495 Genel Yönetim Giderleri (-) (188.359.994) (245.336.704) (220.952.565) (200.305.329) (",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 6,
+          "sourceExcerpt": "eknolojileri A.Ş. – Ocak 2026 Kaynak: ÜÇAY Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş. - Fiyat Tespit Raporu Bilanço (TL) 31/12/2022 31/12/2023 31/12/2024 30/09/2025 VARLIKLAR Dönen Varlıklar 1.660.181.461 2.192.168.790 1.485.914.765 1.361.526.934 Nakit ve Nakit Benzerleri 226.180.002 112.999.688 222.844.873 190.670.094 Finansal Yatırımlar 62.344.680 66.212.628 38.146.301 35.356.619 Ticari Alacaklar 485.295.753 549.598.803 605.819.335 609.319.547 - İlişkili Taraflardan Ticari Alacaklar 5.555.518 278.944 4.644.791 21",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 7,
+          "sourceExcerpt": "4- Değerleme Hakkında Özet Bilgi Kuveyt Türk Yatırım Menkul Değerler A.Ş. tarafından hazırlanan, Üçay Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş. halka arz fiyatının tespitinde indirgenmiş nakit akımı ve çarpan analizi kullanılarak elde edilen sonuçlar eşit ağırlıklandırılarak nihai değer hesaplanmıştır. 1. Pazar Yaklaşımı: Çarpan Analizi Yöntemi 2. Gelir Yaklaşımı: İndirgenmiş Nakit Akımı Yönetimi 4.1- Çarpan Analizi",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "valuation",
+          "sourcePage": 8,
+          "sourceExcerpt": "4.3- Sonuç Kuveyt Türk Yatırım Menkul Değerler A.Ş. tarafından hazırlanan değerleme çalışmasında, İNA ve Çarpan Analizi yöntemleri kullanılarak elde edilen sonuçlar ağırlıklandırılarak nihai değer tespit edilmiştir. Halka arz fiyatı belirlenirken tespit edilen değere %46,3 halka arz iskontosu uygulanmıştır. Şirket için pay başına iskontolu pay değeri 18,00 TL olarak tespit edilmiştir. Tablo 6 Üçay Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş- Değerleme Sonucu Tablosu 6 ÜÇAY Mühendislik Ene",
+          "confidence": 1.0
+        },
+        {
+          "factKey": "risk_factors",
+          "sourcePage": 9,
+          "sourceExcerpt": " olduğununu değerlendiriyoruz. ✓ Sonuç olarak, yapılan incelemeler sonucunda ve İzahnamede yer alan riskler de saklı kalmak kaydıyla, ÜÇAY Mühendislik Enerji Ve İklimlendirme Teknolojileri A.Ş için ulaşılan 18,00 TL halka arz fiyatının makul olduğu kanaatini taşıyoruz. ÇEKİNCE Bu rapor ve yorumlardaki yazılar, bilgiler ve grafikler yalnızca bilgi edinilmesi amacıyla derlenmiştir. Burada yer alan yatırım bilgi, yorum ve tavsiyeleri yatırım danışmanlığı kapsamında değildir. Yatırım danışmanlığı hizmeti, yetkili kuruluşlar t",
+          "confidence": 1.0
+        }
+      ],
+      "structuredFacts": {
+        "fundUse": [],
+        "financials": [
+          {
+            "period": "2022",
+            "revenue": 3290.6,
+            "netProfit": -54.3,
+            "debt": null
+          },
+          {
+            "period": "2023",
+            "revenue": 3924.2,
+            "netProfit": 88.2,
+            "debt": null
+          },
+          {
+            "period": "2024",
+            "revenue": 3711.1,
+            "netProfit": 127.2,
+            "debt": null
+          }
+        ],
+        "promises": [
+          {
+            "title": "Bir yıl boyunca dolaşımdaki payı artıracak işlem yapılmaması",
+            "status": "in-progress",
+            "note": "Şirket ve halka arz eden pay sahiplerinin taahhütleri KAP açıklamalarıyla izlenecektir."
+          },
+          {
+            "title": "30 gün fiyat istikrarı için fon ayrılması",
+            "status": "completed",
+            "note": "Bilgilendirme dokümanında brüt halka arz gelirinin %50’si kadar fonla 30 gün planlandığı belirtilmiştir; bu kayıt planın açıklanmış olmasını gösterir, işlem sonucunu değil."
+          }
+        ]
+      },
+      "reviewStatus": "extracted_unreviewed"
+    }
+  ],
+  "errors": [
+    {
+      "url": "https://kap.org.tr/tr/api/file/download/4028328d9b827481019c474d38527865",
+      "error": "fixture bulunamadı"
+    },
+    {
+      "url": "https://kap.org.tr/tr/api/file/download/4028328c9b82727b019c1e6e63286694",
+      "error": "fixture bulunamadı"
+    },
+    {
+      "url": "https://kap.org.tr/tr/api/file/download/4028328d9b827483019bb2bb9a0d3ddb",
+      "error": "fixture bulunamadı"
+    },
+    {
+      "url": "https://kap.org.tr/tr/api/file/download/4028328d9b827481019c22a2f19d4152",
+      "error": "fixture bulunamadı"
+    },
+    {
+      "url": "https://kap.org.tr/tr/api/file/download/4028328c9b5e661e019b7ed257192beb",
+      "error": "fixture bulunamadı"
+    },
+    {
+      "url": "https://kap.org.tr/tr/api/file/download/4028328c9f0a0859019f3776c16d3c0b",
+      "error": "fixture bulunamadı"
+    }
+  ]
+}

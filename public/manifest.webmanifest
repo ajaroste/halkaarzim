@@ -1,0 +1,10 @@
+{
+  "name": "HalkaArzım",
+  "short_name": "HalkaArzım",
+  "description": "Kaynaklı AI halka arz raporları ve şirket gündemi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f8fb",
+  "theme_color": "#0e8f67",
+  "lang": "tr"
+}

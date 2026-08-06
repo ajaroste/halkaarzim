@@ -1,0 +1,38 @@
+{
+  "name": "halkaarzim-live",
+  "version": "1.0.0-rc.3",
+  "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/domain.test.mjs",
+    "test:source": "python3 scripts/validate-release.py",
+    "test:all": "npm run test && npm run test:contracts && npm run test:parser && npm run typecheck && npm run test:source",
+    "data:update": "python3 scripts/update_all.py",
+    "data:fixture": "python3 scripts/ingest_spk.py --fixture tests/fixtures/2026-49.pdf --source-url https://spk.gov.tr/data/6a7395628f95db1c20deaf20/2026-49.pdf",
+    "data:sync": "python3 scripts/sync_supabase.py",
+    "test:parser": "python3 -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts",
+    "preview:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy:cloudflare": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "test:contracts": "python3 scripts/run_contract_tests.py"
+  },
+  "dependencies": {
+    "next": "16.3.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.8.0",
+    "@opennextjs/cloudflare": "^1.20.2",
+    "wrangler": "^4.114.0"
+  }
+}

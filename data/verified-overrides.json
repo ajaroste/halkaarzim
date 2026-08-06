@@ -1,0 +1,325 @@
+{
+  "bewen-enerji": {
+    "ticker": "BEWEN",
+    "sector": "Enerji",
+    "status": "delayed",
+    "statusLabel": "Talep toplama ertelendi",
+    "dates": "Yeni talep toplama tarihi bekleniyor",
+    "collectionStart": null,
+    "collectionEnd": null,
+    "dataNotes": [
+      "29-31 Temmuz 2026 olarak planlanan talep toplama ertelendi; yeni tarih açıklanmadı."
+    ],
+    "sources": [
+      {
+        "title": "Bewen Enerji halka arz sürecinin ertelenmesine ilişkin KAP açıklaması",
+        "page": "Özel durum açıklaması",
+        "kind": "KAP / resmî açıklama",
+        "url": "https://kap.org.tr/tr/Bildirim/1641554"
+      }
+    ]
+  },
+  "isvea-seramik-ve-banyo-urunleri-sanayi": {
+    "ticker": "ISVEA",
+    "collectionStart": "2026-07-01",
+    "collectionEnd": "2026-07-03",
+    "firstTradeDate": "2026-07-10",
+    "dates": "1-2-3 Temmuz 2026",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor"
+  },
+  "gentas-kimya-sanayi-ve-ticaret-pazarlama": {
+    "ticker": "GENKM",
+    "firstTradeDate": "2026-03-06",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "sources": [
+      {
+        "title": "KAP şirket bilgileri — Gentaş Kimya",
+        "page": "Borsa kodu",
+        "kind": "KAP / resmî kayıt",
+        "url": "https://kap.org.tr/tr/sirket-bilgileri/ozet/6201-gentas-kimya-sanayi-ve-ticaret-pazarlama-a-s"
+      }
+    ]
+  },
+  "best-brands-grup-enerji-yatirim": {
+    "ticker": "BESTE",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "sources": [
+      {
+        "title": "Best Brands halka arz bilgilendirme dokümanı",
+        "page": "Fon kullanımı ve taahhütler s. 3-4; finansallar s. 4-5",
+        "kind": "KAP / resmî belge",
+        "url": "https://kap.org.tr/tr/api/file/download/4028328c9b82727b019c1e6e63286694"
+      },
+      {
+        "title": "KAP BISTECH Pay Piyasası duyurusu",
+        "page": "İlk işlem tarihi",
+        "kind": "Borsa İstanbul/KAP duyurusu aktarımı",
+        "url": "https://kap.org.tr/en/Bildirim/1555603"
+      }
+    ],
+    "market": "Ana Pazar",
+    "publicFloat": 29.0,
+    "offerSize": 802304979,
+    "priceStability": "Planlanmamıştır.",
+    "valuationDiscount": 22.88,
+    "firstTradeDate": "2026-02-11",
+    "fundUse": [
+      {
+        "label": "Yurt içi/yurt dışı yeni enerji tesislerinin kurulumu ve satın alınması",
+        "value": 100
+      }
+    ],
+    "financials": [
+      {
+        "period": "2022",
+        "revenue": 178.9,
+        "netProfit": 69.7,
+        "debt": null
+      },
+      {
+        "period": "2023",
+        "revenue": 287.5,
+        "netProfit": 52.9,
+        "debt": null
+      },
+      {
+        "period": "2024",
+        "revenue": 345.5,
+        "netProfit": 122.0,
+        "debt": null
+      }
+    ],
+    "promises": [
+      {
+        "title": "Halka arz fonunun yeni enerji tesisleri için kullanılması",
+        "status": "in-progress",
+        "note": "Bilgilendirme dokümanında net fonun %100’ü bu amaç için belirtilmiştir; gerçekleşme KAP fon kullanım raporlarıyla izlenecektir."
+      },
+      {
+        "title": "Bir yıl boyunca dolaşımdaki payı artıracak işlem yapılmaması",
+        "status": "in-progress",
+        "note": "Şirket taahhüdü, ilk işlem tarihinden itibaren bir yıl izlenecektir."
+      }
+    ],
+    "analysisScope": "SPK arz yapısı + KAP bilgilendirme dokümanındaki fon kullanımı ve 2022-2024 finansalları",
+    "dataNotes": [
+      "Finansal borç satırı belge tablosundan güvenilir biçimde ayrıştırılamadığı için boş bırakılmıştır."
+    ]
+  },
+  "ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret": {
+    "ticker": "ATATR",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "sources": [
+      {
+        "title": "Ata Turizm halka arz bilgilendirme dokümanı",
+        "page": "Fon kullanımı s. 3; finansallar s. 5-6; fiyat istikrarı s. 3",
+        "kind": "KAP / resmî belge",
+        "url": "https://kap.org.tr/tr/api/file/download/4028328d9b827481019c474d38527865"
+      },
+      {
+        "title": "Borsa İstanbul işlem başlangıcı duyurusunun haber aktarımı",
+        "page": "İlk işlem tarihi",
+        "kind": "Borsa İstanbul/KAP duyurusu aktarımı",
+        "url": "https://tr.investing.com/news/stock-market-news/ata-turizmin-bistte-islem-gorme-tarihi-belirlendi-3766931"
+      }
+    ],
+    "market": "Ana Pazar",
+    "priceStability": "Payların işlem görmeye başlamasından itibaren en fazla 30 gün planlanmıştır.",
+    "firstTradeDate": "2026-02-19",
+    "fundUse": [
+      {
+        "label": "Kiralanan taşınmazların satın alınması",
+        "value": 85,
+        "min": 80,
+        "max": 90
+      },
+      {
+        "label": "Otel ve restoran renovasyonu",
+        "value": 5,
+        "min": 0,
+        "max": 10
+      },
+      {
+        "label": "Taş ocağı kapasite artırımı",
+        "value": 7.5,
+        "min": 5,
+        "max": 10
+      },
+      {
+        "label": "İşletme sermayesi",
+        "value": 7.5,
+        "min": 5,
+        "max": 10
+      }
+    ],
+    "financials": [
+      {
+        "period": "2022",
+        "revenue": 1509.7,
+        "netProfit": 365.6,
+        "debt": null
+      },
+      {
+        "period": "2023",
+        "revenue": 1765.1,
+        "netProfit": 375.9,
+        "debt": null
+      },
+      {
+        "period": "2024",
+        "revenue": 2412.9,
+        "netProfit": 603.9,
+        "debt": null
+      }
+    ],
+    "promises": [
+      {
+        "title": "Opsiyonlu/kiralanan taşınmazların satın alınması",
+        "status": "in-progress",
+        "note": "Net halka arz fonunun %80-90 aralığı bu amaç için planlanmıştır."
+      },
+      {
+        "title": "Otel ve restoran renovasyonu",
+        "status": "not-started",
+        "note": "Planlanan fon aralığı %0-10’dur."
+      },
+      {
+        "title": "Taş ocağı kapasite artışı",
+        "status": "not-started",
+        "note": "Planlanan fon aralığı %5-10’dur."
+      }
+    ],
+    "analysisScope": "SPK arz yapısı + KAP bilgilendirme dokümanındaki fon kullanımı ve 2022-2024 finansalları",
+    "dataNotes": [
+      "Fon kullanım yüzdeleri dokümanda aralık olarak açıklandığından arayüzde aralıkla gösterilir.",
+      "Finansal borç satırı güvenilir ayrıştırılamadığı için boş bırakılmıştır."
+    ]
+  },
+  "ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri": {
+    "ticker": "UCAYM",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "sources": [
+      {
+        "title": "Üçay Mühendislik halka arz bilgilendirme dokümanı",
+        "page": "Halka arz/taahhütler s. 2-3; finansallar s. 5-6",
+        "kind": "KAP / resmî belge",
+        "url": "https://kap.org.tr/tr/api/file/download/4028328d9b827483019bb2bb9a0d3ddb"
+      },
+      {
+        "title": "KAP işlem başlangıcı duyurusunun aktarımı",
+        "page": "İlk işlem tarihi",
+        "kind": "Borsa İstanbul/KAP duyurusu aktarımı",
+        "url": "https://fintables.com/borsa-haber-akisi/3b1e9398-8fe1-4cc9-8d9e-d226518158ec"
+      }
+    ],
+    "market": "Ana Pazar",
+    "priceStability": "Brüt halka arz gelirinin %50’si kadar fonla 30 gün planlanmıştır.",
+    "firstTradeDate": "2026-01-22",
+    "financials": [
+      {
+        "period": "2022",
+        "revenue": 3290.6,
+        "netProfit": -54.3,
+        "debt": null
+      },
+      {
+        "period": "2023",
+        "revenue": 3924.2,
+        "netProfit": 88.2,
+        "debt": null
+      },
+      {
+        "period": "2024",
+        "revenue": 3711.1,
+        "netProfit": 127.2,
+        "debt": null
+      }
+    ],
+    "promises": [
+      {
+        "title": "Bir yıl boyunca dolaşımdaki payı artıracak işlem yapılmaması",
+        "status": "in-progress",
+        "note": "Şirket ve halka arz eden pay sahiplerinin taahhütleri KAP açıklamalarıyla izlenecektir."
+      },
+      {
+        "title": "30 gün fiyat istikrarı için fon ayrılması",
+        "status": "completed",
+        "note": "Bilgilendirme dokümanında brüt halka arz gelirinin %50’si kadar fonla 30 gün planlandığı belirtilmiştir; bu kayıt planın açıklanmış olmasını gösterir, işlem sonucunu değil."
+      }
+    ],
+    "analysisScope": "SPK arz yapısı + KAP bilgilendirme dokümanındaki 2022-2024 finansalları ve taahhütler",
+    "dataNotes": [
+      "Özet bilgilendirme dokümanında ayrıntılı fon kullanım dağılımı bulunmadığından fon kullanım alanı boş bırakılmıştır.",
+      "Finansal borç satırı güvenilir ayrıştırılamadığı için boş bırakılmıştır."
+    ]
+  },
+  "savur-gayrimenkul-yatirim-ortakligi": {
+    "ticker": "SVGYO",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "sources": [
+      {
+        "title": "KAP şirket bilgileri — Savur GYO",
+        "page": "Borsa kodu",
+        "kind": "KAP / resmî kayıt",
+        "url": "https://kap.org.tr/tr/sirket-bilgileri/genel/6198-savur-gayrimenkul-yatirim-ortakligi-a-s"
+      },
+      {
+        "title": "Borsa İstanbul işlem başlangıcı duyurusunun haber aktarımı",
+        "page": "İlk işlem tarihi",
+        "kind": "Borsa İstanbul/KAP duyurusu aktarımı",
+        "url": "https://www.cnbce.com/piyasalar/savur-gyo-svgyo-borsada-ne-zaman-islem-gorecek-gentas-kimya-genkm-borsada-ne-zaman-islem-gorecek-h26183"
+      }
+    ],
+    "firstTradeDate": "2026-03-06"
+  },
+  "luxera-gayrimenkul-yatirim-ortakligi": {
+    "ticker": "LXGYO",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "sources": [
+      {
+        "title": "KAP şirket bilgileri — Luxera GYO",
+        "page": "Borsa kodu",
+        "kind": "KAP / resmî kayıt",
+        "url": "https://kap.org.tr/tr/sirket-bilgileri/genel/6197-luxera-gayrimenkul-yatirim-ortakligi-a-s"
+      },
+      {
+        "title": "Borsa İstanbul işlem başlangıcı duyurusunun aracı kurum aktarımı",
+        "page": "İlk işlem tarihi",
+        "kind": "Borsa İstanbul/KAP duyurusu aktarımı",
+        "url": "https://www.oyakyatirim.com.tr/haberler/20260306181505/luxera-gyo-paylari-10-martta-ana-pazarda-islem-gormeye-baslayacak-fnc-news"
+      }
+    ],
+    "firstTradeDate": "2026-03-10"
+  },
+  "quick-sigorta": {
+    "ticker": "QUICK",
+    "status": "listed",
+    "statusLabel": "İşlem görüyor",
+    "firstTradeDate": "2026-08-06",
+    "market": "Yıldız Pazar",
+    "sources": [
+      {
+        "title": "Borsa İstanbul’da gong Quick Sigorta için çaldı",
+        "page": "İşlem kodu ve ilk işlem tarihi",
+        "kind": "Borsa İstanbul / resmî duyuru",
+        "url": "https://www.borsaistanbul.com/duyuru/15552/borsa-istanbulda-gong-quick-sigorta-icin-caldi"
+      },
+      {
+        "title": "KAP şirket bilgileri — Quick Sigorta",
+        "page": "Şirket özeti ve işlem kodu",
+        "kind": "KAP / resmî kayıt",
+        "url": "https://kap.org.tr/tr/sirket-bilgileri/ozet/6264-quick-sigorta-a-s"
+      }
+    ],
+    "dataNotes": [
+      "Quick Sigorta 6 Ağustos 2026 tarihinde QUICK koduyla Borsa İstanbul’da işlem görmeye başlamıştır."
+    ]
+  }
+}
