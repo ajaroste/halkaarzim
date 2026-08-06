@@ -6,7 +6,7 @@ import { Brand } from "@/components/Brand";
 import { getSupabaseBrowserClient, syncSupabaseSession } from "@/lib/supabase-browser";
 
 export default function AuthCallbackPage() {
-  const [message, setMessage] = useState("Google hesabın doğrulanıyor…");
+  const [message, setMessage] = useState("Hesabın doğrulanıyor…");
 
   useEffect(() => {
     async function complete() {
@@ -18,7 +18,7 @@ export default function AuthCallbackPage() {
       const params = new URLSearchParams(window.location.search);
       const providerError = params.get("error_description") || params.get("error");
       if (providerError) {
-        setMessage("Google girişi tamamlanamadı. Tekrar deneyebilirsin.");
+        setMessage("Sosyal giriş tamamlanamadı. Giriş ekranından tekrar deneyebilirsin.");
         return;
       }
       let result = await client.auth.getSession();
