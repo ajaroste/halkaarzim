@@ -15,18 +15,18 @@ export type PublicProfile = {
 };
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const publicKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SESSION_KEY = "halkaarzim-session";
 
 export function isSupabaseConfigured(): boolean {
-  return Boolean(url && anon && process.env.NEXT_PUBLIC_DEMO_MODE !== "true");
+  return Boolean(url && publicKey && process.env.NEXT_PUBLIC_DEMO_MODE !== "true");
 }
 
 function headers(token?: string): HeadersInit {
-  if (!anon) throw new Error("Supabase anon key eksik");
+  if (!publicKey) throw new Error("Giriş sistemi anahtarı eksik");
   return {
-    apikey: anon,
-    Authorization: `Bearer ${token || anon}`,
+    apikey: publicKey,
+    Authorization: `Bearer ${token || publicKey}`,
     "Content-Type": "application/json"
   };
 }
@@ -35,7 +35,7 @@ async function parseResponse<T>(response: Response): Promise<T> {
   const text = await response.text();
   const body = text ? JSON.parse(text) : {};
   if (!response.ok) {
-    const message = body?.msg || body?.message || body?.error_description || body?.hint || "Supabase isteği başarısız";
+    const message = body?.msg || body?.message || body?.error_description || body?.hint || "İstek tamamlanamadı";
     throw new Error(message);
   }
   return body as T;
@@ -62,7 +62,7 @@ export function clearStoredSession() {
 }
 
 export async function signUp(email: string, password: string, displayName?: string): Promise<AuthSession | { user: unknown }> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   const result = await parseResponse<AuthSession | { user: unknown }>(await fetch(`${url}/auth/v1/signup`, {
     method: "POST", headers: headers(), body: JSON.stringify({ email, password, data: { display_name: displayName || email.split("@")[0] } })
   }));
@@ -70,14 +70,14 @@ export async function signUp(email: string, password: string, displayName?: stri
 }
 
 export async function signIn(email: string, password: string): Promise<AuthSession> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   return storeSession(await parseResponse<AuthSession>(await fetch(`${url}/auth/v1/token?grant_type=password`, {
     method: "POST", headers: headers(), body: JSON.stringify({ email, password })
   })));
 }
 
 export async function refreshSession(session: AuthSession): Promise<AuthSession> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   return storeSession(await parseResponse<AuthSession>(await fetch(`${url}/auth/v1/token?grant_type=refresh_token`, {
     method: "POST", headers: headers(), body: JSON.stringify({ refresh_token: session.refresh_token })
   })));
@@ -99,30 +99,30 @@ export async function signOut(session?: AuthSession | null) {
 }
 
 export async function requestPasswordReset(email: string) {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/profil` : undefined;
   await parseResponse(await fetch(`${url}/auth/v1/recover`, { method: "POST", headers: headers(), body: JSON.stringify({ email, redirect_to: redirectTo }) }));
 }
 
 export async function getProfile(token: string): Promise<PublicProfile | null> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   const rows = await parseResponse<PublicProfile[]>(await fetch(`${url}/rest/v1/profiles?id=eq.${encodeURIComponent((await getUser(token)).id)}&select=id,username,display_name,role,is_suspended&limit=1`, { headers: headers(token), cache: "no-store" }));
   return rows[0] || null;
 }
 
 export async function getUser(token: string): Promise<{ id: string; email?: string }> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   return parseResponse(await fetch(`${url}/auth/v1/user`, { headers: headers(token), cache: "no-store" }));
 }
 
 export async function listComments(ipoId: string, token?: string) {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   const query = new URLSearchParams({ ipo_id: `eq.${ipoId}`, select: "id,body,helpful_count,created_at,display_name", order: "created_at.desc", limit: "50" });
   return parseResponse<Array<Record<string, unknown>>>(await fetch(`${url}/rest/v1/published_comments?${query}`, { headers: headers(token), cache: "no-store" }));
 }
 
 async function rpc<T>(name: string, body: Record<string, unknown>, token: string): Promise<T> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   return parseResponse<T>(await fetch(`${url}/rest/v1/rpc/${name}`, { method: "POST", headers: headers(token), body: JSON.stringify(body) }));
 }
 
@@ -136,7 +136,7 @@ export async function reportComment(commentId: string, reason: string, details: 
   return rpc<string>("report_comment", { p_comment_id: commentId, p_reason: reason, p_details: details }, token);
 }
 export async function listWatchlist(token: string): Promise<string[]> {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   const rows = await parseResponse<Array<{ ipo_id: string }>>(await fetch(`${url}/rest/v1/watchlists?select=ipo_id&order=created_at.desc`, { headers: headers(token), cache: "no-store" }));
   return rows.map((row) => row.ipo_id);
 }
@@ -144,12 +144,12 @@ export async function toggleWatchlist(ipoId: string, enabled: boolean, token: st
   return rpc<boolean>("set_watchlist", { p_ipo_id: ipoId, p_enabled: enabled }, token);
 }
 export async function updateNotificationPreference(ipoId: string, enabled: boolean, token: string) {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   return parseResponse(await fetch(`${url}/rest/v1/watchlists?ipo_id=eq.${ipoId}`, { method: "PATCH", headers: { ...headers(token), Prefer: "return=minimal" }, body: JSON.stringify({ notifications_enabled: enabled }) }));
 }
 
 export async function listModerationQueue(token: string) {
-  if (!url) throw new Error("Supabase URL eksik");
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
   return parseResponse<Array<Record<string, unknown>>>(await fetch(`${url}/rest/v1/comments?status=eq.pending&select=id,ipo_id,body,created_at,user_id&order=created_at.asc&limit=100`, { headers: headers(token), cache: "no-store" }));
 }
 export async function moderateQueuedComment(commentId: string, action: "publish" | "hide", token: string) {
