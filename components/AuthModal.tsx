@@ -3,13 +3,21 @@
 import { useState } from "react";
 import type { FormEvent, MouseEvent } from "react";
 import { isSupabaseConfigured, requestPasswordReset, signIn, signUp } from "@/lib/supabase-rest";
+import { signInWithSocialProvider, type SocialAuthProvider } from "@/lib/supabase-browser";
 
 type Mode = "signin" | "signup" | "reset";
+type BusyAction = "email" | SocialAuthProvider | null;
+
+const socialProviders: Array<{ provider: SocialAuthProvider; label: string; mark: string }> = [
+  { provider: "github", label: "GitHub ile devam et", mark: "GH" },
+  { provider: "linkedin_oidc", label: "LinkedIn ile devam et", mark: "in" },
+  { provider: "spotify", label: "Spotify ile devam et", mark: "♪" }
+];
 
 export function AuthModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [mode, setMode] = useState<Mode>("signin");
   const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [busyAction, setBusyAction] = useState<BusyAction>(null);
 
   if (!open) return null;
 
@@ -36,7 +44,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
       return;
     }
 
-    setBusy(true);
+    setBusyAction("email");
     try {
       if (mode === "reset") {
         await requestPasswordReset(email);
@@ -77,34 +85,72 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
         setMessage(raw);
       }
     } finally {
-      setBusy(false);
+      setBusyAction(null);
     }
   }
+
+  async function continueWithProvider(provider: SocialAuthProvider) {
+    if (!isSupabaseConfigured()) {
+      setMessage("Üyelik sistemi şu anda aktif değil.");
+      return;
+    }
+    setMessage("");
+    setBusyAction(provider);
+    try {
+      await signInWithSocialProvider(provider);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Sosyal giriş başlatılamadı.");
+      setBusyAction(null);
+    }
+  }
+
+  const busy = busyAction !== null;
 
   return <div className="modalBackdrop" role="presentation" onMouseDown={onClose}>
     <section className="modalCard authModalCard" role="dialog" aria-modal="true" aria-labelledby="auth-title" onMouseDown={(event: MouseEvent<HTMLElement>) => event.stopPropagation()}>
       <button className="modalClose" onClick={onClose} aria-label="Kapat">×</button>
       <span className="eyebrow">HalkaArzım hesabı</span>
       <h2 id="auth-title">{mode === "signin" ? "Giriş yap" : mode === "signup" ? "Ücretsiz hesap oluştur" : "Parolanı yenile"}</h2>
-      <p>{mode === "signup" ? "Kayıt sonrasında e-posta adresine doğrulama bağlantısı gönderilir." : "Takip listen, yorumların ve bildirim tercihlerin hesabınla eşitlenir."}</p>
+      <p>{mode === "signup" ? "E-posta ile kayıt olabilir veya aşağıdaki hesaplardan biriyle devam edebilirsin." : mode === "reset" ? "Parola yenileme bağlantısını e-posta adresine göndereceğiz." : "E-posta adresinle veya sosyal hesabınla giriş yapabilirsin."}</p>
+
+      {mode !== "reset" && <>
+        <div style={{ display: "grid", gap: 10, marginBottom: 18 }}>
+          {socialProviders.map(({ provider, label, mark }) => <button
+            key={provider}
+            type="button"
+            className="secondaryButton"
+            style={{ width: "100%", minHeight: 46, justifyContent: "flex-start", gap: 12 }}
+            disabled={busy}
+            onClick={() => void continueWithProvider(provider)}
+          >
+            <span aria-hidden="true" style={{ width: 28, height: 28, display: "grid", placeItems: "center", borderRadius: 8, background: "var(--surface-2)", fontWeight: 900, fontSize: 12 }}>{mark}</span>
+            <span style={{ flex: 1, textAlign: "center", paddingRight: 28 }}>{busyAction === provider ? "Yönlendiriliyor…" : label}</span>
+          </button>)}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "4px 0 18px", color: "var(--muted)", fontSize: 12 }}>
+          <span style={{ height: 1, flex: 1, background: "var(--line)" }} />
+          <span>veya e-posta ile</span>
+          <span style={{ height: 1, flex: 1, background: "var(--line)" }} />
+        </div>
+      </>}
 
       <form className="authForm" onSubmit={submit}>
         {mode === "signup" && <label>Görünen ad<input name="displayName" minLength={2} maxLength={40} autoComplete="name" required /></label>}
         <label>E-posta<input name="email" type="email" autoComplete="email" required /></label>
         {mode !== "reset" && <label>Parola<input name="password" type="password" minLength={8} autoComplete={mode === "signin" ? "current-password" : "new-password"} required /></label>}
         <button className="primaryButton full" disabled={busy || !isSupabaseConfigured()}>
-          {busy ? "İşleniyor…" : mode === "signin" ? "Giriş yap" : mode === "signup" ? "Hesap oluştur" : "Bağlantı gönder"}
+          {busyAction === "email" ? "İşleniyor…" : mode === "signin" ? "Giriş yap" : mode === "signup" ? "Hesap oluştur" : "Bağlantı gönder"}
         </button>
       </form>
 
       {message && <p className="formMessage" role="status">{message}</p>}
       <div className="authLinks">
-        <button className="textButton" type="button" onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setMessage(""); }}>
+        <button className="textButton" type="button" disabled={busy} onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setMessage(""); }}>
           {mode === "signin" ? "Hesabın yok mu? Kayıt ol" : "Giriş ekranına dön"}
         </button>
-        {mode === "signin" && <button className="textButton" type="button" onClick={() => { setMode("reset"); setMessage(""); }}>Parolamı unuttum</button>}
+        {mode === "signin" && <button className="textButton" type="button" disabled={busy} onClick={() => { setMode("reset"); setMessage(""); }}>Parolamı unuttum</button>}
       </div>
-      <small className="authPrivacy">Kayıt olarak kullanım koşullarını ve gizlilik politikasını kabul etmiş olursun.</small>
+      <small className="authPrivacy">Devam ederek kullanım koşullarını ve gizlilik politikasını kabul etmiş olursun.</small>
     </section>
   </div>;
 }
