@@ -1,0 +1,206 @@
+.legalShell {
+  min-height: 100vh;
+  background: var(--premium-bg, var(--bg));
+}
+
+.legalHero {
+  padding: clamp(64px, 9vw, 112px) 0 clamp(42px, 6vw, 72px);
+  border-bottom: 1px solid var(--premium-line, var(--line));
+  background:
+    radial-gradient(circle at 85% 10%, color-mix(in srgb, var(--premium-accent, var(--brand)) 10%, transparent), transparent 34%),
+    var(--premium-surface-solid, var(--surface));
+}
+
+.legalHero h1 {
+  max-width: 15ch;
+  margin: 14px 0 18px;
+  font-size: clamp(2.7rem, 6vw, 5.6rem);
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+
+.legalHero p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--premium-muted, var(--muted));
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+}
+
+.legalMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.legalMeta span {
+  padding: 8px 12px;
+  border: 1px solid var(--premium-line, var(--line));
+  border-radius: 999px;
+  background: var(--premium-surface-soft, var(--surface-2));
+  color: var(--premium-muted, var(--muted));
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.legalLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: clamp(32px, 6vw, 80px);
+  align-items: start;
+  padding-block: clamp(48px, 8vw, 96px);
+}
+
+.legalDocument {
+  min-width: 0;
+}
+
+.legalDocument section {
+  scroll-margin-top: 96px;
+  padding: 0 0 40px;
+  margin: 0 0 40px;
+  border-bottom: 1px solid var(--premium-line, var(--line));
+}
+
+.legalDocument section:last-child {
+  border-bottom: 0;
+}
+
+.legalDocument h2 {
+  margin: 0 0 16px;
+  font-size: clamp(1.45rem, 2.5vw, 2.1rem);
+  letter-spacing: -.035em;
+}
+
+.legalDocument h3 {
+  margin: 26px 0 10px;
+  font-size: 1.05rem;
+}
+
+.legalDocument p,
+.legalDocument li {
+  color: var(--premium-muted, var(--muted));
+  line-height: 1.72;
+}
+
+.legalDocument ul,
+.legalDocument ol {
+  padding-left: 22px;
+}
+
+.legalDocument a {
+  color: var(--premium-accent, var(--brand));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legalNotice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  padding: 18px;
+  margin-bottom: 36px;
+  border: 1px solid color-mix(in srgb, var(--premium-warning, #a56a00) 35%, transparent);
+  border-radius: 18px;
+  background: var(--premium-warning-soft, #fff4d8);
+}
+
+.legalNotice > span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--premium-warning, #a56a00);
+  color: #fff;
+  font-weight: 900;
+}
+
+.legalNotice strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.legalNotice p {
+  margin: 0;
+  color: inherit;
+}
+
+.legalToc {
+  position: sticky;
+  top: 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  border: 1px solid var(--premium-line, var(--line));
+  border-radius: 20px;
+  background: var(--premium-surface-solid, var(--surface));
+}
+
+.legalToc strong {
+  margin-bottom: 8px;
+}
+
+.legalToc a {
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--premium-muted, var(--muted));
+  font-size: 13px;
+}
+
+.legalToc a:hover,
+.legalToc a:focus-visible {
+  color: var(--premium-ink, var(--ink));
+  background: var(--premium-surface-soft, var(--surface-2));
+}
+
+.legalContactCard {
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--premium-surface-soft, var(--surface-2));
+}
+
+.legalContactCard p {
+  margin-bottom: 0;
+}
+
+@media (max-width: 860px) {
+  .legalLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .legalToc {
+    position: static;
+    order: -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .legalToc strong {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .legalHero {
+    padding-top: 50px;
+  }
+
+  .legalHero h1 {
+    font-size: clamp(2.3rem, 13vw, 3.4rem);
+  }
+
+  .legalLayout {
+    padding-block: 36px 68px;
+  }
+
+  .legalToc {
+    grid-template-columns: 1fr;
+  }
+
+  .legalDocument section {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+  }
+}
