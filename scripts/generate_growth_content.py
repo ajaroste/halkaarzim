@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,6 +27,11 @@ def atomic_write_json(path: Path, value: dict[str, Any]) -> None:
 
 def short_company(company: str) -> str:
     return company.replace("Anonim Şirketi", "A.Ş.").replace("Anonim Şti.", "A.Ş.").strip()
+
+
+def normalized_site_url() -> str:
+    raw = os.getenv("SITE_URL", "https://halkaarzim.vercel.app").strip().rstrip("/")
+    return raw if raw.startswith("https://") else "https://halkaarzim.vercel.app"
 
 
 def build_post(item: dict[str, Any], site_url: str) -> dict[str, Any]:
@@ -97,7 +103,7 @@ def main() -> None:
     if not isinstance(items, list):
         raise SystemExit("Invalid IPO data")
 
-    site_url = "https://halkaarzim.vercel.app"
+    site_url = normalized_site_url()
     recent = sorted(
         items,
         key=lambda item: str(item.get("sourceUpdatedAt") or item.get("reportDate") or ""),
@@ -108,6 +114,7 @@ def main() -> None:
     atomic_write_json(OUTPUT_PATH, {
         "generatedAt": generated_at,
         "sourceGeneratedAt": payload.get("generatedAt"),
+        "siteUrl": site_url,
         "disclaimer": "Paylaşım metinleri yatırım tavsiyesi içermez; yayın öncesi kaynak ve tarih kontrolü yapılmalıdır.",
         "posts": posts,
     })
@@ -127,7 +134,7 @@ def main() -> None:
             "",
         ])
     atomic_write_text(NEWSLETTER_PATH, "\n".join(lines).rstrip() + "\n")
-    print(f"Generated {len(posts)} growth content records")
+    print(f"Generated {len(posts)} growth content records for {site_url}")
 
 
 if __name__ == "__main__":
