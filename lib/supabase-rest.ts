@@ -14,7 +14,20 @@ export type PublicProfile = {
   is_suspended?: boolean;
 };
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+export const LEGAL_VERSION = "1.0";
+
+function normalizeSupabaseUrl(raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== "https:" && parsed.hostname !== "localhost") return undefined;
+    return parsed.origin;
+  } catch {
+    return undefined;
+  }
+}
+
+const url = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
 const publicKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SESSION_KEY = "halkaarzim-session";
 
@@ -33,10 +46,14 @@ function headers(token?: string): HeadersInit {
 
 async function parseResponse<T>(response: Response): Promise<T> {
   const text = await response.text();
-  const body = text ? JSON.parse(text) : {};
+  let body: Record<string, unknown> = {};
+  if (text) {
+    try { body = JSON.parse(text) as Record<string, unknown>; }
+    catch { body = { message: text.slice(0, 300) }; }
+  }
   if (!response.ok) {
-    const message = body?.msg || body?.message || body?.error_description || body?.hint || "İstek tamamlanamadı";
-    throw new Error(message);
+    const message = body.msg || body.message || body.error_description || body.hint || "İstek tamamlanamadı";
+    throw new Error(String(message));
   }
   return body as T;
 }
@@ -61,16 +78,23 @@ export function clearStoredSession() {
   if (typeof window !== "undefined") localStorage.removeItem(SESSION_KEY);
 }
 
-export async function signUp(email: string, password: string, displayName?: string): Promise<AuthSession | { user: unknown }> {
+export async function signUp(email: string, password: string, displayName?: string, legalVersion = LEGAL_VERSION): Promise<AuthSession | { user: unknown }> {
   if (!url) throw new Error("Giriş sistemi adresi eksik");
   const redirectTo = typeof window !== "undefined" ? `${window.location.origin}/auth/confirm` : undefined;
+  const legalAcceptedAt = new Date().toISOString();
   const result = await parseResponse<AuthSession | { user: unknown }>(await fetch(`${url}/auth/v1/signup`, {
     method: "POST",
     headers: headers(),
     body: JSON.stringify({
       email,
       password,
-      data: { display_name: displayName || email.split("@")[0] },
+      data: {
+        display_name: displayName || email.split("@")[0],
+        legal_version: legalVersion,
+        legal_accepted_at: legalAcceptedAt,
+        terms_accepted: true,
+        privacy_acknowledged: true
+      },
       email_redirect_to: redirectTo
     })
   }));
@@ -118,14 +142,17 @@ export async function getProfile(token: string): Promise<PublicProfile | null> {
   return rows[0] || null;
 }
 
-export async function updateProfile(input: { username: string; displayName: string }, token: string): Promise<void> {
+async function rpc<T>(name: string, body: Record<string, unknown>, token: string): Promise<T> {
   if (!url) throw new Error("Giriş sistemi adresi eksik");
-  const user = await getUser(token);
-  await parseResponse(await fetch(`${url}/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}`, {
-    method: "PATCH",
-    headers: { ...headers(token), Prefer: "return=minimal" },
-    body: JSON.stringify({ username: input.username, display_name: input.displayName })
-  }));
+  return parseResponse<T>(await fetch(`${url}/rest/v1/rpc/${name}`, { method: "POST", headers: headers(token), body: JSON.stringify(body) }));
+}
+
+export async function updateProfile(input: { username: string; displayName: string }, token: string): Promise<void> {
+  await rpc("update_own_profile", { p_username: input.username, p_display_name: input.displayName }, token);
+}
+
+export async function acceptLegalDocuments(version: string, token: string): Promise<void> {
+  await rpc("accept_legal_documents", { p_version: version }, token);
 }
 
 export async function getUser(token: string): Promise<{ id: string; email?: string }> {
@@ -137,11 +164,6 @@ export async function listComments(ipoId: string, token?: string) {
   if (!url) throw new Error("Giriş sistemi adresi eksik");
   const query = new URLSearchParams({ ipo_id: `eq.${ipoId}`, select: "id,body,helpful_count,created_at,display_name", order: "created_at.desc", limit: "50" });
   return parseResponse<Array<Record<string, unknown>>>(await fetch(`${url}/rest/v1/published_comments?${query}`, { headers: headers(token), cache: "no-store" }));
-}
-
-async function rpc<T>(name: string, body: Record<string, unknown>, token: string): Promise<T> {
-  if (!url) throw new Error("Giriş sistemi adresi eksik");
-  return parseResponse<T>(await fetch(`${url}/rest/v1/rpc/${name}`, { method: "POST", headers: headers(token), body: JSON.stringify(body) }));
 }
 
 export async function createComment(input: { ipoId: string; body: string; token: string }) {
@@ -162,8 +184,7 @@ export async function toggleWatchlist(ipoId: string, enabled: boolean, token: st
   return rpc<boolean>("set_watchlist", { p_ipo_id: ipoId, p_enabled: enabled }, token);
 }
 export async function updateNotificationPreference(ipoId: string, enabled: boolean, token: string) {
-  if (!url) throw new Error("Giriş sistemi adresi eksik");
-  return parseResponse(await fetch(`${url}/rest/v1/watchlists?ipo_id=eq.${ipoId}`, { method: "PATCH", headers: { ...headers(token), Prefer: "return=minimal" }, body: JSON.stringify({ notifications_enabled: enabled }) }));
+  return rpc<boolean>("set_watchlist_notifications", { p_ipo_id: ipoId, p_enabled: enabled }, token);
 }
 
 export async function listModerationQueue(token: string) {
