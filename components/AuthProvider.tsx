@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { clearStoredSession, getProfile, isSupabaseConfigured, signOut, storeSession, type AuthSession, type PublicProfile, validSession } from "@/lib/supabase-rest";
 import { getSupabaseBrowserClient, mapSupabaseSession } from "@/lib/supabase-browser";
 
@@ -19,19 +19,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [profile, setProfile] = useState<PublicProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const reloadPromise = useRef<Promise<void> | null>(null);
 
-  async function reload() {
+  async function performReload() {
     setLoading(true);
     let current: AuthSession | null = null;
     const browser = getSupabaseBrowserClient();
+
     if (browser) {
       const { data } = await browser.auth.getSession();
       if (data.session) current = storeSession(mapSupabaseSession(data.session));
     }
-    if (!current) current = isSupabaseConfigured() ? await validSession() : null;
+
+    if (!current && isSupabaseConfigured()) {
+      const stored = await validSession();
+      if (stored && browser) {
+        const { data, error } = await browser.auth.setSession({
+          access_token: stored.access_token,
+          refresh_token: stored.refresh_token
+        });
+        current = !error && data.session ? storeSession(mapSupabaseSession(data.session)) : stored;
+      } else {
+        current = stored;
+      }
+    }
+
     setSession(current);
     setProfile(current ? await getProfile(current.access_token).catch(() => null) : null);
     setLoading(false);
+  }
+
+  function reload(): Promise<void> {
+    if (reloadPromise.current) return reloadPromise.current;
+    const promise = performReload().finally(() => {
+      if (reloadPromise.current === promise) reloadPromise.current = null;
+    });
+    reloadPromise.current = promise;
+    return promise;
   }
 
   useEffect(() => {
