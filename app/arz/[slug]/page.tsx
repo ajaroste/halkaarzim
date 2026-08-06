@@ -12,14 +12,32 @@ import { LiveAgenda } from "@/components/LiveAgenda";
 import { LotCalculator } from "@/components/LotCalculator";
 import { WatchButton } from "@/components/WatchButton";
 import { AdSlot } from "@/components/AdSlot";
+import { JsonLd } from "@/components/JsonLd";
+import { ShareActions } from "@/components/ShareActions";
+import { RelatedIpos } from "@/components/RelatedIpos";
 import { formatTry } from "@/lib/domain";
 import { getIpoBySlug, ipos } from "@/data/ipos";
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
+
 export function generateStaticParams() { return ipos.map((ipo) => ({ slug: ipo.slug })); }
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const ipo = getIpoBySlug(slug);
-  return ipo ? { title: `${ipo.ticker || "Halka arz"} ${ipo.company}`, description: ipo.aiSummary } : {};
+  if (!ipo) return {};
+  const code = ipo.ticker || "Halka arz";
+  const title = `${code} Halka Arz: Fiyat, Lot, Tarih ve Ön Analiz`;
+  const description = `${ipo.company} halka arz fiyatı, lot bilgisi, talep tarihleri, arz yapısı ve kaynak bazlı ön analiz. ${ipo.aiSummary}`.slice(0, 300);
+  const url = `${siteUrl}/arz/${ipo.slug}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: `/arz/${ipo.slug}` },
+    openGraph: { title, description, url, type: "article", siteName: "HalkaArzım", locale: "tr_TR" },
+    twitter: { card: "summary", title, description },
+    robots: { index: true, follow: true }
+  };
 }
 
 function EmptyState({ title, text }: { title: string; text: string }) {
@@ -33,8 +51,33 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
   const code = ipo.ticker || "Kod bekleniyor";
   const capitalRatio = ipo.lotCount ? Math.round(ipo.capitalIncreaseShares / ipo.lotCount * 100) : 0;
   const saleRatio = ipo.lotCount ? Math.round(ipo.shareholderSaleShares / ipo.lotCount * 100) : 0;
+  const pageUrl = `${siteUrl}/arz/${ipo.slug}`;
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Ana sayfa", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "Halka arzlar", item: `${siteUrl}/halka-arzlar` },
+        { "@type": "ListItem", position: 3, name: ipo.company, item: pageUrl }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: `${ipo.company} Halka Arz Ön Analizi`,
+      description: ipo.aiSummary,
+      mainEntityOfPage: pageUrl,
+      url: pageUrl,
+      inLanguage: "tr-TR",
+      about: { "@type": "Organization", name: ipo.company },
+      author: { "@type": "Organization", name: "HalkaArzım", url: siteUrl },
+      publisher: { "@type": "Organization", name: "HalkaArzım", url: siteUrl },
+      isAccessibleForFree: true
+    }
+  ];
 
-  return <><Header /><main className="detailPage detailV3"><div className="container">
+  return <><JsonLd data={jsonLd} /><Header /><main className="detailPage detailV3"><div className="container">
     <nav className="breadcrumb"><Link href="/">Ana sayfa</Link><span>/</span><Link href="/halka-arzlar">Halka arzlar</Link><span>/</span><span>{code}</span></nav>
 
     <section className="detailIntro">
@@ -51,6 +94,8 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
       <article><span>Talep tarihleri</span><strong>{ipo.dates}</strong></article>
       <article><span>Dağıtım</span><strong>{ipo.distribution}</strong></article>
     </section>
+
+    <div className="detailUtilityRow"><ShareActions title={`${ipo.company} halka arz`} url={pageUrl} /><Link href="/yatirim-tavsiyesi-degildir" className="detailDisclaimerLink">Bu içerik yatırım tavsiyesi değildir →</Link></div>
 
     <nav className="detailSectionNav" aria-label="Detay bölümleri">
       <a href="#ozet">Özet</a><a href="#arz-yapisi">Arz yapısı</a><a href="#belgeler">Belgeler</a><a href="#piyasa">Piyasa</a><a href="#gundem">Gündem</a><a href="#yorumlar">Yorumlar</a>
@@ -99,9 +144,10 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
         </section>
 
         <section id="yorumlar" className="detailSectionBlock"><Comments ipoId={ipo.id} slug={ipo.slug} /></section>
+        <RelatedIpos currentSlug={ipo.slug} sector={ipo.sector} />
       </div>
 
-      <aside className="detailInfoRail"><article className="panel infoRailCard"><span className="eyebrow">Hızlı bilgiler</span><h2>Halka arz bilgileri</h2><dl className="facts"><div><dt>{ipo.approvalLabel || "SPK onay tarihi"}</dt><dd>{ipo.approvalDate}</dd></div><div><dt>Temel arz</dt><dd>{ipo.lotCount.toLocaleString("tr-TR")}</dd></div><div><dt>Azami arz</dt><dd>{(ipo.maxLotCount || ipo.lotCount).toLocaleString("tr-TR")}</dd></div>{ipo.firstTradeDate && <div><dt>İlk işlem tarihi</dt><dd>{new Date(ipo.firstTradeDate).toLocaleDateString("tr-TR")}</dd></div>}{ipo.intermediary && <div><dt>Aracı kurum</dt><dd>{ipo.intermediary}</dd></div>}<div><dt>Veri kapsamı</dt><dd>%{ipo.dataCompleteness || 0}</dd></div></dl></article></aside>
+      <aside className="detailInfoRail"><article className="panel infoRailCard"><span className="eyebrow">Hızlı bilgiler</span><h2>Halka arz bilgileri</h2><dl className="facts"><div><dt>{ipo.approvalLabel || "SPK onay tarihi"}</dt><dd>{ipo.approvalDate}</dd></div><div><dt>Temel arz</dt><dd>{ipo.lotCount.toLocaleString("tr-TR")}</dd></div><div><dt>Azami arz</dt><dd>{(ipo.maxLotCount || ipo.lotCount).toLocaleString("tr-TR")}</dd></div>{ipo.firstTradeDate && <div><dt>İlk işlem tarihi</dt><dd>{new Date(ipo.firstTradeDate).toLocaleDateString("tr-TR")}</dd></div>}{ipo.intermediary && <div><dt>Aracı kurum</dt><dd>{ipo.intermediary}</dd></div>}<div><dt>Veri kapsamı</dt><dd>%{ipo.dataCompleteness || 0}</dd></div></dl><Link className="infoRailLegal" href="/yatirim-tavsiyesi-degildir">Risk ve sorumluluk açıklaması</Link></article></aside>
     </div>
   </div></main><Footer /></>;
 }
