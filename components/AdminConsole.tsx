@@ -1,42 +1,63 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 import { ipos } from "@/data/ipos";
+import { useAuth } from "./AuthProvider";
 import {
   adminAddDocument,
-  adminListPendingComments,
-  adminModerateComment,
-  adminUpdateIpo,
+  adminPatchIpo,
   isSupabaseConfigured,
-  type PendingComment
+  listModerationQueue,
+  moderateQueuedComment
 } from "@/lib/supabase-rest";
-import { useAuth } from "./AuthProvider";
 
-const dbStatuses = [["approved","SPK onaylı"],["upcoming","Yaklaşan"],["active","Talep topluyor"],["completed","Arzı tamamlandı"],["listed","İşlem görüyor"],["delayed","Ertelendi"]];
+type QueueItem = { id: string; ipo_id: string; body: string; created_at: string; user_id: string };
+const dbStatuses = [
+  ["approved", "SPK onaylı"], ["collecting", "Talep topluyor"], ["listing_pending", "Arz tamamlandı"],
+  ["listed", "İşlem görüyor"], ["cancelled", "Ertelendi/iptal"], ["draft", "Taslak"]
+] as const;
 
 export function AdminConsole() {
-  const { session, profile, loading } = useAuth(); const allowed = profile?.role === "admin" || profile?.role === "moderator"; const admin = profile?.role === "admin";
-  const [queue, setQueue] = useState<PendingComment[]>([]); const [message, setMessage] = useState(""); const [busy, setBusy] = useState<string | null>(null);
-  const [ipoId, setIpoId] = useState(ipos[0]?.id || ""); const [status, setStatus] = useState(""); const [ticker, setTicker] = useState(""); const [start, setStart] = useState(""); const [end, setEnd] = useState(""); const [trade, setTrade] = useState(""); const [intermediary, setIntermediary] = useState("");
-  const [docTitle, setDocTitle] = useState(""); const [docType, setDocType] = useState("prospectus"); const [docKind, setDocKind] = useState("KAP"); const [docUrl, setDocUrl] = useState("");
+  const { session, profile, loading } = useAuth();
+  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [message, setMessage] = useState("");
+  const [busy, setBusy] = useState<string | null>(null);
+  const [ipoId, setIpoId] = useState(ipos[0]?.id || "");
+  const [status, setStatus] = useState("");
+  const [ticker, setTicker] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [trade, setTrade] = useState("");
+  const [intermediary, setIntermediary] = useState("");
+  const [docTitle, setDocTitle] = useState("");
+  const [docType, setDocType] = useState("prospectus");
+  const [docKind, setDocKind] = useState("kap");
+  const [docUrl, setDocUrl] = useState("");
+  const allowed = profile?.role === "admin" || profile?.role === "moderator";
+  const admin = profile?.role === "admin";
 
   async function load() {
-    if (!session || !allowed) return; try { setQueue(await adminListPendingComments(session.access_token)); } catch (error) { setMessage(error instanceof Error ? error.message : "Moderasyon kuyruğu alınamadı."); }
+    if (!session || !allowed) return;
+    try { setQueue((await listModerationQueue(session.access_token)) as unknown as QueueItem[]); }
+    catch (error) { setMessage(error instanceof Error ? error.message : "Kuyruk alınamadı."); }
   }
   useEffect(() => { void load(); }, [session, allowed]);
 
   async function act(id: string, action: "publish" | "hide") {
-    if (!session) return; setBusy(id); try { await adminModerateComment(id, action, session.access_token); await load(); setMessage(action === "publish" ? "Yorum yayımlandı." : "Yorum gizlendi."); }
-    catch (error) { setMessage(error instanceof Error ? error.message : "İşlem tamamlanamadı."); } finally { setBusy(null); }
+    if (!session) return; setBusy(id);
+    try {
+      await moderateQueuedComment(id, action, session.access_token);
+      setQueue((items) => items.filter((item) => item.id !== id));
+      setMessage(action === "publish" ? "Yorum yayımlandı." : "Yorum gizlendi.");
+    } catch (error) { setMessage(error instanceof Error ? error.message : "Moderasyon işlemi başarısız."); }
+    finally { setBusy(null); }
   }
 
   async function saveIpo() {
     if (!session || !admin) return; setBusy("ipo");
     try {
-      const changes: Record<string, unknown> = {};
-      if (status) changes.status = status; if (ticker.trim()) changes.ticker = ticker.trim().toUpperCase(); if (start) changes.subscription_start = start; if (end) changes.subscription_end = end; if (trade) changes.first_trade_date = trade; if (intermediary.trim()) changes.intermediary = intermediary.trim();
-      if (!Object.keys(changes).length) throw new Error("En az bir alanı değiştirin.");
-      await adminUpdateIpo(ipoId, changes, session.access_token);
+      await adminPatchIpo({ ipoId, status, ticker, collectionStart: start, collectionEnd: end, firstTradeDate: trade, intermediary }, session.access_token);
       setMessage("Halka arz kaydı güncellendi ve audit log oluşturuldu.");
     } catch (error) { setMessage(error instanceof Error ? error.message : "Halka arz güncellenemedi."); }
     finally { setBusy(null); }
@@ -64,23 +85,23 @@ export function AdminConsole() {
 
     {admin && <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Audit kayıtlı</span><h2>Halka arz düzeltme</h2></div></div>
       <div className="adminFormGrid">
-        <label>Şirket<select value={ipoId} onChange={(e) => setIpoId(e.target.value)}>{ipos.map((ipo) => <option key={ipo.id} value={ipo.id}>{ipo.ticker || "—"} · {ipo.company}</option>)}</select></label>
-        <label>Durum<select value={status} onChange={(e) => setStatus(e.target.value)}><option value="">Değiştirme</option>{dbStatuses.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>
-        <label>Borsa kodu<input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} maxLength={10} placeholder="Örn. ABCDE" /></label>
-        <label>Talep başlangıcı<input type="date" value={start} onChange={(e) => setStart(e.target.value)} /></label>
-        <label>Talep bitişi<input type="date" value={end} onChange={(e) => setEnd(e.target.value)} /></label>
-        <label>İlk işlem günü<input type="date" value={trade} onChange={(e) => setTrade(e.target.value)} /></label>
-        <label className="wideField">Aracı kurum<input value={intermediary} onChange={(e) => setIntermediary(e.target.value)} maxLength={160} /></label>
+        <label>Şirket<select value={ipoId} onChange={(e: ChangeEvent<HTMLSelectElement>) => setIpoId(e.target.value)}>{ipos.map((ipo) => <option key={ipo.id} value={ipo.id}>{ipo.ticker || "—"} · {ipo.company}</option>)}</select></label>
+        <label>Durum<select value={status} onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)}><option value="">Değiştirme</option>{dbStatuses.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+        <label>Borsa kodu<input value={ticker} onChange={(e: ChangeEvent<HTMLInputElement>) => setTicker(e.target.value.toUpperCase())} maxLength={10} placeholder="Örn. ABCDE" /></label>
+        <label>Talep başlangıcı<input type="date" value={start} onChange={(e: ChangeEvent<HTMLInputElement>) => setStart(e.target.value)} /></label>
+        <label>Talep bitişi<input type="date" value={end} onChange={(e: ChangeEvent<HTMLInputElement>) => setEnd(e.target.value)} /></label>
+        <label>İlk işlem günü<input type="date" value={trade} onChange={(e: ChangeEvent<HTMLInputElement>) => setTrade(e.target.value)} /></label>
+        <label className="wideField">Aracı kurum<input value={intermediary} onChange={(e: ChangeEvent<HTMLInputElement>) => setIntermediary(e.target.value)} maxLength={160} /></label>
       </div><button className="primaryButton" disabled={busy === "ipo"} onClick={() => void saveIpo()}>Düzeltmeyi kaydet</button>
     </article>}
 
     {admin && <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Kaynak zorunlu</span><h2>Belge ekle</h2></div></div>
       <div className="adminFormGrid">
-        <label className="wideField">Belge başlığı<input value={docTitle} onChange={(e) => setDocTitle(e.target.value)} maxLength={200} /></label>
-        <label>Belge türü<select value={docType} onChange={(e) => setDocType(e.target.value)}><option value="prospectus">İzahname</option><option value="price_determination">Fiyat tespit raporu</option><option value="fund_use">Fon kullanım raporu</option><option value="financial_report">Finansal rapor</option><option value="kap_disclosure">KAP açıklaması</option></select></label>
-        <label>Kaynak<select value={docKind} onChange={(e) => setDocKind(e.target.value)}><option value="KAP">KAP</option><option value="SPK">SPK</option><option value="COMPANY_IR">Şirket yatırımcı ilişkileri</option><option value="BIST">Borsa İstanbul</option></select></label>
-        <label className="wideField">Resmî URL<input type="url" value={docUrl} onChange={(e) => setDocUrl(e.target.value)} placeholder="https://..." /></label>
-      </div><button className="primaryButton" disabled={busy === "document" || !docTitle.trim() || !docUrl.startsWith("https://")} onClick={() => void addDocument()}>Belgeyi kuyruğa ekle</button>
+        <label className="wideField">Belge başlığı<input value={docTitle} onChange={(e: ChangeEvent<HTMLInputElement>) => setDocTitle(e.target.value)} maxLength={200} /></label>
+        <label>Belge türü<select value={docType} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDocType(e.target.value)}><option value="prospectus">İzahname</option><option value="price_determination">Fiyat tespit raporu</option><option value="fund_use">Fon kullanım raporu</option><option value="financial_report">Finansal rapor</option><option value="kap_disclosure">KAP açıklaması</option></select></label>
+        <label>Kaynak<select value={docKind} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDocKind(e.target.value)}><option value="kap">KAP</option><option value="spk">SPK</option><option value="company">Şirket</option><option value="other">Diğer</option></select></label>
+        <label className="wideField">HTTPS bağlantısı<input type="url" value={docUrl} onChange={(e: ChangeEvent<HTMLInputElement>) => setDocUrl(e.target.value)} placeholder="https://..." /></label>
+      </div><button className="primaryButton" disabled={busy === "document" || !docTitle || !docUrl} onClick={() => void addDocument()}>Belgeyi kuyruğa ekle</button>
     </article>}
   </div>;
 }
