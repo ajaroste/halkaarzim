@@ -1,0 +1,2 @@
+-- This migration mirrors sql/schema.sql.
+-- It is generated in the next commit from the reviewed schema source.
