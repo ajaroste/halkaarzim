@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { FormEvent, MouseEvent } from "react";
 import { isSupabaseConfigured, requestPasswordReset, signIn, signUp } from "@/lib/supabase-rest";
@@ -50,6 +51,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
     const email = String(form.get("email") || "").trim().toLowerCase();
     const password = String(form.get("password") || "");
     const displayName = String(form.get("displayName") || "").trim();
+    const termsAccepted = form.get("termsAccepted") === "on";
 
     if (!email.includes("@")) {
       setMessage("Geçerli bir e-posta adresi gir.");
@@ -57,6 +59,10 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
     }
     if (mode !== "reset" && password.length < 8) {
       setMessage("Parola en az 8 karakter olmalıdır.");
+      return;
+    }
+    if (mode === "signup" && !termsAccepted) {
+      setMessage("Hesap oluşturmak için kullanım koşullarını kabul etmen ve gizlilik metnini okuduğunu onaylaman gerekir.");
       return;
     }
 
@@ -144,6 +150,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
         {mode === "signup" && <label>Görünen ad<input name="displayName" minLength={2} maxLength={40} autoComplete="name" required /></label>}
         <label>E-posta<input name="email" type="email" autoComplete="email" required /></label>
         {mode !== "reset" && <label>Parola<input name="password" type="password" minLength={8} autoComplete={mode === "signin" ? "current-password" : "new-password"} required /></label>}
+        {mode === "signup" && <label className="legalConsentRow"><input name="termsAccepted" type="checkbox" required /><span><Link href="/kullanim-kosullari" target="_blank">Kullanım koşullarını</Link> kabul ediyorum ve <Link href="/gizlilik" target="_blank">Gizlilik/KVKK metnini</Link> okudum.</span></label>}
         <button className="primaryButton full" disabled={busy || !isSupabaseConfigured()}>
           {busyAction === "email" ? "İşleniyor…" : mode === "signin" ? "Giriş yap" : mode === "signup" ? "Hesap oluştur" : "Bağlantı gönder"}
         </button>
@@ -156,7 +163,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
         </button>
         {mode === "signin" && <button className="textButton" type="button" disabled={busy} onClick={() => { setMode("reset"); setMessage(""); }}>Parolamı unuttum</button>}
       </div>
-      <small className="authPrivacy">Devam ederek kullanım koşullarını ve gizlilik politikasını kabul etmiş olursun.</small>
+      <small className="authPrivacy">GitHub ile devam ettiğinde de <Link href="/kullanim-kosullari">kullanım koşulları</Link> ve <Link href="/gizlilik">gizlilik metni</Link> uygulanır.</small>
     </section>
   </div>;
 }
