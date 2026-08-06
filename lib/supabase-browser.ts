@@ -5,6 +5,8 @@ import { clearStoredSession, storeSession, type AuthSession } from "./supabase-r
 
 let browserClient: SupabaseClient | null | undefined;
 
+export type SocialAuthProvider = "github" | "linkedin_oidc" | "spotify";
+
 function getPublicKey(): string | undefined {
   return process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 }
@@ -52,15 +54,17 @@ export function syncSupabaseSession(session: Session | null): AuthSession | null
   return storeSession(mapSupabaseSession(session));
 }
 
-export async function signInWithGoogle(): Promise<void> {
+export async function signInWithSocialProvider(provider: SocialAuthProvider): Promise<void> {
   const client = getSupabaseBrowserClient();
-  if (!client) throw new Error("Google ile giriş şu anda hazır değil.");
+  if (!client) throw new Error("Sosyal giriş sistemi şu anda hazır değil.");
+
   const { error } = await client.auth.signInWithOAuth({
-    provider: "google",
+    provider,
     options: {
       redirectTo: `${window.location.origin}/auth/callback`,
-      queryParams: { access_type: "offline", prompt: "select_account" }
+      skipBrowserRedirect: false
     }
   });
+
   if (error) throw error;
 }
