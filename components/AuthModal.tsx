@@ -9,9 +9,7 @@ type Mode = "signin" | "signup" | "reset";
 type BusyAction = "email" | SocialAuthProvider | null;
 
 const socialProviders: Array<{ provider: SocialAuthProvider; label: string; mark: string }> = [
-  { provider: "github", label: "GitHub ile devam et", mark: "GH" },
-  { provider: "linkedin_oidc", label: "LinkedIn ile devam et", mark: "in" },
-  { provider: "spotify", label: "Spotify ile devam et", mark: "♪" }
+  { provider: "github", label: "GitHub ile devam et", mark: "GH" }
 ];
 
 function authErrorMessage(error: unknown): string {
@@ -119,7 +117,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
       <button className="modalClose" onClick={onClose} aria-label="Kapat">×</button>
       <span className="eyebrow">HalkaArzım hesabı</span>
       <h2 id="auth-title">{mode === "signin" ? "Giriş yap" : mode === "signup" ? "Ücretsiz hesap oluştur" : "Parolanı yenile"}</h2>
-      <p>{mode === "signup" ? "E-posta ile kayıt olabilir veya aşağıdaki hesaplardan biriyle devam edebilirsin." : mode === "reset" ? "Parola yenileme bağlantısını e-posta adresine göndereceğiz." : "E-posta adresinle veya sosyal hesabınla giriş yapabilirsin."}</p>
+      <p>{mode === "signup" ? "E-posta ile kayıt olabilir veya GitHub hesabınla devam edebilirsin." : mode === "reset" ? "Parola yenileme bağlantısını e-posta adresine göndereceğiz." : "E-posta adresinle veya GitHub hesabınla giriş yapabilirsin."}</p>
 
       {mode !== "reset" && <>
         <div style={{ display: "grid", gap: 10, marginBottom: 18 }}>
