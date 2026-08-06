@@ -42,9 +42,11 @@ export function Header() {
       <nav className={menuOpen ? "desktopNav open" : "desktopNav"} aria-label="Ana menü">
         <Link href="/halka-arzlar" onClick={() => setMenuOpen(false)}>Halka arzlar</Link><Link href="/gundem" onClick={() => setMenuOpen(false)}>Şirket gündemi</Link>
       </nav>
-      <div className="headerActions"><button type="button" className="iconButton" onClick={toggleTheme} aria-label={theme === "light" ? "Koyu temayı aç" : "Açık temayı aç"} title={theme === "light" ? "Koyu tema" : "Açık tema"}>{theme === "light" ? "☾" : "☀"}</button>
+      <div className="headerActions">
+        <button type="button" className="iconButton" onClick={() => window.dispatchEvent(new Event("halkaarzim-enable-notifications"))} aria-label="Bildirimleri aç" title="Yeni halka arz bildirimleri">🔔</button>
+        <button type="button" className="iconButton" onClick={toggleTheme} aria-label={theme === "light" ? "Koyu temayı aç" : "Açık temayı aç"} title={theme === "light" ? "Koyu tema" : "Açık tema"}>{theme === "light" ? "☾" : "☀"}</button>
         <Link className="secondaryButton desktopOnly" href="/profil">{session ? (profile?.display_name || "Hesabım") : "Takip listem"}</Link>
-        {!loading && (session ? <button type="button" className="primaryButton desktopOnly" onClick={() => void logout()}>Çıkış</button> : <button type="button" className="primaryButton desktopOnly" onClick={() => setAuthOpen(true)}>Giriş yap</button>)}
+        {!loading && (session ? <button type="button" className="primaryButton desktopOnly" onClick={() => void logout()}>Çıkış</button> : <button type="button" className="primaryButton desktopOnly" onClick={() => setAuthOpen(true)}>Google ile giriş</button>)}
         <button type="button" className="iconButton mobileOnly" onClick={() => setMenuOpen((value) => !value)} aria-label="Menüyü aç" aria-expanded={menuOpen}>☰</button>
       </div>
     </div></header><AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
