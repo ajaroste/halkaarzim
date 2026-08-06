@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 import { ipos } from "@/data/ipos";
 import { useAuth } from "./AuthProvider";
 import {
@@ -84,22 +85,22 @@ export function AdminConsole() {
 
     {admin && <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Audit kayıtlı</span><h2>Halka arz düzeltme</h2></div></div>
       <div className="adminFormGrid">
-        <label>Şirket<select value={ipoId} onChange={(e) => setIpoId(e.target.value)}>{ipos.map((ipo) => <option key={ipo.id} value={ipo.id}>{ipo.ticker || "—"} · {ipo.company}</option>)}</select></label>
-        <label>Durum<select value={status} onChange={(e) => setStatus(e.target.value)}><option value="">Değiştirme</option>{dbStatuses.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>
-        <label>Borsa kodu<input value={ticker} onChange={(e) => setTicker(e.target.value.toUpperCase())} maxLength={10} placeholder="Örn. ABCDE" /></label>
-        <label>Talep başlangıcı<input type="date" value={start} onChange={(e) => setStart(e.target.value)} /></label>
-        <label>Talep bitişi<input type="date" value={end} onChange={(e) => setEnd(e.target.value)} /></label>
-        <label>İlk işlem günü<input type="date" value={trade} onChange={(e) => setTrade(e.target.value)} /></label>
-        <label className="wideField">Aracı kurum<input value={intermediary} onChange={(e) => setIntermediary(e.target.value)} maxLength={160} /></label>
+        <label>Şirket<select value={ipoId} onChange={(e: ChangeEvent<HTMLSelectElement>) => setIpoId(e.target.value)}>{ipos.map((ipo) => <option key={ipo.id} value={ipo.id}>{ipo.ticker || "—"} · {ipo.company}</option>)}</select></label>
+        <label>Durum<select value={status} onChange={(e: ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)}><option value="">Değiştirme</option>{dbStatuses.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+        <label>Borsa kodu<input value={ticker} onChange={(e: ChangeEvent<HTMLInputElement>) => setTicker(e.target.value.toUpperCase())} maxLength={10} placeholder="Örn. ABCDE" /></label>
+        <label>Talep başlangıcı<input type="date" value={start} onChange={(e: ChangeEvent<HTMLInputElement>) => setStart(e.target.value)} /></label>
+        <label>Talep bitişi<input type="date" value={end} onChange={(e: ChangeEvent<HTMLInputElement>) => setEnd(e.target.value)} /></label>
+        <label>İlk işlem günü<input type="date" value={trade} onChange={(e: ChangeEvent<HTMLInputElement>) => setTrade(e.target.value)} /></label>
+        <label className="wideField">Aracı kurum<input value={intermediary} onChange={(e: ChangeEvent<HTMLInputElement>) => setIntermediary(e.target.value)} maxLength={160} /></label>
       </div><button className="primaryButton" disabled={busy === "ipo"} onClick={() => void saveIpo()}>Düzeltmeyi kaydet</button>
     </article>}
 
     {admin && <article className="panel"><div className="panelHeader"><div><span className="eyebrow">Kaynak zorunlu</span><h2>Belge ekle</h2></div></div>
       <div className="adminFormGrid">
-        <label className="wideField">Belge başlığı<input value={docTitle} onChange={(e) => setDocTitle(e.target.value)} maxLength={200} /></label>
-        <label>Belge türü<select value={docType} onChange={(e) => setDocType(e.target.value)}><option value="prospectus">İzahname</option><option value="price_determination">Fiyat tespit raporu</option><option value="fund_use">Fon kullanım raporu</option><option value="financial_report">Finansal rapor</option><option value="kap_disclosure">KAP açıklaması</option></select></label>
-        <label>Kaynak<select value={docKind} onChange={(e) => setDocKind(e.target.value)}><option value="kap">KAP</option><option value="spk">SPK</option><option value="company">Şirket</option><option value="other">Diğer</option></select></label>
-        <label className="wideField">HTTPS bağlantısı<input type="url" value={docUrl} onChange={(e) => setDocUrl(e.target.value)} placeholder="https://..." /></label>
+        <label className="wideField">Belge başlığı<input value={docTitle} onChange={(e: ChangeEvent<HTMLInputElement>) => setDocTitle(e.target.value)} maxLength={200} /></label>
+        <label>Belge türü<select value={docType} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDocType(e.target.value)}><option value="prospectus">İzahname</option><option value="price_determination">Fiyat tespit raporu</option><option value="fund_use">Fon kullanım raporu</option><option value="financial_report">Finansal rapor</option><option value="kap_disclosure">KAP açıklaması</option></select></label>
+        <label>Kaynak<select value={docKind} onChange={(e: ChangeEvent<HTMLSelectElement>) => setDocKind(e.target.value)}><option value="kap">KAP</option><option value="spk">SPK</option><option value="company">Şirket</option><option value="other">Diğer</option></select></label>
+        <label className="wideField">HTTPS bağlantısı<input type="url" value={docUrl} onChange={(e: ChangeEvent<HTMLInputElement>) => setDocUrl(e.target.value)} placeholder="https://..." /></label>
       </div><button className="primaryButton" disabled={busy === "document" || !docTitle || !docUrl} onClick={() => void addDocument()}>Belgeyi kuyruğa ekle</button>
     </article>}
   </div>;
