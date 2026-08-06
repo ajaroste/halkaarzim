@@ -51,10 +51,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   function reload(): Promise<void> {
     if (reloadPromise.current) return reloadPromise.current;
-    const promise = performReload().finally(() => {
-      if (reloadPromise.current === promise) reloadPromise.current = null;
-    });
+    const promise: Promise<void> = performReload();
     reloadPromise.current = promise;
+    void promise.then(
+      () => { if (reloadPromise.current === promise) reloadPromise.current = null; },
+      () => { if (reloadPromise.current === promise) reloadPromise.current = null; }
+    );
     return promise;
   }
 
