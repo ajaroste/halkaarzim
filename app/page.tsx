@@ -13,20 +13,67 @@ export default function HomePage() {
   const listedCount = ipos.filter((ipo) => ipo.status === "listed").length;
 
   return <><Header /><main>
-    <section className="hero"><div className="container heroGrid"><div className="heroCopy"><span className="heroBadge">Resmî kaynaklı halka arz rehberi</span><h1>Halka arzı sadece görme.<br /><em>Kaynağından anla.</em></h1><p>Yeni halka arzları tek ekranda incele; arz yapısını, ortak satışını, önemli tarihleri ve resmî belgeleri sade bir anlatımla karşılaştır.</p><div className="heroActions"><Link className="primaryButton large" href="/halka-arzlar">Halka arzları incele</Link><Link className="secondaryButton large" href="/gundem">Şirket gündemini gör</Link></div><div className="trustRow"><span>✓ Resmî SPK kaynakları</span><span>✓ Açıklanmayan bilgi tahmin edilmez</span><span>✓ Yatırım tavsiyesi içermez</span></div></div>
-      {lead && <article className="heroPanel"><div className="heroPanelHeader"><div><span className="liveDot" /> Güncel ön analiz</div><span>{lead.bulletinNo}</span></div><div className="heroCompany"><div className="companyLogo big">{lead.company.slice(0,2).toLocaleUpperCase("tr-TR")}</div><div><strong>{lead.company}</strong><span>{lead.ticker || "Borsa kodu bekleniyor"} · {lead.sector}</span></div><div className="heroScore"><strong>{lead.aiScore}</strong><span>/100</span></div></div><div className="signalGrid"><div><span>Sermaye artırımı</span><strong className="positive">{lead.capitalIncreaseShares.toLocaleString("tr-TR")}</strong></div><div><span>Ortak satışı</span><strong>{lead.shareholderSaleShares.toLocaleString("tr-TR")}</strong></div><div><span>Arz fiyatı</span><strong>₺{lead.price.toLocaleString("tr-TR")}</strong></div><div><span>Kapsam</span><strong className="warning">Ön analiz</strong></div></div><div className="heroInsight"><span>Kısa değerlendirme</span><p>{lead.aiSummary}</p></div><div className="sourceChip">↗ {lead.sources.length} resmî kaynak</div></article>}
+    <section className="homeHeroV2">
+      <div className="container homeHeroV2Inner">
+        <div className="homeHeroV2Copy">
+          <span className="heroBadge">Resmî verilerden sade analiz</span>
+          <h1>Halka arzı gör.<br /><span>Kararını veriden kur.</span></h1>
+          <p>SPK bültenleri, halka arz tarihleri, arz yapısı ve şirket gündemi tek bir sakin deneyimde.</p>
+          <div className="heroActions">
+            <Link className="primaryButton large" href="/halka-arzlar">Halka arzları keşfet</Link>
+            <Link className="textLink heroTextLink" href="/gundem">Şirket gündemine bak →</Link>
+          </div>
+          <div className="homeHeroProof">
+            <span>Resmî kaynak</span><span>Şeffaf veri kapsamı</span><span>Yatırım tavsiyesi değildir</span>
+          </div>
+        </div>
+        {lead && <div className="homeHeroV2Visual">
+          <article className="marketCardV2">
+            <div className="marketCardV2Top"><span>Güncel halka arz</span><strong>{lead.bulletinNo}</strong></div>
+            <div className="marketCardV2Company">
+              <div className="companyLogo xlarge">{lead.company.slice(0, 2).toLocaleUpperCase("tr-TR")}</div>
+              <div><small>{lead.statusLabel}</small><h2>{lead.company}</h2><p>{lead.sector}</p></div>
+            </div>
+            <div className="marketCardV2Price"><span>Arz fiyatı</span><strong>₺{lead.price.toLocaleString("tr-TR")}</strong></div>
+            <div className="marketCardV2Metrics">
+              <div><span>Toplam lot</span><strong>{lead.lotCount.toLocaleString("tr-TR")}</strong></div>
+              <div><span>Ortak satışı</span><strong>{lead.shareholderSaleShares.toLocaleString("tr-TR")}</strong></div>
+              <div><span>Veri kapsamı</span><strong>%{lead.dataCompleteness || 0}</strong></div>
+            </div>
+            <p className="marketCardV2Summary">{lead.aiSummary}</p>
+            <Link className="secondaryButton" href={`/arz/${lead.slug}`}>Detayı aç</Link>
+          </article>
+          <div className="floatingMetric floatingMetricOne"><span>Takip edilen</span><strong>{ipos.length}</strong></div>
+          <div className="floatingMetric floatingMetricTwo"><span>İşlem gören</span><strong>{listedCount}</strong></div>
+        </div>}
+      </div>
+    </section>
+
+    <section className="homeMetricsV2"><div className="container homeMetricsV2Grid">
+      <article><span>01</span><strong>{ipos.length}</strong><p>Takip edilen halka arz</p></article>
+      <article><span>02</span><strong>{totalLots.toLocaleString("tr-TR")}</strong><p>Toplam temel arz lotu</p></article>
+      <article><span>03</span><strong>{bulletinCount}</strong><p>Resmî SPK bülteni</p></article>
+      <article><span>04</span><strong>{listedCount}</strong><p>İşlem görmeye başlayan</p></article>
     </div></section>
 
-    <section className="statsSection"><div className="container statsGrid">
-      <article className="statCard"><span className="statIcon">SPK</span><div><strong>{ipos.length}</strong><span>Takip edilen halka arz</span></div></article>
-      <article className="statCard"><span className="statIcon">LOT</span><div><strong>{totalLots.toLocaleString("tr-TR")}</strong><span>Toplam temel arz lotu</span></div></article>
-      <article className="statCard"><span className="statIcon">BÜL</span><div><strong>{bulletinCount}</strong><span>Resmî SPK bülteni</span></div></article>
-      <article className="statCard"><span className="statIcon">BIST</span><div><strong>{listedCount}</strong><span>İşlem görmeye başlayan</span></div></article>
+    <section className="section homeFeaturedV2"><div className="container">
+      <div className="homeSectionIntroV2"><span className="eyebrow">Güncel halka arzlar</span><h2>Önce önemli olanı gör.</h2><p>Her kartta yalnızca karar verirken gerçekten ihtiyaç duyacağın bilgiler bulunur.</p></div>
+      <div className="cardGrid homeCardGridV2">{featured.map((ipo) => <IpoCard ipo={ipo} key={ipo.id} />)}</div>
+      <div className="homeCenterAction"><Link className="secondaryButton large" href="/halka-arzlar">Tüm halka arzları görüntüle</Link></div>
     </div></section>
 
-    <section className="section"><div className="container"><div className="sectionHeading"><div><span className="eyebrow">Güncel görünüm</span><h2>SPK onayı alan son halka arzlar</h2><p>Resmî bilgiler tek yerde toplanır; yeni tarihler ve borsa kodları açıklandıkça kayıtlar güncellenir.</p></div><Link className="secondaryButton" href="/halka-arzlar">Tümünü gör</Link></div><div className="cardGrid">{featured.map((ipo) => <IpoCard ipo={ipo} key={ipo.id} />)}</div></div></section>
     <div className="container"><AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT} label="Ana sayfa reklam alanı" /></div>
-    <section className="section mutedSection"><div className="container"><div className="sectionHeading centered"><div><span className="eyebrow">Nasıl değerlendiriyoruz?</span><h2>Açıklanan bilgi kadar konuşuyoruz</h2><p>Her şirket aynı adımlarla incelenir; eksik veya henüz açıklanmamış alanlar açıkça belirtilir.</p></div></div><div className="processGrid"><article><span>01</span><h3>Resmî kaynak kontrol edilir</h3><p>SPK ve şirket belgelerindeki doğrulanabilir bilgiler bir araya getirilir.</p></article><article><span>02</span><h3>Arz yapısı sadeleştirilir</h3><p>Sermaye artırımı, ortak satışı, fiyat ve lot bilgileri anlaşılır hâle getirilir.</p></article><article><span>03</span><h3>Eksik alanlar işaretlenir</h3><p>Henüz açıklanmayan tarih, kod veya finansal bilgi için tahmin üretilmez.</p></article><article><span>04</span><h3>Yeni gelişmeler eklenir</h3><p>Talep toplama, işlem tarihi ve resmî şirket gelişmeleri kayıtla eşleştirilir.</p></article></div></div></section>
-    <section className="finalCta"><div className="container finalCtaInner"><div><span className="eyebrow">Tek ekranda karşılaştır</span><h2>Halka arzları resmî bilgileriyle incele.</h2><p>Fiyatı, lotu, arz yapısını ve güncel durumunu şirketler arasında kolayca karşılaştır.</p></div><Link className="primaryButton large" href="/halka-arzlar">Kayıtları aç</Link></div></section>
+
+    <section className="homeMethodV2"><div className="container homeMethodV2Grid">
+      <div className="homeMethodV2Lead"><span className="eyebrow">Nasıl çalışır?</span><h2>Veri gelir.<br />Gürültü gider.</h2><p>Platform, resmî kaynaklardan gelen karmaşık bilgileri sadeleştirir; açıklanmayan alanları ise açıkça işaretler.</p></div>
+      <div className="homeMethodStepsV2">
+        <article><span>01</span><div><h3>Kaynak doğrulanır</h3><p>SPK ve şirket belgeleri kontrol edilir.</p></div></article>
+        <article><span>02</span><div><h3>Bilgi sadeleştirilir</h3><p>Arz fiyatı, lot ve satış yapısı anlaşılır hâle getirilir.</p></div></article>
+        <article><span>03</span><div><h3>Eksik alan gizlenmez</h3><p>Açıklanmayan bilgiler tahmin edilmez.</p></div></article>
+        <article><span>04</span><div><h3>Gelişmeler eşleştirilir</h3><p>Yeni tarihler ve şirket gündemi kayda eklenir.</p></div></article>
+      </div>
+    </div></section>
+
+    <section className="homeFinalV2"><div className="container homeFinalV2Inner"><div><span className="eyebrow">Daha net bir başlangıç</span><h2>Yeni halka arzları tek yerde takip et.</h2><p>Bildirimleri aç, şirketleri takip listene ekle ve gelişmeleri kaçırma.</p></div><Link className="primaryButton large" href="/profil">Takip listemi oluştur</Link></div></section>
   </main><Footer /></>;
 }
