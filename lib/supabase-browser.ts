@@ -5,10 +5,22 @@ import { clearStoredSession, storeSession, type AuthSession } from "./supabase-r
 
 let browserClient: SupabaseClient | null | undefined;
 
-export type SocialAuthProvider = "github" | "linkedin_oidc" | "spotify";
+export type SocialAuthProvider = "github";
 
 function getPublicKey(): string | undefined {
   return process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+}
+
+function getSupabaseOrigin(): string | undefined {
+  const raw = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!raw) return undefined;
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== "https:" && parsed.hostname !== "localhost") return undefined;
+    return parsed.origin;
+  } catch {
+    return undefined;
+  }
 }
 
 function getAuthCallbackUrl(): string {
@@ -26,7 +38,7 @@ function getAuthCallbackUrl(): string {
 export function getSupabaseBrowserClient(): SupabaseClient | null {
   if (typeof window === "undefined") return null;
   if (browserClient !== undefined) return browserClient;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+  const url = getSupabaseOrigin();
   const key = getPublicKey();
   if (!url || !key) {
     browserClient = null;
@@ -53,7 +65,9 @@ export function mapSupabaseSession(session: Session): AuthSession {
     user: {
       id: session.user.id,
       email: session.user.email,
-      email_confirmed_at: session.user.email_confirmed_at
+      email_confirmed_at: session.user.email_confirmed_at,
+      app_metadata: session.user.app_metadata,
+      user_metadata: session.user.user_metadata
     }
   };
 }
