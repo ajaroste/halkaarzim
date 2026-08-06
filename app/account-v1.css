@@ -1,0 +1,60 @@
+.accountDangerZone {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(320px, 1.1fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 22px;
+  padding: clamp(24px, 4vw, 40px) !important;
+  border-color: color-mix(in srgb, var(--premium-danger, #b84444) 30%, var(--premium-line, var(--line))) !important;
+}
+
+.accountDangerZone h2 {
+  margin: 8px 0 10px;
+  color: var(--premium-ink, var(--ink));
+}
+
+.accountDangerZone p {
+  margin: 0;
+  color: var(--premium-muted, var(--muted));
+}
+
+.dangerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid color-mix(in srgb, var(--premium-danger, #b84444) 55%, transparent);
+  border-radius: 999px;
+  background: var(--premium-danger-soft, #fff0ef);
+  color: var(--premium-danger, #a62f35);
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.dangerButton:hover:not(:disabled) {
+  border-color: var(--premium-danger, #a62f35);
+  transform: translateY(-1px);
+}
+
+.dangerButton:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.accountDangerZone textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+@media (max-width: 760px) {
+  .accountDangerZone {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .dangerButton {
+    width: 100%;
+  }
+}
