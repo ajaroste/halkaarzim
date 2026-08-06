@@ -11,7 +11,24 @@ declare namespace JSX {
 
 declare module "react" {
   export type CSSProperties = Record<string, string | number | undefined>;
-  export type FormEvent<T = any> = any;
+  export type FormEvent<T = any> = {
+    currentTarget: T;
+    target: EventTarget;
+    preventDefault(): void;
+    stopPropagation(): void;
+  };
+  export type ChangeEvent<T = any> = {
+    currentTarget: T;
+    target: T;
+    preventDefault(): void;
+    stopPropagation(): void;
+  };
+  export type MouseEvent<T = any> = {
+    currentTarget: T;
+    target: EventTarget;
+    preventDefault(): void;
+    stopPropagation(): void;
+  };
   export interface Context<T> { Provider: any; Consumer: any; }
   export function createContext<T>(defaultValue: T): Context<T>;
   export function useContext<T>(context: Context<T>): T;
