@@ -1,0 +1,233 @@
+/* Public-facing polish and high-contrast dark theme */
+body {
+  background:
+    radial-gradient(circle at 8% -8%, rgba(14,143,103,.08), transparent 28rem),
+    var(--bg);
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(14,143,103,.13), transparent 24rem),
+    linear-gradient(180deg,#f1f8f5 0%,#f7faf8 100%);
+}
+
+.statsSection {
+  position:relative;
+  z-index:3;
+  margin-top:-34px;
+  padding-bottom:18px;
+}
+
+.statsGrid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  padding:0;
+}
+
+.statCard {
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:19px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--surface);
+  box-shadow:0 14px 38px rgba(20,45,36,.08);
+  transition:border-color .2s ease,background .2s ease,transform .2s ease,box-shadow .2s ease;
+}
+
+.statCard>div {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.statCard strong {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:24px;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+}
+
+.statCard>div span {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.statIcon {
+  flex:0 0 auto;
+  min-width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  padding:0 7px;
+  border-radius:12px;
+  background:var(--brand-soft);
+  color:var(--brand-dark);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.statCard:hover,
+.processGrid article:hover {
+  transform:translateY(-3px);
+  border-color:#bdd8cc;
+  box-shadow:0 18px 44px rgba(20,45,36,.1);
+}
+
+.ipoCard,
+.panel,
+.commentsPanel,
+.processGrid article,
+.statCard {
+  box-shadow:0 12px 34px rgba(20,45,36,.055);
+}
+
+.ipoCard,
+.processGrid article,
+.secondaryButton,
+.iconButton {
+  transition:border-color .2s ease,background .2s ease,transform .2s ease,box-shadow .2s ease;
+}
+
+:root[data-theme="dark"] {
+  --bg:#08110e;
+  --surface:#101c18;
+  --surface-2:#172721;
+  --ink:#f1faf6;
+  --muted:#b5c7bf;
+  --line:#2d453c;
+  --brand:#43d69f;
+  --brand-dark:#89efc8;
+  --brand-soft:#14392c;
+  --positive:#54e0ac;
+  --warning:#ffc16c;
+  --warning-soft:#3d2d14;
+  --danger:#ff8b8b;
+  --danger-soft:#3c2020;
+  --shadow:0 22px 60px rgba(0,0,0,.34);
+}
+
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 10% -10%, rgba(67,214,159,.11), transparent 29rem),
+    var(--bg);
+}
+
+:root[data-theme="dark"] .siteHeader {
+  border-color:rgba(45,69,60,.9);
+  background:rgba(8,17,14,.88);
+}
+
+:root[data-theme="dark"] .hero {
+  border-color:var(--line);
+  background:
+    radial-gradient(circle at 78% 18%, rgba(67,214,159,.12), transparent 25rem),
+    linear-gradient(180deg,#0d1c17 0%,#0a1512 100%);
+}
+
+:root[data-theme="dark"] .heroCopy>p,
+:root[data-theme="dark"] .trustRow,
+:root[data-theme="dark"] .aiSnippet p,
+:root[data-theme="dark"] .agendaSummary p,
+:root[data-theme="dark"] .footerGrid p,
+:root[data-theme="dark"] .reportLead p {
+  color:var(--muted);
+}
+
+:root[data-theme="dark"] .statCard,
+:root[data-theme="dark"] .statsStrip,
+:root[data-theme="dark"] .mutedSection,
+:root[data-theme="dark"] .aiSnippet,
+:root[data-theme="dark"] .promiseStats>div,
+:root[data-theme="dark"] .commentCount,
+:root[data-theme="dark"] .moderationNote,
+:root[data-theme="dark"] .agendaSummary,
+:root[data-theme="dark"] .emptyState,
+:root[data-theme="dark"] .chartEmpty,
+:root[data-theme="dark"] .searchBox,
+:root[data-theme="dark"] .sortBox select,
+:root[data-theme="dark"] .tab,
+:root[data-theme="dark"] .authForm input,
+:root[data-theme="dark"] .calculator input {
+  background:var(--surface);
+  color:var(--ink);
+  border-color:var(--line);
+}
+
+:root[data-theme="dark"] .metricGrid>div,
+:root[data-theme="dark"] .commentComposer textarea,
+:root[data-theme="dark"] .sourceEntry,
+:root[data-theme="dark"] .chartSymbolBar,
+:root[data-theme="dark"] .calculatorResult,
+:root[data-theme="dark"] .detailSignals>div,
+:root[data-theme="dark"] .reportLead {
+  background:var(--surface-2);
+  color:var(--ink);
+}
+
+:root[data-theme="dark"] .secondaryButton,
+:root[data-theme="dark"] .iconButton {
+  background:var(--surface);
+  color:var(--ink);
+}
+
+:root[data-theme="dark"] .secondaryButton:hover,
+:root[data-theme="dark"] .iconButton:hover,
+:root[data-theme="dark"] .tab:hover {
+  border-color:#527565;
+  background:#1a2c25;
+}
+
+:root[data-theme="dark"] .scoreRing {
+  background:radial-gradient(circle closest-side,var(--surface) 77%,transparent 78% 99%),conic-gradient(var(--brand) calc(var(--score)*1%),#2b493e 0);
+}
+
+:root[data-theme="dark"] .companyLogo {
+  background:linear-gradient(145deg,#183d30,#205441);
+  color:#9af3d0;
+}
+
+:root[data-theme="dark"] .statusBadge.active { background:#123b2d; color:#8bf0ca; }
+:root[data-theme="dark"] .statusBadge.approved { background:#222d55; color:#b8c7ff; }
+:root[data-theme="dark"] .statusBadge.upcoming { background:#453716; color:#ffd78c; }
+:root[data-theme="dark"] .statusBadge.completed,
+:root[data-theme="dark"] .statusBadge.listing_pending { background:#27364b; color:#c4d8ff; }
+:root[data-theme="dark"] .statusBadge.listed { background:#24352f; color:#c4d6ce; }
+:root[data-theme="dark"] .statusBadge.delayed,
+:root[data-theme="dark"] .statusBadge.cancelled { background:#472424; color:#ffb0b0; }
+:root[data-theme="dark"] .statusBadge.draft { background:#3a2744; color:#e4baf5; }
+
+:root[data-theme="dark"] .formMessage {
+  background:var(--brand-soft);
+  color:#b6f4dc;
+}
+
+:root[data-theme="dark"] .primaryButton { color:#062218; }
+:root[data-theme="dark"] .finalCta { background:#06100d; }
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+  color:#7f958c;
+  opacity:1;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea { color-scheme:dark; }
+
+@media (max-width:950px) {
+  .statsGrid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width:680px) {
+  .statsSection { margin-top:-20px; }
+  .statsGrid { grid-template-columns:1fr; gap:9px; }
+  .statCard { padding:15px 16px; }
+  .statCard strong { font-size:21px; }
+}
