@@ -9,6 +9,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { ipos } from "@/data/ipos";
 import { listWatchlist } from "@/lib/supabase-rest";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
+import { requestAccountDeletion } from "@/lib/account-deletion";
 
 export default function ProfilePage() {
   const { session, profile, loading, configured, reload } = useAuth();
@@ -16,6 +17,8 @@ export default function ProfilePage() {
   const [message, setMessage] = useState("");
   const [notifications, setNotifications] = useState(false);
   const [savingProfile, setSavingProfile] = useState(false);
+  const [requestingDeletion, setRequestingDeletion] = useState(false);
+  const [deletionReason, setDeletionReason] = useState("");
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
 
@@ -125,9 +128,29 @@ export default function ProfilePage() {
     }
   }
 
+  async function submitDeletionRequest(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!session) return;
+    const confirmed = window.confirm("Hesap silme talebi oluşturulsun mu? Talep işlenene kadar hesabın açık kalır.");
+    if (!confirmed) return;
+    setRequestingDeletion(true);
+    setMessage("");
+    try {
+      await requestAccountDeletion(session.access_token, deletionReason);
+      setDeletionReason("");
+      setMessage("Hesap silme talebin alındı. İnceleme ve kimlik doğrulama sonrasında hesabın ve ilişkili verilerin silme/anonimleştirme işlemi yapılacak.");
+    } catch (error) {
+      const text = error instanceof Error ? error.message : "Hesap silme talebi oluşturulamadı.";
+      setMessage(text.toLowerCase().includes("function") || text.toLowerCase().includes("schema cache") ? "Hesap silme talebi migration’ı henüz Supabase’e uygulanmamış." : text);
+    } finally {
+      setRequestingDeletion(false);
+    }
+  }
+
   return <><Header /><main className="pageShell"><section className="pageHero"><div className="container"><span className="eyebrow">Kişisel alan</span><h1>Takip listen. Profilin. Bildirimlerin.</h1><p>{session ? `${profile?.display_name || session.user.email || "Hesabın"} ile eşitlenen kişisel alan.` : "Giriş yapılmadığı için seçimler yalnız bu tarayıcıda saklanır."}</p></div></section><section className="section"><div className="container narrow">
     {session && <article className="panel profileSettings"><div style={{ width: "100%" }}><span className="eyebrow">Hesap ayarları</span><h2>Profil bilgileri</h2><p>Kullanıcı adın yorumlarda ve topluluk alanlarında görünür.</p><form className="authForm" onSubmit={saveProfile}><label>Kullanıcı adı<input value={username} onChange={(event: ChangeEvent<HTMLInputElement>) => setUsername(event.target.value)} minLength={3} maxLength={30} autoComplete="username" placeholder="ornek_kullanici" required /></label><label>Görünen ad<input value={displayName} onChange={(event: ChangeEvent<HTMLInputElement>) => setDisplayName(event.target.value)} minLength={2} maxLength={40} autoComplete="name" required /></label><label>E-posta<input value={session.user.email || ""} disabled /></label><button className="primaryButton" disabled={savingProfile}>{savingProfile ? "Kaydediliyor…" : "Değişiklikleri kaydet"}</button></form></div></article>}
     <article className="panel profileSettings"><div><span className="eyebrow">Anlık haber</span><h2>Yeni halka arz bildirimleri</h2><p>Yeni bir firma listeye eklendiğinde tarayıcı bildirimi al. Test butonuyla cihazındaki görünümü hemen doğrula.</p></div><div className="buttonRow"><button className={notifications ? "secondaryButton" : "primaryButton"} onClick={enableNotifications}>{notifications ? "Bildirimler açık" : "Bildirimleri aç"}</button><button className="secondaryButton" onClick={() => void testNotification()}>Test bildirimi gönder</button></div></article>
+    {session && <article className="panel accountDangerZone"><div><span className="eyebrow">Gizlilik hakkı</span><h2>Hesap silme talebi</h2><p>Talep oluşturduğunda hesap, yorum, takip ve bildirim verileri incelemeye alınır. Hukuken saklanması gerekmeyen kayıtlar silinir veya anonimleştirilir.</p></div><form className="authForm" onSubmit={submitDeletionRequest}><label>İsteğe bağlı açıklama<textarea value={deletionReason} onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setDeletionReason(event.target.value)} maxLength={500} rows={3} placeholder="Silme talebinle ilgili eklemek istediğin bilgi" /></label><button className="dangerButton" disabled={requestingDeletion}>{requestingDeletion ? "Talep oluşturuluyor…" : "Hesap silme talebi oluştur"}</button></form></article>}
     {!loading && configured && !session && <p className="formMessage">Takip listesini cihazlar arasında eşitlemek için giriş yap.</p>}{message && <p className="formMessage" role="status">{message}</p>}
     {watched.length ? <div className="watchList">{watched.map((ipo) => <article className="panel" key={ipo.id}><div className="companyRow"><div className="companyLogo">{(ipo.ticker || ipo.company).slice(0, 2)}</div><div><h2>{ipo.company}</h2><p>{ipo.ticker || "Kod bekleniyor"} · {ipo.statusLabel}</p></div></div><Link className="textLink" href={`/arz/${ipo.slug}`}>Detaya git →</Link></article>)}</div> : <div className="emptyState"><strong>Takip listen boş</strong><p>Şirket detayındaki “Takip et” düğmesini kullan.</p><Link className="primaryButton" href="/halka-arzlar">Halka arzları aç</Link></div>}
   </div></section></main><Footer /></>;
