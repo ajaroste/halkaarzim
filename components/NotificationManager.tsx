@@ -9,9 +9,13 @@ const SNAPSHOT_KEY = "halkaarzim-known-ipo-ids";
 const DISMISSED_KEY = "halkaarzim-notification-prompt-dismissed";
 const DEFAULT_VAPID_PUBLIC_KEY = "BA7L3ZmAU4nf5RNknQjQUXZr-hO5Q3peXE--97QuZ8XQiJyfAHdE6HkCP8bJqGXaZ4fqRsQvASvA69QKUJjtM3s";
 
-function decodePublicKey(value: string): Uint8Array {
+function decodePublicKey(value: string): ArrayBuffer {
   const padding = "=".repeat((4 - value.length % 4) % 4);
-  return Uint8Array.from(atob((value + padding).replace(/-/g, "+").replace(/_/g, "/")), (character) => character.charCodeAt(0));
+  const bytes = Uint8Array.from(
+    atob((value + padding).replace(/-/g, "+").replace(/_/g, "/")),
+    (character) => character.charCodeAt(0)
+  );
+  return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
 }
 
 async function getRegistration(): Promise<ServiceWorkerRegistration> {
