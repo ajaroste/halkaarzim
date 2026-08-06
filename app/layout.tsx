@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./polish.css";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 
