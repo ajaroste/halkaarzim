@@ -1,4 +1,4 @@
-name: SPK data sync
+name: SPK data, AI and notification sync
 
 on:
   schedule:
@@ -8,10 +8,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: halkaarzim-data-sync
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,35 +23,57 @@ jobs:
           python-version: "3.13"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Update official and public-source data
+
+      - name: Update official and reviewed public-source data
         run: python scripts/update_all.py
         env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_AI_MODEL: ${{ vars.CLOUDFLARE_AI_MODEL }}
+          ALLOW_NETWORK_SYNC: "true"
+
+      - name: Generate source-bound AI reports when configured
+        run: python scripts/generate_ai_reports.py
+        env:
+          ENABLE_AI_GENERATION: ${{ secrets.AI_ADMIN_TOKEN != '' && vars.AI_ENDPOINT != '' }}
+          AI_ENDPOINT: ${{ vars.AI_ENDPOINT }}
+          AI_ADMIN_TOKEN: ${{ secrets.AI_ADMIN_TOKEN }}
+          AI_MAX_ITEMS: "5"
+          AI_REQUIRED: "false"
+
       - name: Run Python validation
-        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts
+        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation
+
       - name: Sync Supabase when configured
+        if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
         run: python scripts/sync_supabase.py
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ENABLE_NOTIFICATION_ENQUEUE: "true"
+
       - name: Send free Web Push notifications
+        if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' && secrets.VAPID_PRIVATE_KEY != '' }}
         run: python scripts/send_notifications.py
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_SUBJECT: ${{ vars.VAPID_SUBJECT }}
-      - name: Commit updated snapshots
+
+      - name: Send Telegram channel update when configured
+        if: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && vars.TELEGRAM_CHANNEL_ID != '' }}
+        run: python scripts/send_telegram_updates.py
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ vars.TELEGRAM_CHANNEL_ID }}
+          SITE_URL: ${{ vars.SITE_URL }}
+
+      - name: Commit updated snapshots and content pack
         run: |
-          if git diff --quiet -- data/generated; then
-            echo "No data change"
+          if git diff --quiet -- data/generated content/generated; then
+            echo "No data or content change"
             exit 0
           fi
           git config user.name "halkaarzim-data-bot"
           git config user.email "halkaarzim-data-bot@users.noreply.github.com"
-          git add data/generated
-          git commit -m "data: update IPO snapshots"
+          git add data/generated content/generated
+          git commit -m "data: update IPO snapshots and growth content"
           git push
