@@ -118,6 +118,16 @@ export async function getProfile(token: string): Promise<PublicProfile | null> {
   return rows[0] || null;
 }
 
+export async function updateProfile(input: { username: string; displayName: string }, token: string): Promise<void> {
+  if (!url) throw new Error("Giriş sistemi adresi eksik");
+  const user = await getUser(token);
+  await parseResponse(await fetch(`${url}/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}`, {
+    method: "PATCH",
+    headers: { ...headers(token), Prefer: "return=minimal" },
+    body: JSON.stringify({ username: input.username, display_name: input.displayName })
+  }));
+}
+
 export async function getUser(token: string): Promise<{ id: string; email?: string }> {
   if (!url) throw new Error("Giriş sistemi adresi eksik");
   return parseResponse(await fetch(`${url}/auth/v1/user`, { headers: headers(token), cache: "no-store" }));
