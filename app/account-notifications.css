@@ -68,6 +68,12 @@
 .calculatorResult { border:1px solid color-mix(in srgb,var(--brand) 22%,var(--line)); }
 .calculatorResult span { color:var(--brand-dark); }
 
+.legalGateBackdrop{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:rgba(0,0,0,.62);backdrop-filter:blur(12px)}
+.legalGateCard{width:min(560px,100%);max-height:min(760px,calc(100svh - 40px));overflow:auto;padding:clamp(24px,5vw,42px);border:1px solid var(--premium-line,var(--line));border-radius:28px;background:var(--premium-surface-solid,var(--surface));color:var(--premium-ink,var(--ink));box-shadow:0 30px 100px rgba(0,0,0,.28)}
+.legalGateCard h2{margin:10px 0 12px;font-size:clamp(1.9rem,5vw,3rem);line-height:1.03;letter-spacing:-.045em}.legalGateCard>p{margin:0 0 20px;color:var(--premium-muted,var(--muted));line-height:1.65}
+.legalGateLinks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}.legalGateLinks a{padding:13px 14px;border:1px solid var(--premium-line,var(--line));border-radius:13px;background:var(--premium-surface-soft,var(--surface-2));color:var(--premium-ink,var(--ink));font-size:13px;font-weight:750;text-align:center}.legalGateLinks a:hover{border-color:color-mix(in srgb,var(--premium-accent,var(--brand)) 45%,var(--premium-line,var(--line)))}
+.legalGateActions{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:20px}.legalGateActions .primaryButton{min-width:190px}
+
 :root[data-theme="dark"] .authModalCard,
 :root[data-theme="dark"] .authCallbackCard,
 :root[data-theme="dark"] .notificationPrompt,
@@ -113,4 +119,5 @@
   .notificationPrompt { top:74px; left:12px; right:12px; width:auto; }
   .notificationPromptActions { align-items:stretch; flex-direction:column; }
   .notificationPromptActions .primaryButton { width:100%; }
+  .legalGateBackdrop{padding:12px;align-items:end}.legalGateCard{width:100%;max-height:calc(100svh - 24px);padding:24px 18px;border-radius:24px 24px 18px 18px}.legalGateLinks{grid-template-columns:1fr}.legalGateActions{align-items:stretch;flex-direction:column-reverse}.legalGateActions .primaryButton,.legalGateActions .textButton{width:100%}
 }
