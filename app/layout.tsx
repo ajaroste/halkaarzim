@@ -7,6 +7,7 @@ import "./home-v2.css";
 import "./detail-refresh.css";
 import "./detail-v3.css";
 import "./legal-v1.css";
+import "./account-v1.css";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 import { LegalConsentGate } from "@/components/LegalConsentGate";
