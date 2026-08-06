@@ -38,8 +38,13 @@ jobs:
           AI_MAX_ITEMS: "5"
           AI_REQUIRED: "false"
 
+      - name: Generate social and newsletter content pack
+        run: python scripts/generate_growth_content.py
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+
       - name: Run Python validation
-        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation
+        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
 
       - name: Sync Supabase when configured
         if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
@@ -64,7 +69,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL_ID: ${{ vars.TELEGRAM_CHANNEL_ID }}
-          SITE_URL: ${{ vars.SITE_URL }}
+          TELEGRAM_MAX_MESSAGES: "2"
 
       - name: Commit updated snapshots and content pack
         run: |
