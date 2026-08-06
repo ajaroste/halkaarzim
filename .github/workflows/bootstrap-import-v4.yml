@@ -1,0 +1,60 @@
+name: Import HalkaArzim application source
+
+on:
+  push:
+    paths:
+      - ".github/workflows/bootstrap-import-v4.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify and extract source
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "60e5a1f72efd92d342e2068ff26549607cc8ac3ee6d485a0afb140604df4f6da  .bootstrap-fix003/part_00" | sha256sum -c -
+          echo "c7dc62d420fd0374f1cbd5e2d35efed10ca73478aaacc286146fb6a350a06319  .bootstrap-fix003/part_01" | sha256sum -c -
+          echo "056d91d5fbbdd277bcfbfccb540bbd360252219390ef02349bc4bbd78f910e08  .bootstrap-fix003/part_02" | sha256sum -c -
+          echo "572659e54f60ce248d731b3e298f08fa1213de6e916da43e23b3640291afa645  .bootstrap-fix003/part_03" | sha256sum -c -
+          echo "cd346896c95389e80bf7b3ca1525b8fc03c953951dbff6a73a04ea303dd672eb  .bootstrap-fix003/part_04" | sha256sum -c -
+          echo "ade88c3069e3731fdb18bc34afdb674ff01051e37ba2f493b0196568604c162a  .bootstrap-fix003/part_05" | sha256sum -c -
+          echo "9a2b347491b3a3d77fbf764f6ca5bfa5b775ec91d588596f5673022427a6a624  .bootstrap-fix003/part_06" | sha256sum -c -
+          echo "347e00038b96a8b145653d6ebe17b5bf076dd15d4ea30ffabdd73e21e2764434  .bootstrap-fix003/part_07" | sha256sum -c -
+          echo "dedc05138518daa47b1285402f63c6d3b19d9c5423bb9e0653a3897489246c41  .bootstrap-fix003/part_08" | sha256sum -c -
+          echo "765918fd12bf7db5259930aaf0d7038df868174a0f05c2b5397d6c147ee37799  .bootstrap-fix003/part_09" | sha256sum -c -
+          cat \
+            .bootstrap2/chunk_000 \
+            .bootstrap2/chunk_001 \
+            .bootstrap2/chunk_002 \
+            .bootstrap-fix003/part_* \
+            .bootstrap2/chunk_004 \
+            .bootstrap2/chunk_005 \
+            .bootstrap2/chunk_006 \
+            .bootstrap2/chunk_007 \
+            .bootstrap2/chunk_008 \
+            > /tmp/source.tar.xz.b64
+          echo "b7b55e07c836d7acb5a02b7d3c1c82e6b7cdfa4d03a6d1eaf8e4cff0c64cb957  /tmp/source.tar.xz.b64" | sha256sum -c -
+          base64 --decode /tmp/source.tar.xz.b64 > /tmp/source.tar.xz
+          echo "808c22d219d64c163f22e0d1521dcf4e5a4f5fcc2bd94d75dc28c930ea395b08  /tmp/source.tar.xz" | sha256sum -c -
+          tar -xJf /tmp/source.tar.xz -C .
+          rm -rf .bootstrap .bootstrap2 .bootstrap-fix003
+          rm -f .github/workflows/ci.yml .github/workflows/data-sync.yml
+
+      - name: Commit application source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- ':!.github/workflows'
+          git commit -m "feat: import HalkaArzim v1.0.0 RC3 application"
+          git push origin HEAD:main
