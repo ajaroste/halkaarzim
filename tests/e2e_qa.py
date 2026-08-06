@@ -17,7 +17,7 @@ def main() -> None:
         page.wait_for_url("**/halka-arzlar/")
         assert page.locator(".card").count() >= 30
 
-        page.locator("[data-filter='trading']").click()
+        page.locator("[data-filter='listed']").click()
         visible = page.locator(".card:not(.hidden)").count()
         assert visible >= 1
         assert page.locator("#result-count").inner_text() == str(visible)
