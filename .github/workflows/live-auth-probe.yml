@@ -1,0 +1,33 @@
+name: Live auth probe
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/live_auth_probe.py"
+      - ".github/workflows/live-auth-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - run: python scripts/live_auth_probe.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: halkaarzim-live-auth-probe
+          path: live-auth-probe
+          if-no-files-found: error
+          retention-days: 14
