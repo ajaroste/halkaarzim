@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type { ChangeEvent } from "react";
 import type { Ipo, IpoStatus } from "@/data/ipos";
 import { IpoCard } from "./IpoCard";
 
@@ -51,8 +52,8 @@ export function IpoExplorer({ items }: { items: Ipo[] }) {
   return (
     <>
       <div className="explorerTools">
-        <label className="searchBox"><span>⌕</span><input aria-label="Halka arz ara" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Şirket, kod, bülten veya sektör ara" /></label>
-        <label className="sortBox"><span>Sırala</span><select aria-label="Halka arzları sırala" value={sort} onChange={(e) => setSort(e.target.value as SortMode)}><option value="newest">En yeni onay</option><option value="oldest">En eski onay</option><option value="price-asc">Fiyat: düşükten yükseğe</option><option value="price-desc">Fiyat: yüksekten düşüğe</option><option value="company">Şirket adına göre</option></select></label>
+        <label className="searchBox"><span>⌕</span><input aria-label="Halka arz ara" value={query} onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)} placeholder="Şirket, kod, bülten veya sektör ara" /></label>
+        <label className="sortBox"><span>Sırala</span><select aria-label="Halka arzları sırala" value={sort} onChange={(e: ChangeEvent<HTMLSelectElement>) => setSort(e.target.value as SortMode)}><option value="newest">En yeni onay</option><option value="oldest">En eski onay</option><option value="price-asc">Fiyat: düşükten yükseğe</option><option value="price-desc">Fiyat: yüksekten düşüğe</option><option value="company">Şirket adına göre</option></select></label>
       </div>
       <div className="tabs" role="tablist" aria-label="Halka arz durum filtresi">
         {filters.map((filter) => <button
