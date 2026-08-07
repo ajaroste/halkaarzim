@@ -1,0 +1,102 @@
+/* Mobile header controls: keep theme, auth and menu reachable on small screens. */
+.mobileMenuAccount,
+.mobileMenuLogout {
+  display: none;
+}
+
+@media (max-width: 950px) {
+  .headerInner {
+    position: relative;
+  }
+
+  .headerLoginButton {
+    display: inline-flex;
+  }
+
+  .mobileMenuAccount,
+  .mobileMenuLogout {
+    display: flex;
+  }
+
+  .mobileMenuLogout {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 8px 0;
+    color: var(--muted);
+    font-weight: 700;
+    text-align: left;
+  }
+}
+
+@media (max-width: 680px) {
+  .headerInner {
+    min-height: 64px;
+    gap: 8px;
+  }
+
+  .brand {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .headerActions {
+    flex: 0 0 auto;
+    gap: 6px;
+  }
+
+  /* globals.css previously hid every iconButton at this breakpoint. */
+  .headerActions .themeButton,
+  .headerActions .mobileMenuButton {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+  }
+
+  .headerActions .notificationButton {
+    display: none;
+  }
+
+  .headerLoginButton {
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 390px) {
+  .container.headerInner {
+    width: calc(100% - 16px);
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .brandMark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .headerActions {
+    gap: 4px;
+  }
+
+  .headerActions .themeButton,
+  .headerActions .mobileMenuButton {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .headerLoginButton {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+}
