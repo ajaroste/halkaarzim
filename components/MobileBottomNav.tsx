@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const items = [
   { href: "/", label: "Ana sayfa", icon: "home" },
@@ -19,11 +19,13 @@ function NavIcon({ name }: { name: (typeof items)[number]["icon"] }) {
 }
 
 export function MobileBottomNav() {
-  const pathname = usePathname();
+  const [pathname, setPathname] = useState("");
+  useEffect(() => { setPathname(window.location.pathname); }, []);
+
   return <nav className="mobileBottomNav" aria-label="Mobil ana menü">
     {items.map((item) => {
       const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-      return <Link href={item.href} key={item.href} className={active ? "active" : undefined} aria-current={active ? "page" : undefined}>
+      return <Link href={item.href} key={item.href} className={active ? "active" : undefined} aria-current={active ? "page" : undefined} onClick={() => setPathname(item.href)}>
         <NavIcon name={item.icon} />
         <span>{item.label}</span>
       </Link>;
