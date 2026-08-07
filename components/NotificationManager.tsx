@@ -74,6 +74,9 @@ export function NotificationManager() {
     let cancelled = false;
     let timer = 0;
 
+    const canPrompt = () => Notification.permission === "default" && localStorage.getItem(DISMISSED_KEY) !== "1";
+    const contextualPrompt = () => { if (!cancelled && canPrompt()) setPromptVisible(true); };
+
     async function initialize() {
       const registration = await getRegistration().catch(() => null);
       const currentIds = ipos.map((ipo) => ipo.id);
@@ -101,27 +104,27 @@ export function NotificationManager() {
         await syncRemoteSubscription(registration).catch(() => null);
       }
 
-      if (!cancelled && Notification.permission === "default" && localStorage.getItem(DISMISSED_KEY) !== "1") {
-        timer = window.setTimeout(() => setPromptVisible(true), 1400);
-      }
+      if (!cancelled && canPrompt()) timer = window.setTimeout(contextualPrompt, 30_000);
     }
 
     const requestHandler = () => void enableNotifications();
     window.addEventListener("halkaarzim-enable-notifications", requestHandler);
+    window.addEventListener("halkaarzim-watchlist-changed", contextualPrompt);
     void initialize();
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
       window.removeEventListener("halkaarzim-enable-notifications", requestHandler);
+      window.removeEventListener("halkaarzim-watchlist-changed", contextualPrompt);
     };
   }, [session]);
 
   if (!promptVisible) return null;
   return <aside className="notificationPrompt" role="dialog" aria-label="Bildirimleri aç">
-    <div className="notificationPromptIcon" aria-hidden="true">🔔</div>
+    <div className="notificationPromptIcon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></div>
     <div className="notificationPromptCopy">
       <strong>Yeni halka arzları kaçırma</strong>
-      <p>Yeni bir firma eklendiğinde tarayıcı bildirimi gönderelim.</p>
+      <p>Takip ettiğin şirketlerde ve yeni halka arzlarda tarayıcı bildirimi al.</p>
       {message && <small>{message}</small>}
     </div>
     <div className="notificationPromptActions">
