@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { FormEvent, MouseEvent } from "react";
-import { isSupabaseConfigured, requestPasswordReset, signIn, signUp } from "@/lib/supabase-rest";
+import { isSupabaseConfigured, requestPasswordReset, signIn, signOut, signUp } from "@/lib/supabase-rest";
 import { signInWithSocialProvider, type SocialAuthProvider } from "@/lib/supabase-browser";
 
 type Mode = "signin" | "signup" | "reset";
@@ -61,6 +61,10 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
       setMessage("Parola en az 8 karakter olmalıdır.");
       return;
     }
+    if (mode === "signup" && (displayName.length < 2 || displayName.length > 40)) {
+      setMessage("Görünen ad 2-40 karakter olmalıdır.");
+      return;
+    }
     if (mode === "signup" && !termsAccepted) {
       setMessage("Hesap oluşturmak için kullanım koşullarını kabul etmen ve gizlilik metnini okuduğunu onaylaman gerekir.");
       return;
@@ -77,6 +81,11 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
       if (mode === "signup") {
         const result = await signUp(email, password, displayName);
         if ("access_token" in result) {
+          if (!result.user.email_confirmed_at) {
+            await signOut(result);
+            setMessage("Hesabın oluşturuldu. Gelen kutundaki doğrulama bağlantısına tıklayarak hesabını etkinleştir.");
+            return;
+          }
           window.dispatchEvent(new Event("halkaarzim-auth-changed"));
           setMessage("Hesabın oluşturuldu ve giriş yapıldı.");
           window.setTimeout(onClose, 600);
@@ -88,6 +97,7 @@ export function AuthModal({ open, onClose }: { open: boolean; onClose: () => voi
 
       const session = await signIn(email, password);
       if (!session.user.email_confirmed_at) {
+        await signOut(session);
         setMessage("E-posta adresin henüz doğrulanmamış. Gelen kutundaki doğrulama bağlantısını kullan.");
         return;
       }
