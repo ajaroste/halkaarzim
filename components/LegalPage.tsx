@@ -16,12 +16,12 @@ type LegalPageProps = {
   showDraftNotice?: boolean;
 };
 
-export function LegalPage({ eyebrow, title, intro, version, toc, children, showDraftNotice = true }: LegalPageProps) {
+export function LegalPage({ eyebrow, title, intro, version, toc, children, showDraftNotice = false }: LegalPageProps) {
   return <><Header /><main className="legalShell">
-    <section className="legalHero"><div className="container narrow"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{intro}</p><div className="legalMeta"><span>Sürüm {version}</span><span>Son güncelleme: 6 Ağustos 2026</span><span>Türkiye</span></div></div></section>
+    <section className="legalHero"><div className="container narrow"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{intro}</p><div className="legalMeta"><span>Sürüm {version}</span><span>Son güncelleme: 7 Ağustos 2026</span><span>Türkiye</span></div></div></section>
     <div className="container legalLayout">
       <article className="legalDocument">
-        {showDraftNotice && <div className="legalNotice" role="note"><span aria-hidden="true">!</span><div><strong>Yayın öncesi tamamlanması gereken alan</strong><p>Veri sorumlusunun gerçek adı/unvanı, açık adresi ve geçerli başvuru e-postası bilinmediği için uydurulmamıştır. Bu bilgiler eklenmeden metin tam bir hukuki uyum belgesi sayılmaz ve bağımsız hukukçu incelemesi gerekir.</p></div></div>}
+        {showDraftNotice && <div className="legalNotice" role="note"><span aria-hidden="true">!</span><div><strong>Hukuki inceleme notu</strong><p>Bu alan yalnız iç inceleme sırasında gösterilir; production kullanıcı arayüzünde yer almaz.</p></div></div>}
         {children}
         <section id="baglantilar"><h2>İlgili politikalar</h2><p><Link href="/gizlilik">Gizlilik ve KVKK</Link> · <Link href="/cerez-politikasi">Çerez Politikası</Link> · <Link href="/ai-politikasi">AI Kullanım Politikası</Link> · <Link href="/yatirim-tavsiyesi-degildir">Yatırım Tavsiyesi Değildir</Link> · <Link href="/icerik-kaldirma">İçerik Kaldırma</Link></p></section>
       </article>
