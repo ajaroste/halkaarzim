@@ -7,6 +7,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "qa-site"
+STATUS_ALIASES = {"trading": "listed", "collecting": "active", "postponed": "delayed"}
+
+
+def canonical_status(value: str | None) -> str:
+    status = value or "approved"
+    return STATUS_ALIASES.get(status, status)
 
 
 def page(title: str, body: str, script: str = "") -> str:
@@ -27,7 +33,8 @@ def main() -> None:
     cards = []
     for item in items:
         ticker = html.escape(item.get("ticker") or "Kod bekleniyor")
-        cards.append(f"<a class='card' data-status='{html.escape(item.get('status','approved'))}' href='/halka-arz/{html.escape(item['slug'])}/'><strong>{html.escape(item['company'])}</strong><p>{ticker} · {item.get('price','-')} TL</p><span class='muted'>{html.escape(item.get('status','approved'))}</span></a>")
+        status = canonical_status(item.get("status"))
+        cards.append(f"<a class='card' data-status='{html.escape(status)}' href='/halka-arz/{html.escape(item['slug'])}/'><strong>{html.escape(item['company'])}</strong><p>{ticker} · {item.get('price','-')} TL</p><span class='muted'>{html.escape(status)}</span></a>")
     buttons = "".join(f"<button class='filter' data-filter='{value}'>{value}</button>" for value in filters)
     script = """
 const root=document.documentElement;document.getElementById('theme-toggle').onclick=()=>{root.dataset.theme=root.dataset.theme==='dark'?'light':'dark';localStorage.setItem('theme',root.dataset.theme)};root.dataset.theme=localStorage.getItem('theme')||'light';
