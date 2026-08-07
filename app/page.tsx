@@ -4,10 +4,12 @@ import { Footer } from "@/components/Footer";
 import { IpoCard } from "@/components/IpoCard";
 import { AdSlot } from "@/components/AdSlot";
 import { ipos } from "@/data/ipos";
+import { publicAnalysisText } from "@/lib/public-analysis";
 
 export default function HomePage() {
   const featured = ipos.slice(0, 4);
   const lead = featured[0];
+  const leadSummary = lead ? publicAnalysisText(lead.aiSummary) : "";
   const totalLots = ipos.reduce((sum, ipo) => sum + ipo.lotCount, 0);
   const bulletinCount = new Set(ipos.map((ipo) => ipo.bulletinNo)).size;
   const listedCount = ipos.filter((ipo) => ipo.status === "listed").length;
@@ -40,7 +42,7 @@ export default function HomePage() {
               <div><span>Ortak satışı</span><strong>{lead.shareholderSaleShares.toLocaleString("tr-TR")}</strong></div>
               <div><span>Veri kapsamı</span><strong>%{lead.dataCompleteness || 0}</strong></div>
             </div>
-            <p className="marketCardV2Summary">{lead.aiSummary}</p>
+            {leadSummary ? <p className="marketCardV2Summary">{leadSummary}</p> : null}
             <Link className="secondaryButton" href={`/arz/${lead.slug}`}>Detayı aç</Link>
           </article>
           <div className="floatingMetric floatingMetricOne"><span>Takip edilen</span><strong>{ipos.length}</strong></div>
@@ -57,7 +59,7 @@ export default function HomePage() {
     </div></section>
 
     <section className="section homeFeaturedV2"><div className="container">
-      <div className="homeSectionIntroV2"><span className="eyebrow">Güncel halka arzlar</span><h2>Önce önemli olanı gör.</h2><p>Her kartta yalnızca karar verirken gerçekten ihtiyaç duyacağın bilgiler bulunur.</p></div>
+      <div className="homeSectionIntroV2"><span className="eyebrow">Güncel halka arzlar</span><h2>Önce önemli olanı gör.</h2><p>Her kartta arzın temel bilgileri, veri kapsamı ve kaynaklı değerlendirmesi yer alır.</p></div>
       <div className="cardGrid homeCardGridV2">{featured.map((ipo) => <IpoCard ipo={ipo} key={ipo.id} />)}</div>
       <div className="homeCenterAction"><Link className="secondaryButton large" href="/halka-arzlar">Tüm halka arzları görüntüle</Link></div>
     </div></section>
@@ -65,7 +67,7 @@ export default function HomePage() {
     <div className="container"><AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_HOME_SLOT} label="Ana sayfa reklam alanı" /></div>
 
     <section className="homeMethodV2"><div className="container homeMethodV2Grid">
-      <div className="homeMethodV2Lead"><span className="eyebrow">Nasıl çalışır?</span><h2>Veri gelir.<br />Gürültü gider.</h2><p>Platform, resmî kaynaklardan gelen karmaşık bilgileri sadeleştirir; açıklanmayan alanları ise açıkça işaretler.</p></div>
+      <div className="homeMethodV2Lead"><span className="eyebrow">Nasıl çalışır?</span><h2>Veri gelir.<br />Gürültü gider.</h2><p>Platform, resmî kaynaklardaki karmaşık bilgileri sadeleştirir ve açıklanmayan alanları açıkça belirtir.</p></div>
       <div className="homeMethodStepsV2">
         <article><span>01</span><div><h3>Kaynak doğrulanır</h3><p>SPK ve şirket belgeleri kontrol edilir.</p></div></article>
         <article><span>02</span><div><h3>Bilgi sadeleştirilir</h3><p>Arz fiyatı, lot ve satış yapısı anlaşılır hâle getirilir.</p></div></article>
