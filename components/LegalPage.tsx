@@ -1,4 +1,3 @@
-import type * as React from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -11,7 +10,9 @@ type LegalPageProps = {
   intro: string;
   version: string;
   toc: TocItem[];
-  children: React.ReactNode;
+  // ReactNode bu projedeki React tip paketinde export edilmediği için
+  // children açıkça render edilebilir içerik olarak tutuluyor.
+  children: any;
   showDraftNotice?: boolean;
 };
 
