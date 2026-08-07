@@ -91,3 +91,29 @@ test("example environment file contains no assigned private secret", () => {
     assert.equal(match[1].trim(), "", `${name} must not contain a value in .env.example`);
   }
 });
+
+test("public UI does not expose drafting or placeholder copy", () => {
+  const publicFiles = [
+    "app/page.tsx",
+    "app/arz/[slug]/page.tsx",
+    "components/AdSlot.tsx",
+    "components/IpoCard.tsx"
+  ];
+  const forbidden = [
+    /buraya\s+(?:şu|bu)?\s*gelecek/i,
+    /şuraya\s+(?:şu|bu)?\s*gelecek/i,
+    /placeholder/i,
+    /lorem ipsum/i,
+    /dummy content/i,
+    /mock content/i,
+    /örnek metin/i,
+    /yakında eklenecek/i,
+    /daha sonra eklenecek/i
+  ];
+  for (const path of publicFiles) {
+    const source = read(path);
+    for (const pattern of forbidden) assert.doesNotMatch(source, pattern, `${path} contains internal drafting copy: ${pattern}`);
+  }
+  const adSlot = read("components/AdSlot.tsx");
+  assert.match(adSlot, /if \(!client \|\| !slot \|\| !consent\) return null;/, "Unconfigured ads must not show placeholders to users");
+});
