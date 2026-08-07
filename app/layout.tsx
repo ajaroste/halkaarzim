@@ -11,10 +11,12 @@ import "./account-v1.css";
 import "./header-mobile.css";
 import "./ux-sprints.css";
 import "./ux-sprints-2.css";
+import "./ux-round2.css";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 import { LegalConsentGate } from "@/components/LegalConsentGate";
 import { NotificationManager } from "@/components/NotificationManager";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
 const description = "Kaynaklı halka arz ön analizleri, sadeleştirilmiş resmî belgeler, önemli tarihler, lot senaryoları ve şirket gündemi.";
@@ -56,5 +58,5 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="tr" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("halkaarzim-theme");if(t!=="dark"&&t!=="light")t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){}})();` }} /></head><body><AuthProvider>{children}<NotificationManager /><CookieBanner /><LegalConsentGate /></AuthProvider></body></html>;
+  return <html lang="tr" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("halkaarzim-theme");if(t!=="dark"&&t!=="light")t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){}})();` }} /></head><body><AuthProvider>{children}<NotificationManager /><CookieBanner /><LegalConsentGate /><MobileBottomNav /></AuthProvider></body></html>;
 }

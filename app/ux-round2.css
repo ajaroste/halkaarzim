@@ -1,0 +1,53 @@
+:root{--motion-fast:160ms;--motion-normal:240ms;--motion-slow:420ms;--motion-ease:cubic-bezier(.2,.8,.2,1)}
+
+.siteHeader{position:sticky;top:0;z-index:50;backdrop-filter:saturate(160%) blur(14px);transition:background-color var(--motion-normal) var(--motion-ease),border-color var(--motion-normal) var(--motion-ease),box-shadow var(--motion-normal) var(--motion-ease)}
+.headerInner,.headerActions,.desktopNav a,.iconButton,.primaryButton,.secondaryButton{transition:transform var(--motion-fast) var(--motion-ease),background-color var(--motion-fast) var(--motion-ease),border-color var(--motion-fast) var(--motion-ease),color var(--motion-fast) var(--motion-ease),box-shadow var(--motion-fast) var(--motion-ease)}
+.iconButton:active,.primaryButton:active,.secondaryButton:active{transform:scale(.97)}
+
+.homeHeroV2{overflow:hidden}
+.homeHeroV2Copy,.homeHeroV2Visual{animation:round2-enter var(--motion-slow) var(--motion-ease) both}
+.homeHeroV2Visual{animation-delay:70ms}
+.marketCardV2,.ipoCard,.panel,.structureCard{transition:transform var(--motion-normal) var(--motion-ease),border-color var(--motion-normal) var(--motion-ease),box-shadow var(--motion-normal) var(--motion-ease),background-color var(--motion-normal) var(--motion-ease)}
+@media(hover:hover){.ipoCard:hover,.marketCardV2:hover,.structureCard:hover{transform:translateY(-2px)}.ipoCard:hover .cardFooter b{transform:translateX(4px)}}
+.cardFooter b{display:inline-block;transition:transform var(--motion-fast) var(--motion-ease)}
+.statusBadge.active{position:relative}
+.statusBadge.active::before{content:"";display:inline-block;width:6px;height:6px;border-radius:999px;background:currentColor;margin-right:6px;animation:active-pulse 1.8s ease-out infinite}
+
+.detailSectionNav{scroll-behavior:smooth}
+.detailSectionNav a{transition:color var(--motion-fast) var(--motion-ease),background-color var(--motion-fast) var(--motion-ease),transform var(--motion-fast) var(--motion-ease)}
+.detailSectionNav a:active{transform:scale(.97)}
+.detailSectionBlock{scroll-margin-top:120px}
+
+.mobileBottomNav{display:none}
+
+@keyframes round2-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes active-pulse{0%{box-shadow:0 0 0 0 currentColor;opacity:1}70%{box-shadow:0 0 0 6px transparent;opacity:.75}100%{box-shadow:0 0 0 0 transparent;opacity:1}}
+
+@media(max-width:760px){
+  body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+  .mobileBottomNav{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:80;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:7px;background:color-mix(in srgb,var(--surface,#fff) 90%,transparent);border:1px solid color-mix(in srgb,currentColor 12%,transparent);border-radius:18px;box-shadow:0 12px 34px rgba(0,0,0,.14);backdrop-filter:blur(18px) saturate(160%)}
+  .mobileBottomNav a{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:13px;text-decoration:none;color:var(--muted,#66716d);font-size:11px;font-weight:650;transition:background-color var(--motion-fast) var(--motion-ease),color var(--motion-fast) var(--motion-ease),transform var(--motion-fast) var(--motion-ease)}
+  .mobileBottomNav a.active{background:color-mix(in srgb,currentColor 8%,transparent);color:var(--text,#10221c)}
+  .mobileBottomNav a:active{transform:scale(.96)}
+  .homeHeroV2{min-height:auto}
+  .homeHeroV2Inner{padding-top:42px;padding-bottom:34px}
+  .homeHeroV2Copy h1{font-size:clamp(2.45rem,12vw,4rem);line-height:.98}
+  .homeHeroV2Copy p{max-width:34ch}
+  .homeHeroV2Visual{margin-top:22px}
+  .marketCardV2Summary{display:none}
+  .homeMetricsV2Grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ipoCardCompactFacts{grid-template-columns:1fr 1fr}
+  .pageHero{padding-bottom:24px}
+}
+
+@media(max-width:430px){
+  .mobileBottomNav{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));border-radius:16px}
+  .mobileBottomNav a{min-height:50px;font-size:10px}
+  .homeHeroProof{gap:8px;flex-wrap:wrap}
+  .homeMetricsV2Grid{gap:10px}
+  .homeMetricsV2Grid article{min-height:118px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}

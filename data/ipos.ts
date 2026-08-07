@@ -69,11 +69,34 @@ export type Ipo = {
   sourceUpdatedAt: string;
 };
 
+const statusLabels: Record<IpoStatus, string> = {
+  active: "Talep topluyor",
+  upcoming: "Yaklaşan",
+  approved: "SPK onaylı",
+  completed: "Arzı tamamlandı",
+  listed: "İşlem görüyor",
+  delayed: "Ertelendi",
+  draft: "Taslak"
+};
+
 function normalizeStatus(item: Ipo): Ipo {
   const label = (item.statusLabel || "").toLocaleLowerCase("tr-TR");
+  const rawStatus = String(item.status || "approved").toLocaleLowerCase("tr-TR");
+  const aliasMap: Record<string, IpoStatus> = {
+    trading: "listed",
+    listed: "listed",
+    collecting: "active",
+    active: "active",
+    postponed: "delayed",
+    delayed: "delayed",
+    approved: "approved",
+    upcoming: "upcoming",
+    completed: "completed",
+    draft: "draft"
+  };
   const tradeTime = item.firstTradeDate ? new Date(item.firstTradeDate).getTime() : Number.NaN;
   const hasStartedTrading = Number.isFinite(tradeTime) && tradeTime <= Date.now();
-  let status = item.status;
+  let status: IpoStatus = aliasMap[rawStatus] || "approved";
 
   if (hasStartedTrading || label.includes("işlem görüyor") || label.includes("işlem gören")) status = "listed";
   else if (label.includes("talep topluyor")) status = "active";
@@ -81,16 +104,6 @@ function normalizeStatus(item: Ipo): Ipo {
   else if (label.includes("tamamlan")) status = "completed";
   else if (label.includes("ertelen")) status = "delayed";
   else if (label.includes("spk") || label.includes("onay")) status = "approved";
-
-  const statusLabels: Record<IpoStatus, string> = {
-    active: "Talep topluyor",
-    upcoming: "Yaklaşan",
-    approved: "SPK onaylı",
-    completed: "Arzı tamamlandı",
-    listed: "İşlem görüyor",
-    delayed: "Ertelendi",
-    draft: "Taslak"
-  };
 
   return { ...item, status, statusLabel: statusLabels[status] };
 }
