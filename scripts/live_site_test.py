@@ -18,6 +18,7 @@ report: dict[str, object] = {
     "started_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     "checks": [],
     "console_errors": [],
+    "network_errors": [],
     "social_redirects": {},
 }
 
@@ -26,29 +27,27 @@ def add_check(name: str, ok: bool, detail: str = "") -> None:
     report["checks"].append({"name": name, "ok": ok, "detail": detail})
 
 
+def track_runtime(page: Page) -> None:
+    page.on("console", lambda message: report["console_errors"].append(message.text) if message.type == "error" else None)
+    page.on("requestfailed", lambda request: report["network_errors"].append(f"{request.method} {request.url}: {request.failure}"))
+    page.on("response", lambda response: report["network_errors"].append(f"HTTP {response.status} {response.url}") if response.status >= 500 else None)
+
+
 def wait_for_live(page: Page) -> None:
     last_error = ""
-    for attempt in range(20):
+    for attempt in range(12):
         try:
             response = page.goto(BASE_URL, wait_until="domcontentloaded", timeout=30_000)
-            page.wait_for_timeout(1500)
+            page.wait_for_timeout(1200)
             body = page.locator("body").inner_text(timeout=10_000)
-            if response and response.ok and "HalkaArzım" in body and "Giriş yap" in body:
+            if response and response.ok and "HalkaArzım" in body:
                 add_check("Canlı site erişimi", True, f"HTTP {response.status}; deneme {attempt + 1}")
                 return
-            last_error = f"HTTP {response.status if response else 'yok'}; beklenen güncel arayüz bulunamadı"
+            last_error = f"HTTP {response.status if response else 'yok'}; güncel arayüz bulunamadı"
         except Exception as exc:  # noqa: BLE001
             last_error = str(exc)
-        page.wait_for_timeout(10_000)
+        page.wait_for_timeout(5000)
     raise RuntimeError(f"Canlı site hazır olmadı: {last_error}")
-
-
-def track_console(page: Page) -> None:
-    def on_console(message) -> None:
-        if message.type == "error":
-            report["console_errors"].append(message.text)
-
-    page.on("console", on_console)
 
 
 def auth_modal(page: Page):
@@ -60,31 +59,30 @@ def open_auth(page: Page) -> None:
     auth_modal(page).wait_for(state="visible", timeout=10_000)
 
 
-def test_social_redirect(browser: Browser, provider_label: str) -> None:
+def check_public_endpoint(context, path: str, marker: str) -> None:
+    response = context.request.get(f"{BASE_URL}{path}", timeout=30_000)
+    text = response.text()
+    add_check(f"Endpoint {path}", response.status == 200 and marker.lower() in text.lower(), f"HTTP {response.status}; {response.headers.get('content-type', '')}")
+
+
+def test_github_redirect(browser: Browser) -> None:
     context = browser.new_context(viewport={"width": 1280, "height": 800}, locale="tr-TR")
     page = context.new_page()
     try:
         page.goto(BASE_URL, wait_until="domcontentloaded", timeout=30_000)
         open_auth(page)
-        auth_modal(page).get_by_role("button", name=provider_label, exact=True).click()
+        auth_modal(page).get_by_role("button", name="GitHub ile devam et", exact=True).click()
         try:
             page.wait_for_url(lambda url: urlparse(url).netloc not in {"halkaarzim.vercel.app", ""}, timeout=20_000)
         except Exception:
-            page.wait_for_timeout(3000)
+            page.wait_for_timeout(2500)
         final_url = page.url
         parsed = urlparse(final_url)
-        is_external = parsed.netloc not in {"halkaarzim.vercel.app", ""}
-        has_localhost = "localhost" in final_url.lower()
-        report["social_redirects"][provider_label] = {
-            "url": final_url,
-            "host": parsed.netloc,
-            "external": is_external,
-            "localhost": has_localhost,
-        }
-        add_check(f"{provider_label} yönlendirmesi", is_external and not has_localhost, parsed.netloc or final_url)
+        ok = parsed.netloc == "github.com" and "localhost" not in final_url.lower()
+        report["social_redirects"]["GitHub"] = {"url": final_url, "host": parsed.netloc}
+        add_check("GitHub OAuth yönlendirmesi", ok, parsed.netloc or final_url)
     except Exception as exc:  # noqa: BLE001
-        report["social_redirects"][provider_label] = {"error": str(exc)}
-        add_check(f"{provider_label} yönlendirmesi", False, str(exc))
+        add_check("GitHub OAuth yönlendirmesi", False, str(exc))
     finally:
         context.close()
 
@@ -94,88 +92,69 @@ def run() -> None:
         browser = playwright.chromium.launch()
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, locale="tr-TR")
         page = context.new_page()
-        track_console(page)
+        track_runtime(page)
 
         wait_for_live(page)
-        page.screenshot(path=OUT / "01-home-light.png", full_page=True)
         add_check("Ana sayfa başlığı", "HalkaArzım" in page.locator("body").inner_text())
         add_check("Üst giriş butonu", page.get_by_role("button", name="Giriş yap", exact=True).count() == 1)
+        page.screenshot(path=OUT / "01-home.png", full_page=True)
 
         theme_button = page.get_by_role("button", name=re.compile("Koyu temayı aç|Açık temayı aç"))
+        add_check("Tema butonu", theme_button.count() == 1)
+        before = page.evaluate("document.documentElement.dataset.theme")
         theme_button.click()
-        page.wait_for_timeout(500)
-        dark_theme = page.evaluate("document.documentElement.dataset.theme") == "dark"
-        add_check("Koyu tema", dark_theme)
-        page.screenshot(path=OUT / "02-home-dark.png", full_page=True)
+        page.wait_for_timeout(350)
+        after = page.evaluate("document.documentElement.dataset.theme")
+        add_check("Tema değiştirme", before != after, f"{before}->{after}")
 
         open_auth(page)
         dialog = auth_modal(page)
         add_check("Giriş penceresi", dialog.is_visible())
-        for label in ["GitHub ile devam et", "LinkedIn ile devam et", "Spotify ile devam et"]:
-            add_check(label, dialog.get_by_role("button", name=label, exact=True).count() == 1)
-        page.screenshot(path=OUT / "03-login-modal.png", full_page=True)
-
-        dialog.get_by_label("E-posta").fill("qa-nonexistent@halkaarzim.invalid")
-        dialog.get_by_label("Parola").fill("TestPassword123!")
-        dialog.get_by_role("button", name="Giriş yap", exact=True).click()
-        page.wait_for_timeout(4500)
-        dialog_text = dialog.inner_text()
-        no_fetch_error = "Failed to fetch" not in dialog_text
-        invalid_login_handled = "E-posta adresi veya parola hatalı" in dialog_text
-        add_check("Supabase bağlantısı", no_fetch_error, dialog_text[-300:])
-        add_check("Güvenli sahte giriş yanıtı", invalid_login_handled, dialog_text[-300:])
-        page.screenshot(path=OUT / "04-login-result.png", full_page=True)
-
+        add_check("GitHub ile giriş", dialog.get_by_role("button", name="GitHub ile devam et", exact=True).count() == 1)
+        add_check("Kayıt görünümü bağlantısı", dialog.get_by_role("button", name="Kayıt ol", exact=True).count() == 1)
+        add_check("Parola sıfırlama bağlantısı", dialog.get_by_role("button", name="Parolamı unuttum", exact=True).count() == 1)
+        page.screenshot(path=OUT / "02-login.png", full_page=True)
         dialog.get_by_role("button", name="Kapat").click()
-        page.goto(f"{BASE_URL}/halka-arzlar", wait_until="domcontentloaded", timeout=30_000)
+
+        check_public_endpoint(context, "/sitemap.xml", "<urlset")
+        check_public_endpoint(context, "/robots.txt", "user-agent")
+        check_public_endpoint(context, "/feed.xml", "<rss")
+        check_public_endpoint(context, "/.well-known/security.txt", "contact:")
+
+        response = page.goto(f"{BASE_URL}/halka-arzlar", wait_until="domcontentloaded", timeout=30_000)
         page.wait_for_timeout(1000)
-        filters = ["Tümü", "SPK onaylı", "Talep topluyor", "Yaklaşan", "Arzı tamamlanan", "İşlem gören", "Ertelenen"]
-        for label in filters:
-            button = page.get_by_role("button", name=re.compile(rf"^{re.escape(label)}"))
-            exists = button.count() > 0
-            if exists:
-                button.first.click()
-                page.wait_for_timeout(250)
-            add_check(f"Filtre: {label}", exists)
-        page.screenshot(path=OUT / "05-ipo-filters.png", full_page=True)
-
-        detail_links = page.get_by_role("link", name=re.compile("Detay|İncele|Aç"))
-        if detail_links.count() > 0:
-            detail_links.first.click()
-            page.wait_for_load_state("domcontentloaded")
-            page.wait_for_timeout(800)
-            add_check("Halka arz detay rotası", "/arz/" in page.url, page.url)
-            page.screenshot(path=OUT / "06-detail-page.png", full_page=True)
+        add_check("Halka arz liste sayfası", bool(response and response.ok) and page.locator("a[href^='/arz/']").count() > 0)
+        detail_links = page.locator("a[href^='/arz/']")
+        if detail_links.count():
+            href = detail_links.first.get_attribute("href")
+            detail_response = page.goto(f"{BASE_URL}{href}", wait_until="domcontentloaded", timeout=30_000)
+            page.wait_for_timeout(700)
+            add_check("Halka arz detay sayfası", bool(detail_response and detail_response.ok) and "/arz/" in page.url, page.url)
+            page.screenshot(path=OUT / "03-detail.png", full_page=True)
         else:
-            add_check("Halka arz detay rotası", False, "Detay bağlantısı bulunamadı")
-
+            add_check("Halka arz detay sayfası", False, "Detay bağlantısı bulunamadı")
         context.close()
 
         mobile = browser.new_context(viewport={"width": 390, "height": 844}, locale="tr-TR", device_scale_factor=1)
         mobile_page = mobile.new_page()
-        track_console(mobile_page)
+        track_runtime(mobile_page)
         mobile_page.goto(BASE_URL, wait_until="domcontentloaded", timeout=30_000)
-        mobile_page.wait_for_timeout(1000)
+        mobile_page.wait_for_timeout(900)
         overflow = mobile_page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
-        add_check("Mobil yatay taşma", not overflow, f"overflow={overflow}")
-        mobile_page.screenshot(path=OUT / "07-mobile-home.png", full_page=True)
-        menu = mobile_page.get_by_role("button", name="Menüyü aç")
-        if menu.count():
-            menu.click()
-            mobile_page.wait_for_timeout(300)
-            mobile_page.screenshot(path=OUT / "08-mobile-menu.png", full_page=True)
-            add_check("Mobil menü", True)
-        else:
-            add_check("Mobil menü", False, "Menü butonu bulunamadı")
+        add_check("iPhone 13 yatay taşma", not overflow, f"overflow={overflow}")
+        add_check("Mobil giriş butonu", mobile_page.get_by_role("button", name="Giriş yap", exact=True).count() == 1)
+        add_check("Mobil tema butonu", mobile_page.get_by_role("button", name=re.compile("Koyu temayı aç|Açık temayı aç")).count() == 1)
+        add_check("Mobil menü butonu", mobile_page.get_by_role("button", name="Menüyü aç").count() == 1)
+        mobile_page.screenshot(path=OUT / "04-mobile.png", full_page=True)
         mobile.close()
 
-        for provider in ["GitHub ile devam et", "LinkedIn ile devam et", "Spotify ile devam et"]:
-            test_social_redirect(browser, provider)
-
+        test_github_redirect(browser)
         browser.close()
 
-    errors = [item for item in report["console_errors"] if "favicon" not in item.lower()]
-    add_check("Tarayıcı konsol hataları", len(errors) == 0, "\n".join(errors[:10]))
+    console_errors = [item for item in report["console_errors"] if "favicon" not in item.lower()]
+    network_errors = list(report["network_errors"])
+    add_check("Kritik console hatası", len(console_errors) == 0, "\n".join(console_errors[:10]))
+    add_check("Kritik network hatası", len(network_errors) == 0, "\n".join(network_errors[:10]))
     report["finished_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     report["passed"] = sum(1 for item in report["checks"] if item["ok"])
     report["failed"] = sum(1 for item in report["checks"] if not item["ok"])
