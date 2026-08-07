@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import type { ChangeEvent } from "react";
 import { useAuth } from "@/components/AuthProvider";
 import { acceptLegalDocuments, LEGAL_VERSION } from "@/lib/supabase-rest";
 import { getSupabaseBrowserClient } from "@/lib/supabase-browser";
@@ -13,7 +14,9 @@ export function LegalConsentGate() {
   const [message, setMessage] = useState("");
 
   if (loading || !session) return null;
-  const currentVersion = String(session.user.user_metadata?.legal_version || "");
+
+  const activeSession = session;
+  const currentVersion = String(activeSession.user.user_metadata?.legal_version || "");
   if (currentVersion === LEGAL_VERSION) return null;
 
   async function confirm() {
@@ -36,7 +39,7 @@ export function LegalConsentGate() {
         }
       });
       if (error) throw error;
-      await acceptLegalDocuments(LEGAL_VERSION, session.access_token).catch(() => null);
+      await acceptLegalDocuments(LEGAL_VERSION, activeSession.access_token).catch(() => null);
       await reload();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Onay kaydedilemedi.");
@@ -45,13 +48,17 @@ export function LegalConsentGate() {
     }
   }
 
+  function handleAcceptanceChange(event: ChangeEvent<HTMLInputElement>) {
+    setAccepted(event.target.checked);
+  }
+
   return <div className="legalGateBackdrop" role="presentation">
     <section className="legalGateCard" role="dialog" aria-modal="true" aria-labelledby="legal-gate-title">
       <span className="eyebrow">İlk giriş onayı</span>
       <h2 id="legal-gate-title">Hesabını kullanmadan önce</h2>
       <p>HalkaArzım sürüm {LEGAL_VERSION} kullanım koşullarını ve kişisel veri bilgilendirmesini incele. Bu onay özellikle GitHub ile oluşturulan yeni hesaplarda istenir.</p>
       <div className="legalGateLinks"><Link href="/kullanim-kosullari" target="_blank">Kullanım koşullarını aç ↗</Link><Link href="/gizlilik" target="_blank">Gizlilik/KVKK metnini aç ↗</Link></div>
-      <label className="legalConsentRow"><input type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} /><span>İki metni okudum; kullanım koşullarını kabul ediyorum ve gizlilik/KVKK metni hakkında bilgilendirildim.</span></label>
+      <label className="legalConsentRow"><input type="checkbox" checked={accepted} onChange={handleAcceptanceChange} /><span>İki metni okudum; kullanım koşullarını kabul ediyorum ve gizlilik/KVKK metni hakkında bilgilendirildim.</span></label>
       {message && <p className="formMessage" role="alert">{message}</p>}
       <div className="legalGateActions"><button className="textButton" type="button" disabled={busy} onClick={() => void logout()}>Hesaptan çık</button><button className="primaryButton" type="button" disabled={busy || !accepted} onClick={() => void confirm()}>{busy ? "Kaydediliyor…" : "Kabul et ve devam et"}</button></div>
     </section>
