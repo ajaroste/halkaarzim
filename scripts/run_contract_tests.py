@@ -14,7 +14,7 @@ def run(command: list[str]) -> None:
 
 def main() -> int:
     try:
-        run(["node", "--test", "tests/supabase_contract.mjs"])
+        run(["node", "--test", "tests/supabase_contract.mjs", "tests/auth_profile_contract.mjs"])
         run([
             "npx",
             "tsc",
