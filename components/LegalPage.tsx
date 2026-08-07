@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type * as React from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -11,7 +11,7 @@ type LegalPageProps = {
   intro: string;
   version: string;
   toc: TocItem[];
-  children: ReactNode;
+  children: React.ReactNode;
   showDraftNotice?: boolean;
 };
 
