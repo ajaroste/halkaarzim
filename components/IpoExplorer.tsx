@@ -48,11 +48,12 @@ export function IpoExplorer({ items }: { items: Ipo[] }) {
   }, [items, query, status, sort]);
 
   const selectedFilter = filters.find((filter) => filter.value === status) || filters[0];
+  const motionKey = `${status}-${sort}-${query.trim().toLocaleLowerCase("tr-TR")}`;
 
   return (
     <>
       <div className="explorerTools">
-        <label className="searchBox"><span>⌕</span><input aria-label="Halka arz ara" value={query} onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)} placeholder="Şirket, kod, bülten veya sektör ara" /></label>
+        <label className="searchBox"><span aria-hidden="true">⌕</span><input aria-label="Halka arz ara" value={query} onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)} placeholder="Şirket, kod, bülten veya sektör ara" /></label>
         <label className="sortBox"><span>Sırala</span><select aria-label="Halka arzları sırala" value={sort} onChange={(e: ChangeEvent<HTMLSelectElement>) => setSort(e.target.value as SortMode)}><option value="newest">En yeni onay</option><option value="oldest">En eski onay</option><option value="price-asc">Fiyat: düşükten yükseğe</option><option value="price-desc">Fiyat: yüksekten düşüğe</option><option value="company">Şirket adına göre</option></select></label>
       </div>
       <div className="tabs" role="tablist" aria-label="Halka arz durum filtresi">
@@ -68,7 +69,7 @@ export function IpoExplorer({ items }: { items: Ipo[] }) {
       </div>
       <p className="filterNotice" aria-live="polite">{selectedFilter.label}: {visible.length} kayıt</p>
       <div id="ipo-results">
-        <div className="cardGrid">{visible.map((ipo) => <IpoCard key={ipo.id} ipo={ipo} />)}</div>
+        <div className="cardGrid" key={motionKey}>{visible.map((ipo) => <IpoCard key={ipo.id} ipo={ipo} />)}</div>
         {!visible.length && <div className="emptyState"><strong>Bu durumda kayıt bulunamadı</strong><p>{query.trim() ? "Arama kelimesini temizle veya başka bir filtre seç." : selectedFilter.emptyText}</p></div>}
       </div>
     </>
