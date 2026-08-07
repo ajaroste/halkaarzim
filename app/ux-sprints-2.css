@@ -1,0 +1,32 @@
+/* UX sprint 2: editorial density and timeline polish. */
+.homeHeroV2Inner{min-height:72svh!important;padding-block:clamp(78px,9vw,120px)!important;gap:clamp(40px,6vw,84px)!important}
+.homeHeroV2Copy h1{font-size:clamp(3.4rem,6.3vw,6.6rem)!important;max-width:10.5ch!important}
+.homeHeroV2:before{opacity:.45}
+.marketCardV2{border-radius:16px!important;box-shadow:0 20px 54px rgba(0,0,0,.22)!important}
+.floatingMetric{border-radius:12px!important;box-shadow:none!important}
+.homeMetricsV2Grid article{border-radius:12px!important;box-shadow:none!important}
+.homeMethodV2{background:#0d1110}
+
+.agendaGroupedList{display:grid;gap:34px}
+.agendaDateGroup{display:grid;grid-template-columns:120px minmax(0,1fr);gap:28px;align-items:start}
+.agendaDateHeading{position:sticky;top:92px;margin:4px 0 0;color:var(--premium-muted);font-size:.8rem;line-height:1.2;text-transform:uppercase;letter-spacing:.08em}
+.agendaDateGroup .agendaPageList{display:grid;gap:0;border-top:1px solid var(--premium-line)}
+.agendaDateGroup .agendaPageList article{border-radius:0!important;border:0!important;border-bottom:1px solid var(--premium-line)!important;box-shadow:none!important;padding-inline:0!important}
+.agendaDateGroup .agendaPageList h3{margin:4px 0 8px;font-size:1.12rem;letter-spacing:-.02em}
+
+.authModalCard .secondaryButton{border-radius:8px!important}
+.authModalCard{max-width:480px}
+
+@media(max-width:900px){
+  .homeHeroV2Inner{min-height:auto!important}
+  .agendaDateGroup{grid-template-columns:1fr;gap:10px}
+  .agendaDateHeading{position:static;margin-top:0}
+}
+
+@media(max-width:640px){
+  .homeHeroV2Inner{padding-block:58px 72px!important}
+  .homeHeroV2Copy h1{font-size:clamp(2.8rem,14vw,4.2rem)!important}
+  .marketCardV2{border-radius:14px!important}
+  .agendaGroupedList{gap:28px}
+  .agendaDateGroup .agendaPageList article{padding-block:18px!important}
+}

@@ -1,0 +1,88 @@
+/* UX sprints: data-first visual language, compact cards and restrained motion. */
+:root{
+  --ux-radius-control:8px;
+  --ux-radius-card:12px;
+  --ux-radius-panel:16px;
+  --ux-fast:120ms;
+  --ux-normal:220ms;
+  --ux-slow:360ms;
+  --ux-ease:cubic-bezier(.2,.8,.2,1)
+}
+
+/* Reduce template-like softness while keeping existing theme tokens. */
+.ipoCard,.panel,.commentsPanel,.modalCard,.detailQuickFacts article,.structureCard,.documentCard{border-radius:var(--ux-radius-card)!important;box-shadow:none!important}
+.primaryButton,.secondaryButton,.iconButton{border-radius:var(--ux-radius-control)!important}
+.statusBadge,.tab,.homeHeroProof span{border-radius:999px!important}
+
+/* IPO explorer */
+.cardGrid{align-items:stretch}
+.ipoCard{display:flex;flex-direction:column;gap:18px;min-height:0;padding:22px!important;transition:border-color var(--ux-normal) ease,background-color var(--ux-normal) ease,transform var(--ux-normal) var(--ux-ease)!important}
+.ipoCard:hover{transform:translateY(-2px)!important;border-color:color-mix(in srgb,var(--premium-accent) 28%,var(--premium-line))!important;box-shadow:none!important}
+.ipoCardIdentity{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.ipoCardIdentity h3{margin:0 0 5px;font-size:1.18rem;line-height:1.2;letter-spacing:-.025em}
+.ipoCardIdentity p{margin:0;color:var(--premium-muted);font-size:.82rem}
+.ipoCardPrice{font-variant-numeric:tabular-nums;font-size:1.45rem;letter-spacing:-.04em;white-space:nowrap}
+.ipoCardCompactFacts{display:grid;grid-template-columns:1.15fr .85fr;border-top:1px solid var(--premium-line);border-bottom:1px solid var(--premium-line)}
+.ipoCardCompactFacts>div{padding:14px 0}
+.ipoCardCompactFacts>div+div{padding-left:18px;border-left:1px solid var(--premium-line)}
+.ipoCardCompactFacts span{display:block;margin-bottom:5px;color:var(--premium-muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.04em}
+.ipoCardCompactFacts strong{font-size:.88rem;font-variant-numeric:tabular-nums}
+.ipoCardSignals{display:flex;flex-wrap:wrap;gap:7px}
+.ipoCardSignals span{padding:6px 8px;border:1px solid var(--premium-line);border-radius:6px;color:var(--premium-muted);background:transparent;font-size:.72rem;font-weight:650}
+.ipoCard .cardFooter{margin-top:auto;padding-top:0;border:0}
+.ipoCard .cardFooter a{display:inline-flex;align-items:center;gap:5px}
+.ipoCard .cardFooter a b{transition:transform var(--ux-normal) var(--ux-ease)}
+.ipoCard .cardFooter a:hover b{transform:translateX(4px)}
+.ipoCard-listed{border-left:3px solid var(--premium-accent)!important}
+.ipoCard-active{border-left:3px solid #d69a2d!important}
+
+/* Explorer feels like data re-organising, not a full re-render. */
+#ipo-results .cardGrid{animation:uxResultsIn var(--ux-normal) var(--ux-ease)}
+@keyframes uxResultsIn{from{opacity:.5;transform:translateY(6px)}to{opacity:1;transform:none}}
+.tab{transition:background-color var(--ux-fast) ease,color var(--ux-fast) ease,border-color var(--ux-fast) ease,transform var(--ux-fast) ease}
+.tab:active{transform:scale(.98)}
+
+/* Detail page: persistent context and quieter hierarchy. */
+.detailSectionNav{position:sticky;top:58px;z-index:20;background:color-mix(in srgb,var(--premium-bg) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.detailInfoRail{position:relative}
+.detailInfoRail .infoRailCard{position:sticky;top:128px}
+.scoreRing{transition:background var(--ux-slow) var(--ux-ease)}
+.reportLabel{letter-spacing:-.01em}
+.detailSectionBlock{scroll-margin-top:132px}
+
+/* Timeline becomes easier to scan. */
+.agendaPageList article,.timelineItem{transition:background-color var(--ux-normal) ease,border-color var(--ux-normal) ease}
+.agendaPageList article:hover,.timelineItem:hover{background:color-mix(in srgb,var(--premium-surface-soft) 64%,transparent)}
+.timelineDot{box-shadow:0 0 0 4px color-mix(in srgb,currentColor 10%,transparent)}
+
+/* Inline feedback / controls */
+.shareMessage,.watchControl small{animation:uxFeedbackIn var(--ux-normal) var(--ux-ease)}
+@keyframes uxFeedbackIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+
+/* Mobile: high information density and touch targets. */
+@media(max-width:680px){
+  .headerActions .themeButton,.headerActions .mobileMenuButton,.headerLoginButton{min-height:44px!important}
+  .headerActions .themeButton,.headerActions .mobileMenuButton{width:44px!important;height:44px!important;flex-basis:44px!important}
+  .tabs{display:flex;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;padding-bottom:3px;scroll-snap-type:x proximity}
+  .tabs::-webkit-scrollbar{display:none}.tab{flex:0 0 auto;scroll-snap-align:start}
+  .explorerTools{grid-template-columns:1fr!important;gap:10px!important}
+  .cardGrid{gap:12px!important}
+  .ipoCard{gap:14px;padding:18px!important}
+  .ipoCardIdentity{gap:12px}.ipoCardIdentity h3{font-size:1.05rem}.ipoCardPrice{font-size:1.28rem}
+  .ipoCardCompactFacts{grid-template-columns:1fr 1fr}.ipoCardCompactFacts>div{padding:12px 0}.ipoCardCompactFacts>div+div{padding-left:12px}
+  .ipoCardSignals{gap:5px}.ipoCardSignals span{font-size:.68rem;padding:5px 7px}
+  .detailSectionNav{top:64px;margin-inline:-14px;padding-inline:14px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+  .detailSectionNav::-webkit-scrollbar{display:none}
+  .detailSectionNav a{min-height:44px;display:inline-flex;align-items:center}
+  .detailInfoRail .infoRailCard{position:static}
+  .detailQuickFacts{grid-template-columns:repeat(2,1fr)!important}
+}
+
+@media(max-width:390px){
+  .headerActions .themeButton,.headerActions .mobileMenuButton{width:44px!important;height:44px!important;flex-basis:44px!important}
+  .headerLoginButton{min-height:44px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #ipo-results .cardGrid,.shareMessage,.watchControl small{animation:none!important}
+}

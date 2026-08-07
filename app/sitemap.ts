@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/halka-arzlar`, lastModified, changeFrequency: "daily", priority: 0.95 },
     { url: `${base}/gundem`, lastModified, changeFrequency: "daily", priority: 0.75 },
     { url: `${base}/metodoloji`, lastModified, changeFrequency: "monthly", priority: 0.65 },
+    { url: `${base}/hakkimizda`, lastModified, changeFrequency: "monthly", priority: 0.55 },
     { url: `${base}/gizlilik`, lastModified, changeFrequency: "monthly", priority: 0.35 },
     { url: `${base}/cerez-politikasi`, lastModified, changeFrequency: "monthly", priority: 0.3 },
     { url: `${base}/kullanim-kosullari`, lastModified, changeFrequency: "monthly", priority: 0.35 },

@@ -34,16 +34,17 @@ def _as_date(value: str | date | None) -> date | None:
 
 
 def compute_status(item: dict[str, Any], today: date | None = None) -> str:
+    """Return the canonical status consumed by the public app and domain contract."""
     today = today or date.today()
     if item.get("postponed"):
-        return "postponed"
+        return "delayed"
     first_trade = _as_date(item.get("firstTradeDate"))
     demand_start = _as_date(item.get("demandStart"))
     demand_end = _as_date(item.get("demandEnd"))
     if first_trade and first_trade <= today:
-        return "trading"
+        return "listed"
     if demand_start and demand_end and demand_start <= today <= demand_end:
-        return "collecting"
+        return "active"
     if demand_start and demand_start > today:
         return "upcoming"
     if demand_end and demand_end < today:
