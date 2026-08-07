@@ -9,7 +9,7 @@ declare global {
 
 const COOKIE_KEY = "halkaarzim-cookie-choice";
 
-export function AdSlot({ slot, label = "Reklam" }: { slot?: string; label?: string }) {
+export function AdSlot({ slot }: { slot?: string; label?: string }) {
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   const [consent, setConsent] = useState(false);
 
@@ -26,13 +26,7 @@ export function AdSlot({ slot, label = "Reklam" }: { slot?: string; label?: stri
     }
   }, [consent, client, slot]);
 
-  if (!client || !slot) {
-    return <aside className="adPlaceholder" aria-label="Reklam alanı"><span>{label}</span><small>AdSense onayı ve slot kodu sonrası otomatik dolar.</small></aside>;
-  }
-
-  if (!consent) {
-    return <aside className="adPlaceholder" aria-label="Reklam izni bekleniyor"><span>{label}</span><small>Reklam, yalnız çerez tercihinde izin verildikten sonra yüklenir.</small></aside>;
-  }
+  if (!client || !slot || !consent) return null;
 
   return (
     <>
