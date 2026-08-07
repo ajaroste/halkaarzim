@@ -71,9 +71,11 @@ export type Ipo = {
 
 function normalizeStatus(item: Ipo): Ipo {
   const label = (item.statusLabel || "").toLocaleLowerCase("tr-TR");
+  const tradeTime = item.firstTradeDate ? new Date(item.firstTradeDate).getTime() : Number.NaN;
+  const hasStartedTrading = Number.isFinite(tradeTime) && tradeTime <= Date.now();
   let status = item.status;
 
-  if (item.firstTradeDate || label.includes("işlem görüyor") || label.includes("işlem gören")) status = "listed";
+  if (hasStartedTrading || label.includes("işlem görüyor") || label.includes("işlem gören")) status = "listed";
   else if (label.includes("talep topluyor")) status = "active";
   else if (label.includes("yaklaş")) status = "upcoming";
   else if (label.includes("tamamlan")) status = "completed";
