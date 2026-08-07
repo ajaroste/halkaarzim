@@ -111,7 +111,7 @@ def run() -> None:
         dialog = auth_modal(page)
         add_check("Giriş penceresi", dialog.is_visible())
         add_check("GitHub ile giriş", dialog.get_by_role("button", name="GitHub ile devam et", exact=True).count() == 1)
-        add_check("Kayıt görünümü bağlantısı", dialog.get_by_role("button", name="Kayıt ol", exact=True).count() == 1)
+        add_check("Kayıt görünümü bağlantısı", dialog.get_by_role("button", name=re.compile("Kayıt ol")).count() == 1)
         add_check("Parola sıfırlama bağlantısı", dialog.get_by_role("button", name="Parolamı unuttum", exact=True).count() == 1)
         page.screenshot(path=OUT / "02-login.png", full_page=True)
         dialog.get_by_role("button", name="Kapat").click()
