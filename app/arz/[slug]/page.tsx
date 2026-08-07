@@ -16,6 +16,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { ShareActions } from "@/components/ShareActions";
 import { RelatedIpos } from "@/components/RelatedIpos";
 import { formatTry } from "@/lib/domain";
+import { publicAnalysisList, publicAnalysisText } from "@/lib/public-analysis";
 import { getIpoBySlug, ipos } from "@/data/ipos";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ipo = getIpoBySlug(slug);
   if (!ipo) return {};
   const code = ipo.ticker || "Halka arz";
+  const summary = publicAnalysisText(ipo.aiSummary);
   const title = `${code} Halka Arz: Fiyat, Lot, Tarih ve Ön Analiz`;
-  const description = `${ipo.company} halka arz fiyatı, lot bilgisi, talep tarihleri, arz yapısı ve kaynak bazlı ön analiz. ${ipo.aiSummary}`.slice(0, 300);
+  const description = `${ipo.company} halka arz fiyatı, lot bilgisi, talep tarihleri, arz yapısı ve kaynak bazlı ön analiz. ${summary}`.slice(0, 300);
   const url = `${siteUrl}/arz/${ipo.slug}`;
   return {
     title,
@@ -51,6 +53,9 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
   const code = ipo.ticker || "Kod bekleniyor";
   const capitalRatio = ipo.lotCount ? Math.round(ipo.capitalIncreaseShares / ipo.lotCount * 100) : 0;
   const saleRatio = ipo.lotCount ? Math.round(ipo.shareholderSaleShares / ipo.lotCount * 100) : 0;
+  const summary = publicAnalysisText(ipo.aiSummary) || `${ipo.company} halka arzına ilişkin doğrulanmış temel veriler aşağıda özetlenmiştir.`;
+  const highlights = publicAnalysisList(ipo.highlights);
+  const risks = publicAnalysisList(ipo.risks);
   const pageUrl = `${siteUrl}/arz/${ipo.slug}`;
   const jsonLd = [
     {
@@ -66,7 +71,7 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
       "@context": "https://schema.org",
       "@type": "Article",
       headline: `${ipo.company} Halka Arz Ön Analizi`,
-      description: ipo.aiSummary,
+      description: summary,
       mainEntityOfPage: pageUrl,
       url: pageUrl,
       inLanguage: "tr-TR",
@@ -104,19 +109,19 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
     <div className="detailContentGrid">
       <div className="detailContentMain">
         <section id="ozet" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Özet</span><h2>Bu halka arzda öne çıkanlar</h2><p>Önce kritik bilgileri gör, ayrıntılara sonra geç.</p></div>
+          <div className="detailSectionHeading"><span className="eyebrow">Özet</span><h2>Bu halka arzda öne çıkanlar</h2><p>Arzın temel verileri, olumlu unsurları ve riskleri tek bakışta.</p></div>
           <article className="panel aiReportPanel compactReport">
-            <div className="reportLead"><AiScore score={ipo.aiScore} /><div><strong className="reportLabel">Kaynak bazlı ön analiz</strong><p>{ipo.aiSummary}</p></div></div>
-            <div className="summarySplit">
-              <div className="summaryList positiveSummary"><h3>Olumlu sinyaller</h3><ul>{ipo.highlights.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>
-              <div className="summaryList riskSummary"><h3>Eksikler ve riskler</h3><ul>{ipo.risks.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>
-            </div>
-            <details className="detailDisclosure"><summary>Tüm analiz ve kaynakları göster</summary><div className="disclosureBody"><div className="sourceList"><div className="sourceListTitle"><strong>Kullanılan kaynaklar</strong><span>{ipo.sources.length} belge</span></div>{ipo.sources.map((source) => source.url ? <a className="sourceEntry" key={`${source.title}-${source.url}`} href={source.url} target="_blank" rel="noreferrer"><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span><b>↗</b></a> : <div className="sourceEntry" key={`${source.title}-${source.page}`}><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span></div>)}</div><p className="reportStamp">Kapsam: {ipo.analysisScope}. Bu değerlendirme yatırım tavsiyesi veya getiri tahmini değildir.</p></div></details>
+            <div className="reportLead"><AiScore score={ipo.aiScore} /><div><strong className="reportLabel">Kaynak bazlı ön analiz</strong><p>{summary}</p></div></div>
+            {(highlights.length > 0 || risks.length > 0) && <div className="summarySplit">
+              {highlights.length > 0 && <div className="summaryList positiveSummary"><h3>Olumlu unsurlar</h3><ul>{highlights.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>}
+              {risks.length > 0 && <div className="summaryList riskSummary"><h3>Riskler ve eksik bilgiler</h3><ul>{risks.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>}
+            </div>}
+            <details className="detailDisclosure"><summary>Analiz kapsamı ve kaynaklar</summary><div className="disclosureBody"><div className="sourceList"><div className="sourceListTitle"><strong>Kullanılan kaynaklar</strong><span>{ipo.sources.length} belge</span></div>{ipo.sources.map((source) => source.url ? <a className="sourceEntry" key={`${source.title}-${source.url}`} href={source.url} target="_blank" rel="noreferrer"><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span><b>↗</b></a> : <div className="sourceEntry" key={`${source.title}-${source.page}`}><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span></div>)}</div><p className="reportStamp">Kapsam: {ipo.analysisScope}. Bu değerlendirme yatırım tavsiyesi veya getiri tahmini değildir.</p></div></details>
           </article>
         </section>
 
         <section id="arz-yapisi" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Arz yapısı</span><h2>Para şirkete mi, ortağa mı gidiyor?</h2><p>Sermaye artırımı ve mevcut ortak satışını tek bakışta karşılaştır.</p></div>
+          <div className="detailSectionHeading"><span className="eyebrow">Arz yapısı</span><h2>Para şirkete mi, ortağa mı gidiyor?</h2><p>Sermaye artırımı ile mevcut ortak satışının temel arz içindeki dağılımı.</p></div>
           <div className="structureCards">
             <article className="structureCard"><div><span>Sermaye artırımı</span><strong>{ipo.capitalIncreaseShares.toLocaleString("tr-TR")} lot</strong></div><b>%{capitalRatio}</b><div className="progress"><span style={{ width: `${capitalRatio}%` }} /></div><p>Şirket kasasına giden yeni sermaye payı.</p></article>
             <article className="structureCard"><div><span>Mevcut ortak satışı</span><strong>{ipo.shareholderSaleShares.toLocaleString("tr-TR")} lot</strong></div><b>%{saleRatio}</b><div className="progress"><span style={{ width: `${saleRatio}%` }} /></div><p>Mevcut ortakların sattığı pay.</p></article>
@@ -124,23 +129,23 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
         </section>
 
         <section id="belgeler" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Belgeler</span><h2>Fon kullanımı ve finansal görünüm</h2><p>Veri varsa gösterilir; yoksa sayfa gereksiz büyük kutularla doldurulmaz.</p></div>
+          <div className="detailSectionHeading"><span className="eyebrow">Belgeler</span><h2>Fon kullanımı ve finansal görünüm</h2><p>Resmî belgelerde açıklanan fon kullanım planı ve finansal veriler.</p></div>
           <div className="documentGrid">
-            <article className="panel documentCard"><h3>Fon kullanım planı</h3>{ipo.fundUse.length ? <div className="fundUseList">{ipo.fundUse.map((item) => <div className="fundUseRow" key={item.label}><div><span>{item.label}</span><strong>{item.min != null && item.max != null ? `%${item.min}–${item.max}` : `%${item.value}`}</strong></div><div className="progress"><span style={{ width: `${Math.min(100, item.value)}%` }} /></div></div>)}</div> : <EmptyState title="Henüz işlenmedi" text="İzahname doğrulandığında fon kullanım kalemleri burada gösterilecek." />}</article>
-            <article className="panel documentCard"><h3>Finansal görünüm</h3>{ipo.financials.length ? <FinancialTable rows={ipo.financials} /> : <EmptyState title="Finansal tablo yok" text="Bağımsız denetim raporu işlendiğinde bu alan güncellenecek." />}</article>
+            <article className="panel documentCard"><h3>Fon kullanım planı</h3>{ipo.fundUse.length ? <div className="fundUseList">{ipo.fundUse.map((item) => <div className="fundUseRow" key={item.label}><div><span>{item.label}</span><strong>{item.min != null && item.max != null ? `%${item.min}–${item.max}` : `%${item.value}`}</strong></div><div className="progress"><span style={{ width: `${Math.min(100, item.value)}%` }} /></div></div>)}</div> : <EmptyState title="Henüz açıklanmadı" text="Doğrulanmış fon kullanım detayları açıklandığında bu bölüm güncellenir." />}</article>
+            <article className="panel documentCard"><h3>Finansal görünüm</h3>{ipo.financials.length ? <FinancialTable rows={ipo.financials} /> : <EmptyState title="Finansal veri bulunmuyor" text="Doğrulanmış finansal veriler açıklandığında bu bölüm güncellenir." />}</article>
           </div>
         </section>
 
         <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_DETAIL_SLOT} label="Şirket detayı reklam alanı" />
 
         <section id="piyasa" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Piyasa</span><h2>Fiyat grafiği ve lot tahmini</h2><p>İşlem görmeye başladıysa grafik; tahsisat belliyse lot tahmini gösterilir.</p></div>
-          <div className="marketGrid"><article className="panel"><TradingViewChart ticker={ipo.ticker} /></article><article className="panel lotPanel">{ipo.retailLots > 0 ? <><h3>Lot tahmin aracı</h3><LotCalculator price={ipo.price} retailLots={ipo.retailLots} /></> : <EmptyState title="Lot tahmini kapalı" text="Bireysel tahsisat açıklanmadığı için tahmin yapılamıyor." />}</article></div>
+          <div className="detailSectionHeading"><span className="eyebrow">Piyasa</span><h2>Fiyat grafiği ve lot tahmini</h2><p>İşlem görmeye başlayan şirketlerde fiyat grafiği; tahsisat açıklanan arzlarda lot senaryosu.</p></div>
+          <div className="marketGrid"><article className="panel"><TradingViewChart ticker={ipo.ticker} /></article><article className="panel lotPanel">{ipo.retailLots > 0 ? <><h3>Lot tahmin aracı</h3><LotCalculator price={ipo.price} retailLots={ipo.retailLots} /></> : <EmptyState title="Lot tahmini için veri yok" text="Bireysel tahsisat açıklanmadığı için hesaplama yapılamıyor." />}</article></div>
         </section>
 
         <section id="gundem" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Gündem</span><h2>Şirket gelişmeleri ve verilen sözler</h2><p>Resmî gelişmeler ve halka arz vaatleri aynı akışta takip edilir.</p></div>
-          <div className="agendaPromiseGrid"><article className="panel"><LiveAgenda company={ipo.company} officialEvents={ipo.agenda} /></article><article className="panel">{ipo.promises.length ? <PromiseTracker promises={ipo.promises} /> : <EmptyState title="Vaat takibi başlamadı" text="Fon kullanım planı yayımlandığında hedefler kayıt altına alınacak." />}</article></div>
+          <div className="detailSectionHeading"><span className="eyebrow">Gündem</span><h2>Şirket gelişmeleri ve verilen sözler</h2><p>Resmî gelişmeler ve halka arz sürecinde açıklanan taahhütler.</p></div>
+          <div className="agendaPromiseGrid"><article className="panel"><LiveAgenda company={ipo.company} officialEvents={ipo.agenda} /></article><article className="panel">{ipo.promises.length ? <PromiseTracker promises={ipo.promises} /> : <EmptyState title="Takip edilecek taahhüt bulunmuyor" text="Doğrulanmış somut taahhütler bulunduğunda burada listelenir." />}</article></div>
         </section>
 
         <section id="yorumlar" className="detailSectionBlock"><Comments ipoId={ipo.id} slug={ipo.slug} /></section>
