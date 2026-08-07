@@ -17,11 +17,11 @@ class EnrichmentTests(unittest.TestCase):
 
     def test_status_transitions(self) -> None:
         today = date(2026, 8, 6)
-        self.assertEqual(compute_status({"demandStart": "2026-02-04", "demandEnd": "2026-02-05", "firstTradeDate": "2026-02-12"}, today), "trading")
+        self.assertEqual(compute_status({"demandStart": "2026-02-04", "demandEnd": "2026-02-05", "firstTradeDate": "2026-02-12"}, today), "listed")
         self.assertEqual(compute_status({"demandStart": "2026-02-04", "demandEnd": "2026-02-05"}, today), "completed")
         self.assertEqual(compute_status({"demandStart": "2026-09-01", "demandEnd": "2026-09-03"}, today), "upcoming")
-        self.assertEqual(compute_status({"demandStart": "2026-08-05", "demandEnd": "2026-08-07"}, today), "collecting")
-        self.assertEqual(compute_status({"postponed": True}, today), "postponed")
+        self.assertEqual(compute_status({"demandStart": "2026-08-05", "demandEnd": "2026-08-07"}, today), "active")
+        self.assertEqual(compute_status({"postponed": True}, today), "delayed")
 
     def test_manual_sources_are_public_and_secure(self) -> None:
         rows = load_manual_overrides()
