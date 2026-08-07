@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: "20 5 * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/data-sync.yml"
 
 permissions:
   contents: write
@@ -16,6 +20,16 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 35
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+      VAPID_SUBJECT: ${{ vars.VAPID_SUBJECT }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ vars.TELEGRAM_CHANNEL_ID }}
+      AI_ENDPOINT: ${{ vars.AI_ENDPOINT }}
+      AI_ADMIN_TOKEN: ${{ secrets.AI_ADMIN_TOKEN }}
+      SITE_URL: ${{ vars.SITE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -32,43 +46,30 @@ jobs:
       - name: Generate source-bound AI reports when configured
         run: python scripts/generate_ai_reports.py
         env:
-          ENABLE_AI_GENERATION: ${{ secrets.AI_ADMIN_TOKEN != '' && vars.AI_ENDPOINT != '' }}
-          AI_ENDPOINT: ${{ vars.AI_ENDPOINT }}
-          AI_ADMIN_TOKEN: ${{ secrets.AI_ADMIN_TOKEN }}
+          ENABLE_AI_GENERATION: ${{ env.AI_ADMIN_TOKEN != '' && env.AI_ENDPOINT != '' }}
           AI_MAX_ITEMS: "5"
           AI_REQUIRED: "false"
 
       - name: Generate social and newsletter content pack
         run: python scripts/generate_growth_content.py
-        env:
-          SITE_URL: ${{ vars.SITE_URL }}
 
       - name: Run Python validation
         run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
 
       - name: Sync Supabase when configured
-        if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
         run: python scripts/sync_supabase.py
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ENABLE_NOTIFICATION_ENQUEUE: "true"
 
       - name: Send free Web Push notifications
-        if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_ROLE_KEY != '' && secrets.VAPID_PRIVATE_KEY != '' }}
+        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' && env.VAPID_PRIVATE_KEY != '' }}
         run: python scripts/send_notifications.py
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
-          VAPID_SUBJECT: ${{ vars.VAPID_SUBJECT }}
 
       - name: Send Telegram channel update when configured
-        if: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && vars.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: python scripts/send_telegram_updates.py
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL_ID: ${{ vars.TELEGRAM_CHANNEL_ID }}
           TELEGRAM_MAX_MESSAGES: "2"
 
       - name: Commit updated snapshots and content pack
