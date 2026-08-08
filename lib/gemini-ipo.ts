@@ -48,6 +48,18 @@ function validate(result: IpoAiAnalysis) {
   if (PROHIBITED.some((term) => combined.includes(term))) throw new Error("Gemini çıktısı yatırım yönlendirmesi içeriyor");
 }
 
+function extractJson(raw: string): string {
+  const trimmed = raw.trim();
+  const withoutFence = trimmed
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+  if (withoutFence.startsWith("{") && withoutFence.endsWith("}")) return withoutFence;
+  const match = withoutFence.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error("Gemini JSON yanıtı bulunamadı");
+  return match[0];
+}
+
 export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoAiAnalysis> {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
   if (!apiKey) throw new Error("GEMINI_API_KEY eksik");
@@ -61,7 +73,8 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
     "Al, sat, kaçırma, kesin kazanç, tavan yapar, güvenli yatırım gibi yatırım yönlendirmeleri kullanma.",
     "Eksik verileri açıkça dataGaps alanında belirt.",
     "summary en fazla 900 karakter, her madde en fazla 260 karakter olsun.",
-    "Yanıt yalnız JSON olsun.",
+    "Sadece geçerli JSON döndür. Markdown veya açıklama ekleme.",
+    "Tam olarak şu alanları kullan: summary:string, strengths:string[], risks:string[], dataGaps:string[], confidence:number.",
     JSON.stringify(facts)
   ].join("\n");
 
@@ -73,25 +86,10 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
     },
     signal: AbortSignal.timeout(25_000),
     body: JSON.stringify({
-      systemInstruction: {
-        parts: [{ text: "Yalnız doğrulanmış girdiyi doğal finans editoryal diliyle özetle. Yatırım tavsiyesi verme." }]
-      },
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 1200,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: "OBJECT",
-          properties: {
-            summary: { type: "STRING" },
-            strengths: { type: "ARRAY", items: { type: "STRING" } },
-            risks: { type: "ARRAY", items: { type: "STRING" } },
-            dataGaps: { type: "ARRAY", items: { type: "STRING" } },
-            confidence: { type: "INTEGER" }
-          },
-          required: ["summary", "strengths", "risks", "dataGaps", "confidence"]
-        }
+        maxOutputTokens: 1200
       }
     })
   });
@@ -106,7 +104,7 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
   const raw = payload.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("") || "";
   if (!raw) throw new Error("Gemini boş yanıt döndürdü");
 
-  const parsed = JSON.parse(raw) as Record<string, unknown>;
+  const parsed = JSON.parse(extractJson(raw)) as Record<string, unknown>;
   const confidence = Number(parsed.confidence);
   const result: IpoAiAnalysis = {
     provider: "google-gemini",
