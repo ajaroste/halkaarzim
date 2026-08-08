@@ -10,20 +10,9 @@ const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_REQUESTS = 10;
 const rateBuckets = new Map<string, { count: number; resetAt: number }>();
 const INTERNAL_OUTPUT_PHRASES = [
-  "şuraya",
-  "buraya",
-  "burada gösterilecek",
-  "burada yer alacak",
-  "kullanıcıya göster",
-  "placeholder",
-  "prompt",
-  "model cevabı",
-  "model çıktısı",
-  "ai olarak",
-  "yapay zekâ olarak",
-  "yapay zeka olarak",
-  "taslak olarak",
-  "yayımlanmadan önce insan kontrolü"
+  "şuraya", "buraya", "burada gösterilecek", "burada yer alacak", "kullanıcıya göster",
+  "placeholder", "prompt", "model cevabı", "model çıktısı", "ai olarak", "yapay zekâ olarak",
+  "yapay zeka olarak", "taslak olarak", "yayımlanmadan önce insan kontrolü"
 ];
 
 type Facts = {
@@ -90,9 +79,9 @@ function secureTokenEqual(expected: string, supplied: string): boolean {
 }
 
 function clientKey(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  return forwarded || realIp || "unknown";
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-real-ip")?.trim()
+    || "unknown";
 }
 
 function isRateLimited(key: string): { limited: boolean; retryAfter: number } {
@@ -103,8 +92,9 @@ function isRateLimited(key: string): { limited: boolean; retryAfter: number } {
     return { limited: false, retryAfter: 0 };
   }
   current.count += 1;
-  if (current.count <= RATE_LIMIT_REQUESTS) return { limited: false, retryAfter: 0 };
-  return { limited: true, retryAfter: Math.max(1, Math.ceil((current.resetAt - now) / 1000)) };
+  return current.count <= RATE_LIMIT_REQUESTS
+    ? { limited: false, retryAfter: 0 }
+    : { limited: true, retryAfter: Math.max(1, Math.ceil((current.resetAt - now) / 1000)) };
 }
 
 function sanitizeFacts(input: unknown): Facts {
@@ -214,13 +204,16 @@ function buildPrompt(facts: Facts): string {
 }
 
 async function runGemini(facts: Facts, fallback: ReturnType<typeof deterministicDraft>) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
   if (!apiKey) return null;
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const model = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
   const response = await fetch(endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "x-goog-api-key": apiKey
+    },
     signal: AbortSignal.timeout(25_000),
     body: JSON.stringify({
       systemInstruction: {
@@ -245,7 +238,11 @@ async function runGemini(facts: Facts, fallback: ReturnType<typeof deterministic
       }
     })
   });
-  if (!response.ok) throw new Error(`Gemini upstream status ${response.status}`);
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    console.error("Gemini upstream error", response.status, detail.slice(0, 600));
+    throw new Error(`Gemini upstream status ${response.status}`);
+  }
   const payload = await response.json() as {
     candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
   };
