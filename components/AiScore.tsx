@@ -9,9 +9,9 @@ function coverageLevel(score: number): string {
 
 export function AiScore({ score, compact = false }: { score: number; compact?: boolean }) {
   return (
-    <div className={compact ? "score compact" : "score"} aria-label={`Kaynak bazlı veri skoru ${score}`}>
+    <div className={compact ? "score compact" : "score"} aria-label={`Veri ve arz yapısı skoru ${score}`}>
       <div className="scoreRing" style={{ "--score": score } as CSSProperties}><strong>{score}</strong><span>/100</span></div>
-      {!compact && <div><span className="eyebrow">Kaynak bazlı veri skoru</span><strong className="scoreLevel">{coverageLevel(score)}</strong></div>}
+      {!compact && <div><span className="eyebrow">Veri ve Arz Yapısı Skoru</span><strong className="scoreLevel">{coverageLevel(score)}</strong></div>}
     </div>
   );
 }
