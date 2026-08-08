@@ -2,7 +2,6 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { IpoCard } from "@/components/IpoCard";
-import { CompanyLogo } from "@/components/CompanyLogo";
 import { AdSlot } from "@/components/AdSlot";
 import { ipos, type IpoStatus } from "@/data/ipos";
 
@@ -44,7 +43,7 @@ export default function HomePage() {
           <article className="marketCardV2">
             <div className="marketCardV2Top"><span>Güncel halka arz</span><strong>{lead.bulletinNo}</strong></div>
             <div className="marketCardV2Company">
-              <CompanyLogo ipo={lead} size="large" />
+              <div className="companyLogo xlarge">{lead.company.slice(0, 2).toLocaleUpperCase("tr-TR")}</div>
               <div><small>{lead.statusLabel}</small><h2>{lead.company}</h2><p>{lead.sector}</p></div>
             </div>
             <div className="marketCardV2Price"><span>Arz fiyatı</span><strong>₺{lead.price.toLocaleString("tr-TR")}</strong></div>
