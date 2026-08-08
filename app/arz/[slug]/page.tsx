@@ -21,6 +21,10 @@ import { getIpoBySlug, ipos } from "@/data/ipos";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
 
+function AiNavIcon() {
+  return <svg className="aiNavIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.75c.55 3.35 2.24 5.04 5.6 5.6-3.36.55-5.05 2.24-5.6 5.6-.56-3.36-2.25-5.05-5.6-5.6 3.35-.56 5.04-2.25 5.6-5.6ZM18.1 14.2c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>;
+}
+
 export function generateStaticParams() { return ipos.map((ipo) => ({ slug: ipo.slug })); }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -103,17 +107,20 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
     <div className="detailUtilityRow"><ShareActions title={`${ipo.company} halka arz`} url={pageUrl} /><Link href="/yatirim-tavsiyesi-degildir" className="detailDisclaimerLink">Bu içerik yatırım tavsiyesi değildir →</Link></div>
 
     <nav className="detailSectionNav" aria-label="Detay bölümleri">
-      <a href="#ozet">Özet</a><a href="#arz-yapisi">Arz yapısı</a><a href="#belgeler">Belgeler</a><a href="#piyasa">Piyasa</a><a href="#gundem">Gündem</a><a href="#yorumlar">Yorumlar</a>
+      <a href="#ozet">Özet</a><a href="#arz-yapisi">Arz yapısı</a><a href="#belgeler">Belgeler</a><a href="#piyasa">Piyasa</a><a href="#gundem">Gündem</a><a href="#yorumlar">Yorumlar</a><a className="aiNavLink" href="#ai-yorumu"><AiNavIcon />AI yorumu</a>
     </nav>
 
     <div className="detailContentGrid">
       <div className="detailContentMain">
-        <section id="ozet" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Özet</span><h2>Bu halka arzda öne çıkanlar</h2><p>Arzın temel verileri, olumlu unsurları ve riskleri tek bakışta.</p></div>
+        <section id="ai-yorumu" className="aiTopSection">
           <article className="panel aiReportPanel compactReport">
             <AiRuntimeAnalysis slug={ipo.slug} fallbackScore={ipo.aiScore} fallbackSummary={summary} fallbackHighlights={highlights} fallbackRisks={risks} />
             <details className="detailDisclosure"><summary>Analiz kapsamı ve kaynaklar</summary><div className="disclosureBody"><div className="sourceList"><div className="sourceListTitle"><strong>Kullanılan kaynaklar</strong><span>{ipo.sources.length} belge</span></div>{ipo.sources.map((source) => source.url ? <a className="sourceEntry" key={`${source.title}-${source.url}`} href={source.url} target="_blank" rel="noreferrer"><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span><b>↗</b></a> : <div className="sourceEntry" key={`${source.title}-${source.page}`}><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span></div>)}</div><p className="reportStamp">Kapsam: {ipo.analysisScope}. Bu değerlendirme yatırım tavsiyesi veya getiri tahmini değildir.</p></div></details>
           </article>
+        </section>
+
+        <section id="ozet" className="detailSectionBlock">
+          <div className="detailSectionHeading"><span className="eyebrow">Özet</span><h2>Bu halka arzda öne çıkanlar</h2><p>Arzın temel verileri, olumlu unsurları ve riskleri tek bakışta.</p></div>
         </section>
 
         <section id="arz-yapisi" className="detailSectionBlock">
