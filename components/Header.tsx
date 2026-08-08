@@ -7,7 +7,7 @@ import { AuthModal } from "./AuthModal";
 import { useAuth } from "./AuthProvider";
 
 type Theme = "light" | "dark";
-type IconName = "bell" | "moon" | "sun" | "menu" | "close";
+type IconName = "bell" | "moon" | "sun" | "menu" | "close" | "logout";
 
 function Icon({ name }: { name: IconName }) {
   const common = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
@@ -15,6 +15,7 @@ function Icon({ name }: { name: IconName }) {
   if (name === "moon") return <svg {...common}><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg>;
   if (name === "sun") return <svg {...common}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>;
   if (name === "close") return <svg {...common}><path d="M6 6l12 12M18 6 6 18"/></svg>;
+  if (name === "logout") return <svg {...common}><path d="M10 4H5v16h5"/><path d="m14 8 4 4-4 4M18 12H9"/></svg>;
   return <svg {...common}><path d="M4 7h16M4 12h16M4 17h16"/></svg>;
 }
 
@@ -72,7 +73,9 @@ export function Header() {
         {!loading && (session
           ? <button type="button" className="primaryButton desktopOnly" onClick={() => void logout()}>Çıkış</button>
           : <button type="button" className="primaryButton headerLoginButton" onClick={() => setAuthOpen(true)}>Giriş yap</button>)}
-        <button type="button" className="iconButton mobileOnly mobileMenuButton" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Menüyü kapat" : "Menüyü aç"} aria-expanded={menuOpen}><Icon name={menuOpen ? "close" : "menu"} /></button>
+        {session
+          ? <button type="button" className="mobileOnly mobileHeaderLogout" onClick={() => void logout()} aria-label="Çıkış yap"><Icon name="logout" /><span>Çıkış yap</span></button>
+          : <button type="button" className="iconButton mobileOnly mobileMenuButton" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Menüyü kapat" : "Menüyü aç"} aria-expanded={menuOpen}><Icon name={menuOpen ? "close" : "menu"} /></button>}
       </div>
     </div></header><AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
   </>;
