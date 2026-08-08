@@ -57,8 +57,13 @@ export function Header() {
       <nav className={menuOpen ? "desktopNav open" : "desktopNav"} aria-label="Ana menü">
         <Link href="/halka-arzlar" onClick={() => setMenuOpen(false)}>Halka arzlar</Link><Link href="/gundem" onClick={() => setMenuOpen(false)}>Şirket gündemi</Link>
         <button type="button" className="textButton mobileMenuNotification" onClick={requestNotifications}>Bildirimler</button>
-        {session && <Link className="mobileMenuAccount" href="/profil" onClick={() => setMenuOpen(false)}>Hesabım</Link>}
-        {session && <button type="button" className="textButton mobileMenuLogout" onClick={() => { setMenuOpen(false); void logout(); }}>Çıkış yap</button>}
+        {session && <div className="mobileAuthActions" aria-label="Hesap işlemleri">
+          <Link className="mobileMenuAccount" href="/profil" onClick={() => setMenuOpen(false)}>
+            <span>Hesabım</span>
+            <small>{profile?.display_name || session.user.email || "Profil ve hesap ayarları"}</small>
+          </Link>
+          <button type="button" className="textButton mobileMenuLogout" onClick={() => { setMenuOpen(false); void logout(); }}>Çıkış yap</button>
+        </div>}
       </nav>
       <div className="headerActions">
         <button type="button" className="iconButton notificationButton" onClick={requestNotifications} aria-label="Bildirimleri aç" title="Yeni halka arz bildirimleri"><Icon name="bell" /></button>
