@@ -39,7 +39,7 @@ function cleanText(value: unknown, max = 900): string {
 
 function cleanList(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
-  return value.map((item) => cleanText(item, 260)).filter(Boolean).slice(0, 8);
+  return value.map((item) => cleanText(item, 180)).filter(Boolean).slice(0, 3);
 }
 
 function validate(result: IpoAiAnalysis) {
@@ -48,15 +48,37 @@ function validate(result: IpoAiAnalysis) {
   if (PROHIBITED.some((term) => combined.includes(term))) throw new Error("Gemini çıktısı yatırım yönlendirmesi içeriyor");
 }
 
-function extractJson(raw: string): string | null {
-  const trimmed = raw.trim();
-  const withoutFence = trimmed
+function stripFence(raw: string): string {
+  return raw.trim()
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/\s*```$/i, "")
     .trim();
-  if (withoutFence.startsWith("{") && withoutFence.endsWith("}")) return withoutFence;
-  const match = withoutFence.match(/\{[\s\S]*\}/);
+}
+
+function extractJson(raw: string): string | null {
+  const text = stripFence(raw);
+  if (text.startsWith("{") && text.endsWith("}")) return text;
+  const match = text.match(/\{[\s\S]*\}/);
   return match ? match[0] : null;
+}
+
+function salvageSummary(raw: string): string {
+  const text = stripFence(raw);
+  const marker = text.match(/["']summary["']\s*:\s*["']/i);
+  if (!marker || marker.index == null) return "";
+
+  let value = text.slice(marker.index + marker[0].length);
+  const nextField = value.search(/["']\s*,\s*["'](?:strengths|risks|dataGaps|confidence)["']\s*:/i);
+  if (nextField >= 0) value = value.slice(0, nextField);
+
+  return cleanText(
+    value
+      .replace(/\\n/g, " ")
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\")
+      .replace(/["'}\],\s]+$/g, ""),
+    600
+  );
 }
 
 function parseGeminiOutput(raw: string): Record<string, unknown> {
@@ -66,18 +88,22 @@ function parseGeminiOutput(raw: string): Record<string, unknown> {
       const parsed = JSON.parse(candidate) as Record<string, unknown>;
       if (parsed && typeof parsed === "object") return parsed;
     } catch {
-      // JSON parse başarısızsa ham Gemini metnini özet olarak kullanacağız.
+      // Eksik kapanmış JSON için alan bazlı kurtarma aşağıda yapılır.
     }
   }
 
-  const fallbackSummary = cleanText(
-    raw
-      .replace(/^```(?:json)?\s*/i, "")
-      .replace(/\s*```$/i, "")
-      .replace(/^\s*(?:summary|özet)\s*[:\-]\s*/i, ""),
-    900
-  );
+  const recoveredSummary = salvageSummary(raw);
+  if (recoveredSummary) {
+    return {
+      summary: recoveredSummary,
+      strengths: [],
+      risks: [],
+      dataGaps: [],
+      confidence: 60
+    };
+  }
 
+  const fallbackSummary = cleanText(stripFence(raw), 600);
   if (!fallbackSummary) throw new Error("Gemini boş yanıt döndürdü");
 
   return {
@@ -100,9 +126,9 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
     "Türkiye'deki bu halka arz için tarafsız ve kaynaklarla sınırlı Türkçe analiz üret.",
     "Yalnız verilen gerçekleri kullan; bilgi uydurma.",
     "Al, sat, kaçırma, kesin kazanç, tavan yapar, güvenli yatırım gibi yatırım yönlendirmeleri kullanma.",
-    "Eksik verileri açıkça dataGaps alanında belirt.",
-    "summary en fazla 900 karakter, her madde en fazla 260 karakter olsun.",
-    "Tam olarak şu alanları kullan: summary:string, strengths:string[], risks:string[], dataGaps:string[], confidence:number.",
+    "Çıktıyı kısa tut: summary en fazla 450 karakter olsun.",
+    "strengths, risks ve dataGaps alanlarının her birinde en fazla 3 madde; her madde en fazla 160 karakter olsun.",
+    "Tam olarak şu JSON alanlarını kullan: summary:string, strengths:string[], risks:string[], dataGaps:string[], confidence:number.",
     JSON.stringify(facts)
   ].join("\n");
 
@@ -117,7 +143,7 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 1200,
+        maxOutputTokens: 2400,
         responseMimeType: "application/json"
       }
     })
@@ -140,7 +166,7 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
   const result: IpoAiAnalysis = {
     provider: "google-gemini",
     model,
-    summary: cleanText(parsed.summary),
+    summary: cleanText(parsed.summary, 600),
     strengths: cleanList(parsed.strengths),
     risks: cleanList(parsed.risks),
     dataGaps: cleanList(parsed.dataGaps),
