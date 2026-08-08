@@ -1,0 +1,559 @@
+/* iPhone 13 / 390x844 responsive hardening.
+   Loaded last so legacy desktop rules cannot re-introduce horizontal overflow. */
+
+@media (max-width: 430px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body,
+  main,
+  header,
+  footer,
+  section,
+  article,
+  nav,
+  form,
+  .pageShell,
+  .container {
+    min-width: 0;
+  }
+
+  .container {
+    width: calc(100% - 24px) !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+
+  img,
+  svg,
+  iframe,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  /* Header */
+  .siteHeader,
+  .headerInner {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .siteHeader .container.headerInner {
+    width: calc(100% - 20px) !important;
+  }
+
+  .brand {
+    min-width: 0 !important;
+    max-width: calc(100% - 104px) !important;
+    overflow: hidden;
+  }
+
+  .brandText {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .headerActions {
+    flex: 0 0 auto !important;
+    min-width: 96px !important;
+  }
+
+  .desktopNav.open {
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 88px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+  }
+
+  .desktopNav.open a,
+  .desktopNav.open button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    overflow-wrap: anywhere;
+  }
+
+  /* Shared headings and copy */
+  h1,
+  h2,
+  h3,
+  p,
+  strong,
+  small,
+  span,
+  a,
+  button,
+  label {
+    min-width: 0;
+  }
+
+  .pageHero h1,
+  .homeHeroV2Copy h1,
+  .accountHeroInner h1,
+  .detailIntroIdentity h1,
+  .detailIdentity h1,
+  .sectionHeading h2,
+  .finalCta h2 {
+    max-width: 100% !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .pageHero p,
+  .homeHeroV2Copy p,
+  .accountHeroInner p,
+  .detailIntroIdentity p,
+  .detailIdentity p {
+    max-width: 100% !important;
+    overflow-wrap: anywhere;
+  }
+
+  /* Home */
+  .homeHeroV2Inner,
+  .heroGrid,
+  .splitFeature,
+  .finalCtaInner,
+  .sectionHeading {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px !important;
+  }
+
+  .homeHeroV2Copy,
+  .homeHeroV2Visual,
+  .heroCopy,
+  .heroPanel,
+  .marketCardV2,
+  .marketCardV2Company,
+  .agendaPreview {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .homeHeroV2Copy h1 {
+    font-size: clamp(38px, 11vw, 48px) !important;
+    line-height: .98 !important;
+  }
+
+  .homeMetricsV2Grid,
+  .statsGrid,
+  .signalGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .homeMetricsV2Grid article,
+  .statsGrid > div,
+  .signalGrid > div {
+    min-width: 0 !important;
+  }
+
+  .homeMetricsV2Grid strong,
+  .marketCardV2Metrics strong {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+
+  /* IPO explorer + cards */
+  .explorerTools,
+  .searchBox,
+  .sortBox,
+  .sortBox select,
+  .cardGrid,
+  .ipoCard,
+  .ipoCardCompactFacts,
+  .metricGrid,
+  .cardFooter {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .searchBox {
+    width: 100% !important;
+  }
+
+  .sortBox {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+  }
+
+  .sortBox select {
+    width: 100%;
+  }
+
+  .tabs {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .cardGrid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .ipoCard {
+    width: 100% !important;
+    padding: 15px !important;
+  }
+
+  .companyRow,
+  .cardTopline,
+  .cardFooter {
+    min-width: 0 !important;
+  }
+
+  .companyRow > div:last-child {
+    min-width: 0;
+  }
+
+  .companyRow h3,
+  .companyRow p,
+  .ticker,
+  .cardFooter span,
+  .secondaryMetrics span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .metricGrid,
+  .ipoCardCompactFacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Detail */
+  .detailPage,
+  .detailHero,
+  .detailIntro,
+  .detailIntroIdentity,
+  .detailIdentity,
+  .overviewGrid,
+  .overviewMain,
+  .panel,
+  .commentsPanel,
+  .stickyPanel,
+  .detailQuickFacts,
+  .detailSectionBlock,
+  .tradingViewWrap,
+  .tradingview-widget-container {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .detailHero,
+  .detailIntro,
+  .overviewGrid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .detailIdentity,
+  .detailIntroIdentity {
+    max-width: 100%;
+  }
+
+  .detailQuickFacts,
+  .chartSummary {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .detailSectionNav {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .detailSectionNav::-webkit-scrollbar { display: none; }
+
+  .detailSectionNav a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .tradingview-widget-container,
+  .tradingViewMount,
+  .tradingViewMount > div,
+  .tradingViewMount iframe {
+    min-height: 360px !important;
+    height: 360px !important;
+  }
+
+  .sourceEntry {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .sourceEntry > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Agenda */
+  .agendaPageList,
+  .agendaPageList article,
+  .timeline,
+  .agendaRow {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .agendaPageList article,
+  .agendaRow {
+    grid-template-columns: 12px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .agendaPageList h2,
+  .agendaPageList p,
+  .agendaRow strong,
+  .agendaRow p {
+    overflow-wrap: anywhere;
+  }
+
+  /* Account */
+  .accountHeroInner,
+  .accountGridModern,
+  .accountDangerZone,
+  .accountSignedOutModern {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .accountHeroInner,
+  .accountIdentityCard,
+  .accountSettingsShell,
+  .accountGridModern,
+  .accountSideStack,
+  .accountCardModern,
+  .accountWatchGrid,
+  .accountWatchCard,
+  .accountDangerZone,
+  .accountSignedOutModern {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .accountIdentityCard {
+    display: grid !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+  }
+
+  .accountIdentityCard > div:nth-child(2) {
+    min-width: 0 !important;
+    overflow: hidden;
+  }
+
+  .accountQuickLogout {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .accountCardHeader {
+    display: grid !important;
+    grid-template-columns: 44px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .accountCardHeader .accountUnsavedBadge,
+  .accountCardHeader .accountStatusDot {
+    grid-column: 1 / -1;
+    margin-left: 0 !important;
+    justify-self: start;
+  }
+
+  .accountSecurityRows > div {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  .accountSecurityRows strong {
+    max-width: 170px;
+    overflow-wrap: anywhere;
+  }
+
+  .accountWatchGrid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Forms and auth modal */
+  .modalBackdrop,
+  .authBackdrop {
+    padding: 10px !important;
+  }
+
+  .modalCard,
+  .authModalModern,
+  .authFormPane,
+  .authForm,
+  .authFormModern,
+  .authInputShell,
+  .accountInputShell {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .modalCard,
+  .authModalModern {
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .authModalModern {
+    display: block !important;
+  }
+
+  .authVisualPane {
+    display: none !important;
+  }
+
+  .authFormPane {
+    width: 100% !important;
+    padding: 48px 18px 20px !important;
+  }
+
+  input,
+  textarea,
+  select,
+  .authForm input,
+  .calculator input {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Tables remain horizontally scrollable inside their own container only. */
+  .tableWrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .financialTable {
+    max-width: none;
+  }
+
+  /* Legal/footer */
+  .legalPage,
+  .methodGrid,
+  .footerGrid,
+  .footerInner,
+  .footerBottom {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .methodGrid,
+  .footerGrid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .methodGrid > div {
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .methodGrid > div > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Fixed bottom navigation */
+  body {
+    padding-bottom: calc(108px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .mobileBottomNav {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: max(8px, env(safe-area-inset-bottom)) !important;
+    width: auto !important;
+    max-width: calc(100vw - 16px) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    padding: 6px 4px !important;
+    gap: 2px !important;
+    overflow: hidden !important;
+  }
+
+  .mobileBottomNav a,
+  .mobileBottomNav button {
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 4px 2px !important;
+    font-size: 10px !important;
+    overflow: hidden !important;
+  }
+
+  .mobileBottomNav span {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+}
+
+@media (max-width: 390px) {
+  .container {
+    width: calc(100% - 20px) !important;
+  }
+
+  .siteHeader .container.headerInner {
+    width: calc(100% - 16px) !important;
+  }
+
+  .brandText {
+    font-size: 18px !important;
+  }
+
+  .accountHeroInner h1,
+  .pageHero h1 {
+    font-size: clamp(32px, 9.5vw, 38px) !important;
+  }
+
+  .accountCardModern,
+  .panel,
+  .ipoCard {
+    padding-inline: 14px !important;
+  }
+
+  .detailQuickFacts,
+  .chartSummary {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
