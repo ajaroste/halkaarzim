@@ -1,6 +1,6 @@
-/* Comments V2 — compact editorial/community treatment */
+/* Comments V3 — card-based community layout */
 .commentsPanel {
-  padding: 28px 30px;
+  padding: 30px;
   overflow: hidden;
 }
 
@@ -11,8 +11,8 @@
 
 .commentsPanel .sectionHeading h2 {
   margin: 8px 0 0;
-  font-size: clamp(32px, 4vw, 46px);
-  line-height: .98;
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: .96;
   letter-spacing: -.055em;
 }
 
@@ -21,34 +21,40 @@
   min-height: 30px;
   align-items: center;
   padding: 0 10px;
-  margin-top: 4px;
-  border: 1px solid var(--line);
+  margin-top: 2px;
+  border: 1px solid color-mix(in srgb, var(--brand) 42%, var(--line));
   border-radius: 8px;
-  background: transparent;
-  color: var(--muted);
+  background: color-mix(in srgb, var(--brand-soft) 35%, transparent);
+  color: var(--ink);
   font-size: 11px;
-  font-weight: 750;
+  font-weight: 800;
   white-space: nowrap;
 }
 
 .commentsPanel .commentComposer {
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface-2);
-  overflow: hidden;
+  border: 0;
+  background: transparent;
+  overflow: visible;
 }
 
 .commentsPanel .commentComposer textarea {
   display: block;
   width: 100%;
-  min-height: 112px;
+  min-height: 154px;
   resize: vertical;
-  padding: 16px;
-  border: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
   outline: 0;
-  background: transparent !important;
+  background: color-mix(in srgb, var(--surface-2) 62%, transparent) !important;
   color: var(--ink);
   line-height: 1.55;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+.commentsPanel .commentComposer textarea:focus {
+  border-color: color-mix(in srgb, var(--brand) 55%, var(--line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 12%, transparent);
 }
 
 .commentsPanel .commentComposer textarea::placeholder {
@@ -60,9 +66,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 14px;
-  padding: 10px 12px;
-  border-top: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  padding: 12px 0 0;
+  border: 0;
+  background: transparent;
 }
 
 .commentsPanel .composerFooter small {
@@ -71,34 +77,48 @@
 }
 
 .commentsPanel .composerFooter .primaryButton {
-  min-height: 40px;
-  padding: 0 17px;
+  min-height: 42px;
+  padding: 0 18px;
   border-radius: 9px;
   box-shadow: none;
 }
 
-.commentsPanel .commentNotices {
-  margin: 14px 0 0;
-  padding: 0 2px;
+.commentsPanel .commentPolicyCard {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-2) 38%, transparent);
 }
 
-.commentsPanel .moderationNote {
+.commentsPanel .commentPolicyIcon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  color: var(--brand);
+}
+
+.commentsPanel .commentPolicyIcon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.commentsPanel .commentPolicyCard p {
   margin: 0;
-  padding: 10px 0;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent !important;
   color: var(--muted);
   font-size: 11px;
   line-height: 1.55;
 }
 
-.commentsPanel .moderationNote:last-child {
-  border-bottom: 0;
+.commentsPanel .commentPolicyCard p + p {
+  margin-top: 8px;
 }
 
-.commentsPanel .moderationNote strong {
+.commentsPanel .commentPolicyCard strong {
   color: var(--ink);
 }
 
@@ -108,51 +128,60 @@
   max-width: 100%;
   margin: 12px 0 0;
   padding: 8px 10px;
-  border: 1px solid color-mix(in srgb, var(--brand) 35%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--brand) 32%, var(--line));
   border-radius: 8px;
-  background: color-mix(in srgb, var(--brand-soft) 52%, transparent);
+  background: color-mix(in srgb, var(--brand-soft) 45%, transparent);
   color: var(--brand-dark);
   font-size: 11px;
   font-weight: 700;
 }
 
+.commentsPanel .commentsLoading {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .commentsPanel .commentList {
-  margin-top: 20px;
-  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
 }
 
 .commentsPanel .comment {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
-  gap: 13px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--line);
-  background: transparent;
-}
-
-.commentsPanel .comment:last-child {
-  border-bottom: 0;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface) 94%, var(--surface-2));
 }
 
 .commentsPanel .avatar {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--line));
   border-radius: 50%;
-  background: var(--surface-2);
+  background: color-mix(in srgb, var(--brand-soft) 50%, var(--surface));
   color: var(--brand-dark);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 850;
   text-transform: uppercase;
+}
+
+.commentsPanel .commentBody {
+  min-width: 0;
 }
 
 .commentsPanel .commentMeta {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 8px;
   min-width: 0;
 }
 
@@ -166,8 +195,8 @@
   font-size: 10px;
 }
 
-.commentsPanel .comment p {
-  margin: 7px 0 9px;
+.commentsPanel .commentBody > p {
+  margin: 9px 0 14px;
   color: var(--ink);
   font-size: 13px;
   line-height: 1.55;
@@ -178,27 +207,85 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
 }
 
-.commentsPanel .commentActions .textButton {
-  min-height: 32px;
-  padding: 0 8px;
+.commentsPanel .reactionButton,
+.commentsPanel .reportButton {
+  min-height: 34px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 8px;
   background: transparent;
-  color: var(--muted);
-  font-size: 10px;
-  font-weight: 700;
   cursor: pointer;
+  transition: background .16s ease, color .16s ease, transform .16s ease;
 }
 
-.commentsPanel .commentActions .textButton:hover {
+.commentsPanel .reactionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.commentsPanel .reactionButton.iconOnly {
+  padding-inline: 8px;
+}
+
+.commentsPanel .reactionButton svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.commentsPanel .reactionButton:hover {
   background: var(--surface-2);
   color: var(--ink);
 }
 
-.commentsPanel .commentActions .dangerText {
+.commentsPanel .reactionButton:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+.commentsPanel .reactionButton:disabled,
+.commentsPanel .reportButton:disabled {
+  opacity: .55;
+  cursor: default;
+}
+
+.commentsPanel .actionDivider {
+  width: 1px;
+  height: 18px;
+  margin: 0 5px;
+  background: var(--line);
+}
+
+.commentsPanel .reportButton {
+  padding: 0 8px;
   color: var(--danger);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.commentsPanel .reportButton:hover {
+  background: color-mix(in srgb, var(--danger-soft) 60%, transparent);
+}
+
+.commentsPanel .commentsEnd {
+  margin: 4px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.commentsPanel .emptyState {
+  padding: 28px 18px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  text-align: center;
 }
 
 @media (max-width: 680px) {
@@ -214,29 +301,55 @@
   }
 
   .commentsPanel .sectionHeading h2 {
-    font-size: 30px;
+    font-size: 31px;
   }
 
   .commentsPanel .commentCount {
     min-height: 28px;
+    padding-inline: 8px;
     font-size: 9px;
   }
 
   .commentsPanel .commentComposer textarea {
-    min-height: 96px;
-    padding: 13px;
+    min-height: 112px;
+    padding: 14px;
     font-size: 14px;
   }
 
-  .commentsPanel .comment {
-    grid-template-columns: 34px minmax(0, 1fr);
+  .commentsPanel .commentPolicyCard {
+    grid-template-columns: 24px minmax(0, 1fr);
     gap: 10px;
-    padding: 15px 0;
+    margin-top: 18px;
+    padding: 13px;
+  }
+
+  .commentsPanel .commentPolicyIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .commentsPanel .commentPolicyCard p {
+    font-size: 10px;
+  }
+
+  .commentsPanel .comment {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 11px;
+    padding: 14px;
   }
 
   .commentsPanel .avatar {
-    width: 34px;
-    height: 34px;
-    font-size: 11px;
+    width: 38px;
+    height: 38px;
+    font-size: 12px;
+  }
+
+  .commentsPanel .commentActions {
+    flex-wrap: wrap;
+  }
+
+  .commentsPanel .reactionButton,
+  .commentsPanel .reportButton {
+    min-height: 38px;
   }
 }
