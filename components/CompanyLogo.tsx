@@ -6,33 +6,14 @@ import type { Ipo } from "@/data/ipos";
 type LogoRule = {
   ticker?: string;
   companyIncludes: string[];
-  sources: string[];
+  domain: string;
 };
 
 const logoRules: LogoRule[] = [
-  {
-    ticker: "VEYAS",
-    companyIncludes: ["türker vangölü", "veyas"],
-    sources: ["https://turkerveyas.com.tr/favicon.ico"]
-  },
-  {
-    ticker: "KPEKS",
-    companyIncludes: ["kapeks kimya", "kapeks"],
-    sources: [
-      "https://kapeks.com.tr/wp-content/themes/korenel/assets/image/logo-text.png",
-      "https://kapeks.com.tr/favicon.ico"
-    ]
-  },
-  {
-    ticker: "TKNKA",
-    companyIncludes: ["teknika plast", "teknika"],
-    sources: ["https://teknikaplast.com.tr/favicon.ico"]
-  },
-  {
-    ticker: "CITAS",
-    companyIncludes: ["çitlekçi", "citlekci"],
-    sources: ["https://citlekci.com.tr/favicon.ico"]
-  }
+  { ticker: "VEYAS", companyIncludes: ["türker vangölü", "veyas"], domain: "turkerveyas.com.tr" },
+  { ticker: "KPEKS", companyIncludes: ["kapeks kimya", "kapeks"], domain: "kapeks.com.tr" },
+  { ticker: "TKNKA", companyIncludes: ["teknika plast", "teknika"], domain: "teknikaplast.com.tr" },
+  { ticker: "CITAS", companyIncludes: ["çitlekçi", "citlekci"], domain: "citlekci.com.tr" }
 ];
 
 function normalize(value: string) {
@@ -50,24 +31,23 @@ function initials(ipo: Pick<Ipo, "company" | "ticker">) {
     .toLocaleUpperCase("tr-TR");
 }
 
-function resolveSources(ipo: Pick<Ipo, "company" | "ticker">) {
+function resolveDomain(ipo: Pick<Ipo, "company" | "ticker">) {
   const ticker = ipo.ticker?.toLocaleUpperCase("tr-TR");
   const company = normalize(ipo.company);
-  const rule = logoRules.find((item) =>
+  return logoRules.find((item) =>
     (ticker && item.ticker === ticker) ||
     item.companyIncludes.some((part) => company.includes(normalize(part)))
-  );
-  return rule?.sources || [];
+  )?.domain;
 }
 
 export function CompanyLogo({ ipo, size = "normal" }: { ipo: Pick<Ipo, "company" | "ticker">; size?: "normal" | "large" }) {
-  const sources = useMemo(() => resolveSources(ipo), [ipo.company, ipo.ticker]);
-  const [sourceIndex, setSourceIndex] = useState(0);
+  const domain = useMemo(() => resolveDomain(ipo), [ipo.company, ipo.ticker]);
+  const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const className = `companyLogo companyLogoReal${size === "large" ? " xlarge" : ""}`;
   const pixelSize = size === "large" ? 72 : 48;
-  const src = sources[sourceIndex];
   const fallback = initials(ipo);
+  const src = domain && !failed ? `/api/company-logo?domain=${encodeURIComponent(domain)}` : null;
 
   return <div
     className={className}
@@ -97,14 +77,13 @@ export function CompanyLogo({ ipo, size = "normal" }: { ipo: Pick<Ipo, "company"
       height={pixelSize}
       loading="lazy"
       decoding="async"
-      referrerPolicy="no-referrer"
       onLoad={() => setLoaded(true)}
-      onError={() => { setLoaded(false); setSourceIndex((current) => current + 1); }}
+      onError={() => { setLoaded(false); setFailed(true); }}
       style={{
         position: "relative",
         zIndex: 1,
-        width: "82%",
-        height: "82%",
+        width: "84%",
+        height: "84%",
         objectFit: "contain",
         display: "block",
         opacity: loaded ? 1 : 0,
