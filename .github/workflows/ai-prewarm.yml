@@ -1,0 +1,58 @@
+name: Prewarm HalkaArz AI analyses
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 1 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  prewarm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Wait for production deployment
+        run: sleep 30
+      - name: Discover IPO pages and prewarm AI cache
+        env:
+          BASE_URL: https://halkaarzim.vercel.app
+        shell: bash
+        run: |
+          set -euo pipefail
+          sitemap="$(curl --fail --silent --show-error --retry 3 "$BASE_URL/sitemap.xml")"
+          mapfile -t slugs < <(printf '%s' "$sitemap" | grep -oE '<loc>[^<]+/arz/[^<]+</loc>' | sed -E 's#.*\/arz\/([^<]+)</loc>#\1#' | sort -u)
+          if [ "${#slugs[@]}" -eq 0 ]; then
+            echo "No IPO slugs discovered from sitemap"
+            exit 1
+          fi
+
+          echo "Prewarming ${#slugs[@]} IPO analyses"
+          failed=0
+          for slug in "${slugs[@]}"; do
+            url="$BASE_URL/api/ai/ipo/$slug"
+            echo "::group::$slug"
+            status="$(curl --silent --show-error --retry 2 --max-time 35 -o /tmp/ai.json -w '%{http_code}' "$url" || true)"
+            if [ "$status" != "200" ]; then
+              echo "AI prewarm failed: HTTP $status"
+              cat /tmp/ai.json 2>/dev/null || true
+              failed=$((failed + 1))
+            else
+              python3 - <<'PY'
+import json
+with open('/tmp/ai.json', encoding='utf-8') as f:
+    data = json.load(f)
+assert data.get('provider') == 'google-gemini', data
+assert data.get('summary'), data
+print(f"OK model={data.get('model')} confidence={data.get('confidence')} summary_chars={len(data.get('summary',''))}")
+PY
+            fi
+            echo "::endgroup::"
+            sleep 1
+          done
+
+          if [ "$failed" -gt 0 ]; then
+            echo "$failed IPO AI analyses failed to prewarm"
+            exit 1
+          fi
