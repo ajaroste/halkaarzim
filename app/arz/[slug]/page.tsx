@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { AiScore } from "@/components/AiScore";
+import { AiRuntimeAnalysis } from "@/components/AiRuntimeAnalysis";
 import { Comments } from "@/components/Comments";
 import { PromiseTracker } from "@/components/PromiseTracker";
 import { FinancialTable } from "@/components/FinancialTable";
@@ -111,11 +111,7 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
         <section id="ozet" className="detailSectionBlock">
           <div className="detailSectionHeading"><span className="eyebrow">Özet</span><h2>Bu halka arzda öne çıkanlar</h2><p>Arzın temel verileri, olumlu unsurları ve riskleri tek bakışta.</p></div>
           <article className="panel aiReportPanel compactReport">
-            <div className="reportLead"><AiScore score={ipo.aiScore} /><div><strong className="reportLabel">Kaynak bazlı ön analiz</strong><p>{summary}</p></div></div>
-            {(highlights.length > 0 || risks.length > 0) && <div className="summarySplit">
-              {highlights.length > 0 && <div className="summaryList positiveSummary"><h3>Olumlu unsurlar</h3><ul>{highlights.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>}
-              {risks.length > 0 && <div className="summaryList riskSummary"><h3>Riskler ve eksik bilgiler</h3><ul>{risks.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>}
-            </div>}
+            <AiRuntimeAnalysis slug={ipo.slug} fallbackScore={ipo.aiScore} fallbackSummary={summary} fallbackHighlights={highlights} fallbackRisks={risks} />
             <details className="detailDisclosure"><summary>Analiz kapsamı ve kaynaklar</summary><div className="disclosureBody"><div className="sourceList"><div className="sourceListTitle"><strong>Kullanılan kaynaklar</strong><span>{ipo.sources.length} belge</span></div>{ipo.sources.map((source) => source.url ? <a className="sourceEntry" key={`${source.title}-${source.url}`} href={source.url} target="_blank" rel="noreferrer"><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span><b>↗</b></a> : <div className="sourceEntry" key={`${source.title}-${source.page}`}><div><strong>{source.title}</strong><small>{source.kind}</small></div><span>{source.page}</span></div>)}</div><p className="reportStamp">Kapsam: {ipo.analysisScope}. Bu değerlendirme yatırım tavsiyesi veya getiri tahmini değildir.</p></div></details>
           </article>
         </section>
