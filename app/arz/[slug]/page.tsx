@@ -120,7 +120,7 @@ export default async function IpoDetailPage({ params }: { params: Promise<{ slug
         </section>
 
         <section id="ozet" className="detailSectionBlock">
-          <div className="detailSectionHeading"><span className="eyebrow">Özet</span><h2>Bu halka arzda öne çıkanlar</h2><p>Arzın temel verileri, olumlu unsurları ve riskleri tek bakışta.</p></div>
+          <div className="detailSectionHeading"></div>
         </section>
 
         <section id="arz-yapisi" className="detailSectionBlock">
