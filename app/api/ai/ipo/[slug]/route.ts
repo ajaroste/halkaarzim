@@ -11,7 +11,7 @@ function response(body: unknown, status = 200, cache = false) {
     status,
     headers: {
       "Cache-Control": cache
-        ? "public, s-maxage=3600, stale-while-revalidate=21600"
+        ? "public, s-maxage=21600, stale-while-revalidate=43200"
         : "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff"
     }
@@ -38,13 +38,49 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   const facts = {
     company: ipo.company,
+    ticker: ipo.ticker,
+    sector: ipo.sector,
+    status: ipo.status,
+    statusLabel: ipo.statusLabel,
+    price: ipo.price,
+    dates: ipo.dates,
+    collectionStart: ipo.collectionStart,
+    collectionEnd: ipo.collectionEnd,
+    firstTradeDate: ipo.firstTradeDate,
+    approvalDate: ipo.approvalDate,
+    approvalLabel: ipo.approvalLabel,
+    distribution: ipo.distribution,
+    intermediary: ipo.intermediary,
+    lotCount: ipo.lotCount,
+    maxLotCount: ipo.maxLotCount,
+    retailLots: ipo.retailLots,
+    participantCount: ipo.participantCount,
+    offerSize: ipo.offerSize,
+    publicFloat: ipo.publicFloat,
+    market: ipo.market,
+    priceStability: ipo.priceStability,
+    valuationDiscount: ipo.valuationDiscount,
+    allocationText: ipo.allocationText,
+    dataCompleteness: ipo.dataCompleteness,
+    dataNotes: ipo.dataNotes,
+    capitalBefore: ipo.capitalBefore,
+    capitalAfter: ipo.capitalAfter,
     capitalIncreaseShares: ipo.capitalIncreaseShares,
     shareholderSaleShares: ipo.shareholderSaleShares,
     extraSaleShares: ipo.extraSaleShares,
-    fundUse: ipo.fundUse.map((item) => ({ label: item.label, value: item.value })),
+    fundUse: ipo.fundUse.map((item) => ({ label: item.label, value: item.value, min: item.min, max: item.max })),
     financials: ipo.financials,
     risks: ipo.risks,
-    sources: ipo.sources.map((source) => ({ title: source.title, url: source.url, page: source.page }))
+    agenda: ipo.agenda.map((item) => ({
+      date: item.date,
+      category: item.category,
+      title: item.title,
+      summary: item.summary,
+      source: item.source,
+      impact: item.impact
+    })),
+    promises: ipo.promises,
+    sources: ipo.sources.map((source) => ({ title: source.title, url: source.url, page: source.page, kind: source.kind }))
   };
 
   try {
