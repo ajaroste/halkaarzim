@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import { moderateComment } from "@/lib/domain";
+import { listCommentDislikeCounts } from "@/lib/comment-reactions";
 import { createComment, dislikeComment, isSupabaseConfigured, listComments, reportComment, voteComment } from "@/lib/supabase-rest";
 import { useAuth } from "./AuthProvider";
 
-export type DisplayComment = { id: string; name: string; time: string; text: string; likes: number };
+export type DisplayComment = { id: string; name: string; time: string; text: string; likes: number; dislikes: number };
 
 function ThumbUpIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v10H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h3Zm0 10h9.1a3 3 0 0 0 2.86-2.1l1.68-5.4A2 2 0 0 0 18.73 10H14l.72-3.57A2.85 2.85 0 0 0 12.8 3.2L12 3l-5 7v10Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>;
@@ -33,12 +34,15 @@ export function Comments({ ipoId }: { ipoId: string; slug: string }) {
     if (!isSupabaseConfigured()) { setLoading(false); return; }
     try {
       const rows = await listComments(ipoId, session?.access_token);
+      const ids = rows.map((row) => String(row.id));
+      const dislikeCounts = await listCommentDislikeCounts(ids, session?.access_token);
       setComments(rows.map((row) => ({
         id: String(row.id),
         name: String(row.display_name || "Üye"),
         time: new Date(String(row.created_at)).toLocaleString("tr-TR"),
         text: String(row.body),
-        likes: Number(row.helpful_count || 0)
+        likes: Number(row.helpful_count || 0),
+        dislikes: Number(dislikeCounts[String(row.id)] || 0)
       })));
     } catch {
       setMessage("Yorumlar şu anda alınamadı.");
@@ -132,8 +136,8 @@ export function Comments({ ipoId }: { ipoId: string; slug: string }) {
           <div className="commentMeta"><strong>{comment.name}</strong><span>{comment.time}</span></div>
           <p>{comment.text}</p>
           <div className="commentActions">
-            <button className="reactionButton" type="button" aria-label="Beğen" disabled={busyId === comment.id} onClick={() => void like(comment.id)}><ThumbUpIcon /><span>{comment.likes}</span></button>
-            <button className="reactionButton iconOnly" type="button" aria-label="Beğenmedim" disabled={busyId === comment.id} onClick={() => void dislike(comment.id)}><ThumbDownIcon /></button>
+            <button className="reactionButton" type="button" aria-label={`Beğen, ${comment.likes}`} disabled={busyId === comment.id} onClick={() => void like(comment.id)}><ThumbUpIcon /><span>{comment.likes}</span></button>
+            <button className="reactionButton" type="button" aria-label={`Beğenmedim, ${comment.dislikes}`} disabled={busyId === comment.id} onClick={() => void dislike(comment.id)}><ThumbDownIcon /><span>{comment.dislikes}</span></button>
             <span className="actionDivider" aria-hidden="true" />
             <button className="reportButton" type="button" disabled={busyId === comment.id} onClick={() => void report(comment.id)}>Bildir</button>
           </div>
