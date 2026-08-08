@@ -13,6 +13,10 @@ type Analysis = {
   dataGaps?: string[];
 };
 
+function AiSparkIcon() {
+  return <svg className="aiSparkIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.75c.55 3.35 2.24 5.04 5.6 5.6-3.36.55-5.05 2.24-5.6 5.6-.56-3.36-2.25-5.05-5.6-5.6 3.35-.56 5.04-2.25 5.6-5.6ZM18.1 14.2c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3ZM5.4 14.8c.22 1.3.87 1.95 2.17 2.17-1.3.22-1.95.87-2.17 2.17-.22-1.3-.87-1.95-2.17-2.17 1.3-.22 1.95-.87 2.17-2.17Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>;
+}
+
 export function AiRuntimeAnalysis({
   slug,
   fallbackScore,
@@ -55,8 +59,8 @@ export function AiRuntimeAnalysis({
     <div className="reportLead">
       <AiScore score={score} />
       <div>
-        <strong className="reportLabel">{isGemini ? "Gemini ile AI analizi" : "Kaynak bazlı ön analiz"}</strong>
-        {isGemini && <small className="aiProviderStamp">Gemini · kaynaklara dayalı</small>}
+        <div className="aiReportTitleRow"><span className="aiReportIcon"><AiSparkIcon /></span><strong className="reportLabel">{isGemini ? "Gemini ile AI yorumu" : "AI yorumu hazırlanıyor"}</strong></div>
+        <small className="aiProviderStamp">{isGemini ? "Gemini · doğrulanmış kaynaklara dayalı" : "Kaynak bazlı analiz gösteriliyor · Gemini hazır olduğunda otomatik güncellenir"}</small>
         <p>{summary}</p>
       </div>
     </div>
