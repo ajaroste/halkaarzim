@@ -6,6 +6,8 @@ const authModal = fs.readFileSync("components/AuthModal.tsx", "utf8");
 const profilePage = fs.readFileSync("app/profil/page.tsx", "utf8");
 const profileRpc = fs.readFileSync("supabase/migrations/20260806180000_profile_update_permissions.sql", "utf8");
 const usernameHardening = fs.readFileSync("supabase/migrations/20260807224500_profile_username_hardening.sql", "utf8");
+const toastHost = fs.readFileSync("components/ToastHost.tsx", "utf8");
+const watchButton = fs.readFileSync("components/WatchButton.tsx", "utf8");
 
 test("unconfirmed email sessions are cleared before auth state is published", () => {
   assert.match(authModal, /await signOut\(session\)/);
@@ -23,6 +25,19 @@ test("profile updates use the shared authenticated RPC client", () => {
 test("signed-out profile page exposes an auth entry point", () => {
   assert.match(profilePage, /Giriş yap veya hesap oluştur/);
   assert.match(profilePage, /<AuthModal open=\{authOpen\}/);
+});
+
+test("signed-in profile exposes a direct logout action", () => {
+  assert.match(profilePage, /handleLogout/);
+  assert.match(profilePage, /Çıkış yap/);
+  assert.match(profilePage, /await logout\(\)/);
+});
+
+test("user actions use the global top toast channel", () => {
+  assert.match(toastHost, /halkaarzim-toast/);
+  assert.match(profilePage, /showToast/);
+  assert.match(watchButton, /Halka arz takip edildi/);
+  assert.doesNotMatch(watchButton, /<small>\{message\}/);
 });
 
 test("profile RPC only updates the authenticated user's own row", () => {
