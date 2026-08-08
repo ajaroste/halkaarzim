@@ -79,6 +79,12 @@ const statusLabels: Record<IpoStatus, string> = {
   draft: "Taslak"
 };
 
+function dateAtIstanbulBoundary(value: string | null | undefined, endOfDay = false): number {
+  if (!value) return Number.NaN;
+  const suffix = endOfDay ? "T23:59:59+03:00" : "T00:00:00+03:00";
+  return new Date(`${value}${suffix}`).getTime();
+}
+
 function normalizeStatus(item: Ipo): Ipo {
   const label = (item.statusLabel || "").toLocaleLowerCase("tr-TR");
   const rawStatus = String(item.status || "approved").toLocaleLowerCase("tr-TR");
@@ -94,15 +100,23 @@ function normalizeStatus(item: Ipo): Ipo {
     completed: "completed",
     draft: "draft"
   };
-  const tradeTime = item.firstTradeDate ? new Date(item.firstTradeDate).getTime() : Number.NaN;
-  const hasStartedTrading = Number.isFinite(tradeTime) && tradeTime <= Date.now();
+  const now = Date.now();
+  const tradeTime = dateAtIstanbulBoundary(item.firstTradeDate);
+  const collectionStart = dateAtIstanbulBoundary(item.collectionStart);
+  const collectionEnd = dateAtIstanbulBoundary(item.collectionEnd, true);
+  const hasStartedTrading = Number.isFinite(tradeTime) && tradeTime <= now;
   let status: IpoStatus = aliasMap[rawStatus] || "approved";
 
-  if (hasStartedTrading || label.includes("işlem görüyor") || label.includes("işlem gören")) status = "listed";
-  else if (label.includes("talep topluyor")) status = "active";
+  if (status === "draft" || label.includes("taslak")) status = "draft";
+  else if (status === "delayed" || label.includes("ertelen")) status = "delayed";
+  else if (status === "listed" || hasStartedTrading || label.includes("işlem görüyor") || label.includes("işlem gören")) status = "listed";
+  else if (Number.isFinite(collectionStart) && Number.isFinite(collectionEnd)) {
+    if (now < collectionStart) status = "upcoming";
+    else if (now <= collectionEnd) status = "active";
+    else status = "completed";
+  } else if (label.includes("talep topluyor")) status = "active";
   else if (label.includes("yaklaş")) status = "upcoming";
   else if (label.includes("tamamlan")) status = "completed";
-  else if (label.includes("ertelen")) status = "delayed";
   else if (label.includes("spk") || label.includes("onay")) status = "approved";
 
   return { ...item, status, statusLabel: statusLabels[status] };
