@@ -1,4 +1,5 @@
 /* Mobile header controls: keep theme, auth, notifications and menu reachable on small screens. */
+.mobileAuthActions,
 .mobileMenuAccount,
 .mobileMenuLogout,
 .mobileMenuNotification {
@@ -14,20 +15,67 @@
     display: inline-flex;
   }
 
-  .mobileMenuAccount,
-  .mobileMenuLogout,
+  .desktopNav.open {
+    max-height: calc(100dvh - 84px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   .mobileMenuNotification {
     display: flex;
+  }
+
+  .mobileAuthActions {
+    display: grid;
+    width: 100%;
+    gap: 8px;
+    padding-top: 12px;
+    margin-top: 2px;
+    border-top: 1px solid var(--line);
+  }
+
+  .mobileMenuAccount {
+    display: flex;
+    min-height: 52px;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .mobileMenuAccount span {
+    font-weight: 800;
+  }
+
+  .mobileMenuAccount small {
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mobileMenuLogout,
   .mobileMenuNotification {
     width: 100%;
+    min-height: 44px;
     justify-content: flex-start;
-    padding: 8px 0;
+    padding: 8px 10px;
     color: var(--muted);
     font-weight: 700;
     text-align: left;
+  }
+
+  .mobileMenuLogout {
+    display: flex;
+    color: var(--danger);
   }
 }
 
