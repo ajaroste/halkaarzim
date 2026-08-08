@@ -1,0 +1,40 @@
+.toastViewport {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 2400;
+  width: min(440px, calc(100vw - 28px));
+  transform: translateX(-50%);
+  display: grid;
+  gap: 10px;
+  pointer-events: none;
+}
+.toastCard { position: relative; display: grid; grid-template-columns: 38px minmax(0,1fr) 30px; gap: 12px; align-items: center; padding: 13px 12px 14px; overflow: hidden; border: 1px solid color-mix(in srgb,var(--line) 82%,transparent); border-radius: 16px; background: color-mix(in srgb,var(--surface) 94%,transparent); box-shadow: 0 18px 55px rgba(0,0,0,.24); backdrop-filter: blur(18px) saturate(1.15); pointer-events: auto; animation: toast-enter 300ms cubic-bezier(.2,.8,.2,1) both; }
+.toastIcon { width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-weight:850;background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent); }
+.toastIcon.error{background:rgba(210,64,64,.16);color:#e45c5c}.toastIcon.warning{background:rgba(232,153,45,.17);color:#eaa347}.toastIcon.info{background:rgba(82,134,245,.16);color:#6f9af7}
+.toastCopy{min-width:0;display:grid;gap:2px}.toastCopy strong{font-size:14px;line-height:1.25;letter-spacing:-.01em}.toastCopy span{color:var(--muted);font-size:12.5px;line-height:1.35}
+.toastClose{border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;width:30px;height:30px;border-radius:9px}.toastClose:hover{background:var(--surface-2);color:var(--ink)}
+.toastProgress{position:absolute;left:0;bottom:0;height:2px;width:100%;transform-origin:left;background:var(--accent);animation:toast-progress linear both}.toastCard.error .toastProgress{background:#e45c5c}.toastCard.warning .toastProgress{background:#eaa347}.toastCard.info .toastProgress{background:#6f9af7}
+@keyframes toast-enter{from{opacity:0;transform:translateY(-18px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes toast-progress{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+.accountQuickLogout,.accountLogoutButton{border:1px solid color-mix(in srgb,#d55252 38%,var(--line));background:color-mix(in srgb,#d55252 9%,var(--surface));color:#d85a5a;border-radius:12px;font:inherit;font-weight:760;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 13px;transition:transform 160ms ease,border-color 160ms ease,background 160ms ease}
+.accountQuickLogout:hover,.accountLogoutButton:hover{transform:translateY(-1px);border-color:#d85a5a;background:color-mix(in srgb,#d55252 14%,var(--surface))}.accountLogoutButton{width:100%;margin-top:16px}.accountQuickLogout{margin-left:auto;white-space:nowrap}
+
+@media(max-width:680px){
+  .mobileMenuButton{display:none!important}
+  .detailIntro{display:grid!important;grid-template-columns:1fr!important;gap:18px!important;align-items:start!important}
+  .detailIntroIdentity{display:grid!important;grid-template-columns:58px minmax(0,1fr)!important;gap:14px!important;align-items:start!important;min-width:0!important}
+  .detailIntroIdentity .companyLogo.xlarge{width:58px!important;height:58px!important;min-width:58px!important;border-radius:16px!important;font-size:18px!important}
+  .detailIntroIdentity>div:last-child{min-width:0!important}
+  .detailIntroIdentity h1{font-size:clamp(29px,8.2vw,40px)!important;line-height:1.02!important;letter-spacing:-.045em!important;overflow-wrap:normal!important;word-break:normal!important;hyphens:none!important;max-width:100%!important;margin:12px 0 8px!important}
+  .detailIntroIdentity p{font-size:14px!important;margin:0!important}.detailIntro .watchControl{justify-self:start!important}.detailIntro .cardTopline{gap:8px!important;flex-wrap:wrap!important}.detailIntro .ticker{font-size:13px!important}
+  .detailQuickFacts{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}.detailQuickFacts article{padding:16px!important;min-width:0!important}.detailQuickFacts span{font-size:12px!important}.detailQuickFacts strong{font-size:16px!important;line-height:1.2!important;word-break:normal!important;overflow-wrap:anywhere!important}
+  .watchControl .secondaryButton,.watchControl .primaryButton{min-height:42px;padding-inline:13px;white-space:nowrap;font-size:13.5px}
+  .mobileBottomNav{left:12px!important;right:12px!important;bottom:max(10px,env(safe-area-inset-bottom))!important;width:auto!important;border-radius:18px!important;padding:7px 5px!important}.mobileBottomNav a,.mobileBottomNav button{min-width:0;gap:4px!important;font-size:10.5px!important;line-height:1.15!important}.mobileBottomNav svg{width:19px!important;height:19px!important}
+  .siteHeader .headerInner{gap:8px!important}.siteHeader .brandText{font-size:clamp(19px,5.5vw,25px)!important;letter-spacing:-.045em!important}.siteHeader .brandMark{width:36px!important;height:36px!important}.headerActions{gap:7px!important}.headerActions .iconButton{width:42px!important;min-width:42px!important;height:42px!important}.headerLoginButton{min-height:42px!important;padding-inline:14px!important;font-size:13.5px!important}
+  .homeMetricsV2Grid{gap:10px!important}.homeMetricsV2Grid article{min-width:0!important;padding:18px 16px!important;min-height:148px!important}.homeMetricsV2Grid article>span{display:none!important}.homeMetricsV2Grid article strong{font-variant-numeric:tabular-nums;font-size:clamp(28px,7.4vw,36px)!important;letter-spacing:-.045em!important;white-space:nowrap!important}.homeMetricsV2Grid article p{font-size:13px!important;line-height:1.35!important;margin-top:14px!important}
+  .marketCardV2Company h2{font-size:clamp(25px,7.5vw,34px)!important;line-height:1.02!important;letter-spacing:-.04em!important}.marketCardV2Company p{font-size:13px!important}.marketCardV2Metrics{grid-template-columns:1fr 1fr!important;gap:8px!important}.marketCardV2Metrics>div{padding:12px!important}.marketCardV2Metrics strong{font-size:14px!important;white-space:nowrap!important}
+  .accountIdentityCard{grid-template-columns:50px minmax(0,1fr)!important;gap:12px!important}.accountIdentityCard>div:nth-child(2){min-width:0!important}.accountIdentityCard strong,.accountIdentityCard span,.accountIdentityCard small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.accountQuickLogout{grid-column:1/-1;width:100%;margin:4px 0 0!important}.accountHeroModern h1{font-size:clamp(32px,9vw,44px)!important;line-height:1!important}.accountCardModern h2{font-size:20px!important}.accountCardDescription{font-size:13.5px!important;line-height:1.5!important}
+  .toastViewport{top:max(10px,env(safe-area-inset-top));width:calc(100vw - 20px)}.toastCard{border-radius:14px;padding:11px 10px 12px;grid-template-columns:34px minmax(0,1fr) 28px;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){.toastCard,.toastProgress{animation:none!important}}
