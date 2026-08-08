@@ -11,7 +11,7 @@ function response(body: unknown, status = 200, cache = false) {
     status,
     headers: {
       "Cache-Control": cache
-        ? "public, s-maxage=86400, stale-while-revalidate=604800"
+        ? "public, s-maxage=3600, stale-while-revalidate=21600"
         : "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff"
     }
