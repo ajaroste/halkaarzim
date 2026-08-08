@@ -1,8 +1,8 @@
-const CACHE = "halkaarzim-shell-v2";
+const CACHE = "halkaarzim-shell-v3";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(["/", "/halka-arzlar", "/manifest.webmanifest"])));
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(["/manifest.webmanifest"])));
 });
 
 self.addEventListener("activate", (event) => {
@@ -14,9 +14,22 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || new URL(event.request.url).origin !== self.location.origin) return;
+
+  const url = new URL(event.request.url);
+  const isNavigation = event.request.mode === "navigate" || event.request.destination === "document";
+  const isNextRuntime = url.pathname.startsWith("/_next/") || event.request.headers.get("RSC") === "1";
+
+  // Never persist Next.js route/RSC/runtime responses across deployments.
+  if (isNavigation || isNextRuntime) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(fetch(event.request).then((response) => {
-    const copy = response.clone();
-    caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+    if (response.ok && ["image", "style", "font", "manifest"].includes(event.request.destination)) {
+      const copy = response.clone();
+      caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+    }
     return response;
   }).catch(() => caches.match(event.request)));
 });
