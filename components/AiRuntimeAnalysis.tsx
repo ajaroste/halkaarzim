@@ -67,8 +67,8 @@ export function AiRuntimeAnalysis({
     <div className="reportLead">
       <AiScore score={score} />
       <div>
-        <div className="aiReportTitleRow"><span className="aiReportIcon"><AiSparkIcon /></span><strong className="reportLabel">{isGemini ? "Gemini ile AI yorumu" : finished ? "Kaynak bazlı ön analiz" : "AI yorumu hazırlanıyor"}</strong></div>
-        <small className="aiProviderStamp">{isGemini ? "Gemini · doğrulanmış kaynaklara dayalı" : finished ? "Gemini yanıtı alınamadı · doğrulanmış kaynak analizi gösteriliyor" : "Kaynak bazlı analiz gösteriliyor · Gemini hazır olduğunda otomatik güncellenir"}</small>
+        <div className="aiReportTitleRow"><span className="aiReportIcon"><AiSparkIcon /></span><strong className="reportLabel">{isGemini ? "HalkaArz AI yorumu" : finished ? "Kaynak bazlı ön analiz" : "HalkaArz AI hazırlanıyor"}</strong></div>
+        <small className="aiProviderStamp">{isGemini ? "Gemini altyapısı · doğrulanmış kaynaklara dayalı" : finished ? "AI yanıtı alınamadı · doğrulanmış kaynak analizi gösteriliyor" : "Kaynak bazlı analiz gösteriliyor · HalkaArz AI hazır olduğunda otomatik güncellenir"}</small>
         <p>{summary}</p>
       </div>
     </div>
