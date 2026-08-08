@@ -18,11 +18,23 @@ function response(body: unknown, status = 200, cache = false) {
   });
 }
 
+function safeReason(error: unknown) {
+  if (!(error instanceof Error)) return "unknown_error";
+  const message = error.message || "unknown_error";
+  if (/GEMINI_API_KEY/i.test(message)) return "missing_api_key";
+  if (/Gemini upstream \d+/i.test(message)) return message.replace(/[^a-zA-Z0-9 _-]/g, "").slice(0, 80);
+  if (/JSON|parse/i.test(message)) return "invalid_model_json";
+  if (/boş yanıt/i.test(message)) return "empty_model_response";
+  if (/yatırım yönlendirmesi/i.test(message)) return "blocked_model_output";
+  if (/timeout/i.test(message)) return "timeout";
+  return "runtime_error";
+}
+
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const ipo = getIpoBySlug(slug);
   if (!ipo) return response({ error: "Halka arz bulunamadı." }, 404);
-  if (!process.env.GEMINI_API_KEY) return response({ error: "AI analizi yapılandırılmadı." }, 503);
+  if (!process.env.GEMINI_API_KEY) return response({ error: "AI analizi yapılandırılmadı.", reason: "missing_api_key" }, 503);
 
   const facts = {
     company: ipo.company,
@@ -39,7 +51,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     const analysis = await generateGeminiIpoAnalysis(facts);
     return response(analysis, 200, true);
   } catch (error) {
-    console.error("Runtime IPO AI analysis failed", error instanceof Error ? error.message : error);
-    return response({ error: "AI analizi şu anda hazırlanamadı." }, 502);
+    const reason = safeReason(error);
+    console.error("Runtime IPO AI analysis failed", reason, error instanceof Error ? error.message : error);
+    return response({ error: "AI analizi şu anda hazırlanamadı.", reason }, 502);
   }
 }
