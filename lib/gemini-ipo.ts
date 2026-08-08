@@ -73,7 +73,6 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
     "Al, sat, kaçırma, kesin kazanç, tavan yapar, güvenli yatırım gibi yatırım yönlendirmeleri kullanma.",
     "Eksik verileri açıkça dataGaps alanında belirt.",
     "summary en fazla 900 karakter, her madde en fazla 260 karakter olsun.",
-    "Sadece geçerli JSON döndür. Markdown veya açıklama ekleme.",
     "Tam olarak şu alanları kullan: summary:string, strengths:string[], risks:string[], dataGaps:string[], confidence:number.",
     JSON.stringify(facts)
   ].join("\n");
@@ -89,7 +88,8 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 1200
+        maxOutputTokens: 1200,
+        responseMimeType: "application/json"
       }
     })
   });
