@@ -178,6 +178,9 @@ export async function createComment(input: { ipoId: string; body: string; token:
 export async function voteComment(commentId: string, token: string) {
   return rpc<boolean>("toggle_comment_vote", { p_comment_id: commentId }, token);
 }
+export async function dislikeComment(commentId: string, token: string) {
+  return rpc<boolean>("toggle_comment_dislike", { p_comment_id: commentId }, token);
+}
 export async function reportComment(commentId: string, reason: string, details: string, token: string) {
   return rpc<string>("report_comment", { p_comment_id: commentId, p_reason: reason, p_details: details }, token);
 }
