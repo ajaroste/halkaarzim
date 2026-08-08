@@ -1,11 +1,17 @@
 /* UX sprint 2: editorial density and timeline polish. */
-.homeHeroV2Inner{min-height:72svh!important;padding-block:clamp(78px,9vw,120px)!important;gap:clamp(40px,6vw,84px)!important}
-.homeHeroV2Copy h1{font-size:clamp(3.4rem,6.3vw,6.6rem)!important;max-width:10.5ch!important}
-.homeHeroV2:before{opacity:.45}
-.marketCardV2{border-radius:16px!important;box-shadow:0 20px 54px rgba(0,0,0,.22)!important}
-.floatingMetric{border-radius:12px!important;box-shadow:none!important}
-.homeMetricsV2Grid article{border-radius:12px!important;box-shadow:none!important}
-.homeMethodV2{background:#0d1110}
+.homeHeroV2{background:var(--premium-bg)!important}
+.homeHeroV2:before{display:none!important}
+.homeHeroV2Inner{min-height:auto!important;padding-block:clamp(56px,7vw,88px)!important;gap:clamp(32px,5vw,64px)!important;grid-template-columns:minmax(0,1fr) minmax(360px,.72fr)!important}
+.homeHeroV2Copy h1{font-size:clamp(3rem,5.7vw,5.8rem)!important;line-height:.94!important;max-width:11ch!important}
+.homeHeroV2Copy>p{font-size:clamp(1rem,1.4vw,1.18rem)!important}
+.homeHeroProof{margin-top:24px!important}
+.marketCardV2{padding:24px!important;border-radius:12px!important;box-shadow:none!important;border-color:var(--premium-line)!important;background:#101412!important}
+.marketCardV2Company{padding-block:20px!important}.marketCardV2Price{padding:14px 0!important}.marketCardV2Metrics>div{border-radius:8px!important}
+.floatingMetric{display:none!important}
+.homeMetricsV2{padding-top:18px!important}.homeMetricsV2Grid article{padding:22px!important;border-radius:10px!important;box-shadow:none!important}
+.homeFeaturedV2{padding-top:clamp(72px,8vw,108px)!important}.homeSectionIntroV2{margin-bottom:30px!important}.homeSectionIntroV2 h2{font-size:clamp(2.5rem,5vw,4.6rem)!important;line-height:.98!important}
+.homeMethodV2{padding-block:clamp(72px,8vw,110px)!important;background:#0d1110}.homeMethodV2Lead h2{font-size:clamp(2.8rem,5vw,4.8rem)!important;line-height:.96!important}
+.homeFinalV2{padding-block:clamp(64px,7vw,96px)!important}.homeFinalV2 h2{font-size:clamp(2.5rem,4.7vw,4.4rem)!important;line-height:.98!important}
 
 .agendaGroupedList{display:grid;gap:34px}
 .agendaDateGroup{display:grid;grid-template-columns:120px minmax(0,1fr);gap:28px;align-items:start}
@@ -18,15 +24,22 @@
 .authModalCard{max-width:480px}
 
 @media(max-width:900px){
-  .homeHeroV2Inner{min-height:auto!important}
+  .homeHeroV2Inner{grid-template-columns:1fr!important;min-height:auto!important}
   .agendaDateGroup{grid-template-columns:1fr;gap:10px}
   .agendaDateHeading{position:static;margin-top:0}
 }
 
 @media(max-width:640px){
-  .homeHeroV2Inner{padding-block:58px 72px!important}
-  .homeHeroV2Copy h1{font-size:clamp(2.8rem,14vw,4.2rem)!important}
-  .marketCardV2{border-radius:14px!important}
+  .homeHeroV2Inner{padding-block:34px 42px!important;gap:24px!important}
+  .homeHeroV2Copy h1{font-size:clamp(2.35rem,11vw,3.5rem)!important;margin:14px 0 16px!important}
+  .homeHeroV2Copy>p{font-size:.96rem!important;line-height:1.45!important}
+  .heroActions{margin-top:20px!important}
+  .homeHeroProof{margin-top:18px!important}.homeHeroProof span{padding:6px 8px!important;font-size:.69rem!important}
+  .homeHeroV2Visual{margin-top:4px!important}.marketCardV2{padding:16px!important;border-radius:10px!important}
+  .marketCardV2Top{padding-bottom:12px!important}.marketCardV2Company{padding-block:14px!important;gap:12px!important}.marketCardV2Company .companyLogo{width:42px!important;height:42px!important;border-radius:9px!important}.marketCardV2Company h2{font-size:1.12rem!important;margin-top:3px!important}.marketCardV2Price{padding:9px 0!important}.marketCardV2Price strong{font-size:2rem!important}.marketCardV2Metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important}.marketCardV2Metrics>div{padding:9px!important}.marketCardV2Metrics>div:nth-child(3){grid-column:1/-1}.marketCardV2 .secondaryButton{min-height:42px!important;margin-top:10px!important}
+  .homeMetricsV2Grid article{min-height:96px!important;padding:14px!important}.homeMetricsV2Grid strong{font-size:1.7rem!important}.homeMetricsV2Grid p{margin-top:7px!important;font-size:.74rem!important}
+  .cardGrid{gap:8px!important}.ipoCard{gap:8px!important;padding:12px!important;border-radius:9px!important}.ipoCard .cardTopline{min-height:24px!important}.statusBadge{padding:4px 7px!important;font-size:.64rem!important}.ticker{font-size:.68rem!important}.ipoCardIdentity{gap:8px!important}.ipoCardIdentity h3{font-size:.93rem!important;line-height:1.13!important;margin-bottom:2px!important}.ipoCardIdentity p{font-size:.7rem!important;line-height:1.2!important}.ipoCardPrice{font-size:1.08rem!important}.ipoCardCompactFacts>div{padding:7px 0!important}.ipoCardCompactFacts>div+div{padding-left:9px!important}.ipoCardCompactFacts span{margin-bottom:2px!important;font-size:.6rem!important}.ipoCardCompactFacts strong{font-size:.76rem!important;line-height:1.15!important}.ipoCardSignals{gap:4px!important}.ipoCardSignals span{padding:3px 5px!important;font-size:.61rem!important}.ipoCardSignals span:nth-child(n+3){display:none!important}.ipoCard .cardFooter{font-size:.67rem!important;min-height:24px!important}.ipoCard .cardFooter a{min-height:32px!important}
+  .homeSectionIntroV2 h2{font-size:2.45rem!important}.homeMethodV2Lead h2,.homeFinalV2 h2{font-size:2.55rem!important}
   .agendaGroupedList{gap:28px}
   .agendaDateGroup .agendaPageList article{padding-block:18px!important}
 }
