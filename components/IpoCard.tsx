@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Ipo } from "@/data/ipos";
 import { formatTry } from "@/lib/domain";
+import { CompanyLogo } from "./CompanyLogo";
 
 function capitalStructureLabel(ipo: Ipo): string | null {
   if (!ipo.lotCount) return null;
@@ -27,7 +28,13 @@ export function IpoCard({ ipo }: { ipo: Ipo }) {
 
   return <article className={`ipoCard ipoCard-${ipo.status}`}>
     <div className="cardTopline"><span className={`statusBadge ${ipo.status}`}>{ipo.statusLabel}</span><span className="ticker">{code}</span></div>
-    <div className="ipoCardIdentity"><div><h3>{ipo.company}</h3><p>{ipo.sector}</p></div><strong className="ipoCardPrice">{formatTry(ipo.price)}</strong></div>
+    <div className="ipoCardIdentity">
+      <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+        <CompanyLogo ipo={ipo} />
+        <div style={{ minWidth: 0 }}><h3>{ipo.company}</h3><p>{ipo.sector}</p></div>
+      </div>
+      <strong className="ipoCardPrice">{formatTry(ipo.price)}</strong>
+    </div>
     <div className="ipoCardCompactFacts">
       <div><span>{timing.label}</span><strong>{timing.value}</strong></div>
       <div><span>Temel arz</span><strong>{ipo.lotCount.toLocaleString("tr-TR")} lot</strong></div>
