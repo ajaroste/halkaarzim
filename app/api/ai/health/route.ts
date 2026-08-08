@@ -4,9 +4,11 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 15;
 
+const GEMINI_MODEL = "gemini-3.5-flash";
+
 export async function GET() {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
-  const model = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
+  const model = GEMINI_MODEL;
 
   if (!apiKey) {
     return NextResponse.json(
@@ -16,7 +18,7 @@ export async function GET() {
   }
 
   try {
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
     const upstream = await fetch(endpoint, {
       method: "POST",
       headers: {
