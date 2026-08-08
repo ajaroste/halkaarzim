@@ -48,7 +48,7 @@ function validate(result: IpoAiAnalysis) {
   if (PROHIBITED.some((term) => combined.includes(term))) throw new Error("Gemini çıktısı yatırım yönlendirmesi içeriyor");
 }
 
-function extractJson(raw: string): string {
+function extractJson(raw: string): string | null {
   const trimmed = raw.trim();
   const withoutFence = trimmed
     .replace(/^```(?:json)?\s*/i, "")
@@ -56,8 +56,37 @@ function extractJson(raw: string): string {
     .trim();
   if (withoutFence.startsWith("{") && withoutFence.endsWith("}")) return withoutFence;
   const match = withoutFence.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error("Gemini JSON yanıtı bulunamadı");
-  return match[0];
+  return match ? match[0] : null;
+}
+
+function parseGeminiOutput(raw: string): Record<string, unknown> {
+  const candidate = extractJson(raw);
+  if (candidate) {
+    try {
+      const parsed = JSON.parse(candidate) as Record<string, unknown>;
+      if (parsed && typeof parsed === "object") return parsed;
+    } catch {
+      // JSON parse başarısızsa ham Gemini metnini özet olarak kullanacağız.
+    }
+  }
+
+  const fallbackSummary = cleanText(
+    raw
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```$/i, "")
+      .replace(/^\s*(?:summary|özet)\s*[:\-]\s*/i, ""),
+    900
+  );
+
+  if (!fallbackSummary) throw new Error("Gemini boş yanıt döndürdü");
+
+  return {
+    summary: fallbackSummary,
+    strengths: [],
+    risks: [],
+    dataGaps: [],
+    confidence: 60
+  };
 }
 
 export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoAiAnalysis> {
@@ -100,11 +129,13 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
     throw new Error(`Gemini upstream ${response.status}`);
   }
 
-  const payload = await response.json() as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> };
+  const payload = await response.json() as {
+    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+  };
   const raw = payload.candidates?.[0]?.content?.parts?.map((part) => part.text || "").join("") || "";
   if (!raw) throw new Error("Gemini boş yanıt döndürdü");
 
-  const parsed = JSON.parse(extractJson(raw)) as Record<string, unknown>;
+  const parsed = parseGeminiOutput(raw);
   const confidence = Number(parsed.confidence);
   const result: IpoAiAnalysis = {
     provider: "google-gemini",
@@ -113,7 +144,7 @@ export async function generateGeminiIpoAnalysis(facts: IpoAiFacts): Promise<IpoA
     strengths: cleanList(parsed.strengths),
     risks: cleanList(parsed.risks),
     dataGaps: cleanList(parsed.dataGaps),
-    confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(100, Math.round(confidence))) : 0
+    confidence: Number.isFinite(confidence) ? Math.max(0, Math.min(100, Math.round(confidence))) : 60
   };
   validate(result);
   return result;
