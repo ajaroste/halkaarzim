@@ -15,7 +15,7 @@ concurrency:
 jobs:
   release-gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,3 +35,41 @@ jobs:
         run: npm run test:all
       - name: Build production application
         run: npm run build
+      - name: Prewarm all production HalkaArz AI analyses
+        if: github.event_name == 'push' && contains(github.event.head_commit.message, 'prewarm-now')
+        env:
+          BASE_URL: https://halkaarzim.vercel.app
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Waiting for Vercel production deployment..."
+          sleep 75
+          sitemap="$(curl --fail --silent --show-error --retry 4 "$BASE_URL/sitemap.xml")"
+          mapfile -t slugs < <(printf '%s' "$sitemap" | grep -oE '<loc>[^<]+/arz/[^<]+</loc>' | sed -E 's#.*\/arz\/([^<]+)</loc>#\1#' | sort -u)
+          test "${#slugs[@]}" -gt 0
+          echo "Generating ${#slugs[@]} HalkaArz AI analyses"
+          failed=0
+          passed=0
+          for slug in "${slugs[@]}"; do
+            echo "::group::$slug"
+            status="$(curl --silent --show-error --retry 2 --max-time 35 -o /tmp/ai.json -w '%{http_code}' "$BASE_URL/api/ai/ipo/$slug?prewarm=20260809" || true)"
+            if [ "$status" = "200" ] && python3 - <<'PY'
+import json
+with open('/tmp/ai.json', encoding='utf-8') as f:
+    d=json.load(f)
+assert d.get('provider') == 'google-gemini'
+assert isinstance(d.get('summary'), str) and d['summary'].strip()
+print('OK', d.get('model'), 'confidence=', d.get('confidence'), 'summary_chars=', len(d['summary']))
+PY
+            then
+              passed=$((passed + 1))
+            else
+              echo "FAILED HTTP=$status"
+              cat /tmp/ai.json 2>/dev/null || true
+              failed=$((failed + 1))
+            fi
+            echo "::endgroup::"
+            sleep 1
+          done
+          echo "AI_PREWARM_RESULT passed=$passed failed=$failed total=${#slugs[@]}"
+          test "$failed" -eq 0
