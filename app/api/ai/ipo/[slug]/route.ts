@@ -8,12 +8,15 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 30;
 
 function response(body: unknown, status = 200, cache = false) {
+  const cacheValue = cache
+    ? "public, s-maxage=31536000, stale-while-revalidate=86400"
+    : "no-store, max-age=0";
+
   return NextResponse.json(body, {
     status,
     headers: {
-      "Cache-Control": cache
-        ? "public, s-maxage=31536000, stale-while-revalidate=86400"
-        : "no-store, max-age=0",
+      "Cache-Control": cacheValue,
+      ...(cache ? { "CDN-Cache-Control": cacheValue, "Vercel-CDN-Cache-Control": cacheValue } : {}),
       "X-Content-Type-Options": "nosniff"
     }
   });
@@ -38,8 +41,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   const ipo = getIpoBySlug(slug);
   if (!ipo) return response({ error: "Halka arz bulunamadı." }, 404);
 
-  // Persistent cache is an optimization, not a hard dependency. If it is
-  // temporarily unavailable we still generate the AI result normally.
   try {
     const cached = await getCachedIpoAiAnalysis(slug);
     if (cached) return response(cached, 200, true);
@@ -100,14 +101,13 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   try {
     const analysis = await generateGeminiIpoAnalysis(facts);
 
-    // A cache write failure must not hide a valid Gemini result from users.
     try {
       const persisted = await storeIpoAiAnalysisOnce(slug, analysis);
       return response(persisted, 200, true);
     } catch (cacheError) {
       const reason = safeReason(cacheError);
-      console.error("IPO AI persistent cache write failed; returning generated analysis", reason, cacheError instanceof Error ? cacheError.message : cacheError);
-      return response(analysis, 200, false);
+      console.error("IPO AI persistent cache write failed; caching generated analysis at CDN", reason, cacheError instanceof Error ? cacheError.message : cacheError);
+      return response(analysis, 200, true);
     }
   } catch (error) {
     const reason = safeReason(error);
