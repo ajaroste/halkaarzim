@@ -34,29 +34,27 @@ jobs:
 
           echo "Prewarming ${#slugs[@]} IPO analyses"
           failed=0
+          passed=0
           for slug in "${slugs[@]}"; do
-            url="$BASE_URL/api/ai/ipo/$slug"
+            url="$BASE_URL/api/ai/ipo/$slug?prewarm=20260809"
             echo "::group::$slug"
             status="$(curl --silent --show-error --retry 2 --max-time 35 -o /tmp/ai.json -w '%{http_code}' "$url" || true)"
             if [ "$status" != "200" ]; then
               echo "AI prewarm failed: HTTP $status"
               cat /tmp/ai.json 2>/dev/null || true
               failed=$((failed + 1))
+            elif python3 -c "import json; d=json.load(open('/tmp/ai.json', encoding='utf-8')); assert d.get('provider') == 'google-gemini'; assert isinstance(d.get('summary'), str) and d['summary'].strip(); print('OK model=%s confidence=%s summary_chars=%s' % (d.get('model'), d.get('confidence'), len(d.get('summary',''))))"; then
+              passed=$((passed + 1))
             else
-              python3 - <<'PY'
-import json
-with open('/tmp/ai.json', encoding='utf-8') as f:
-    data = json.load(f)
-assert data.get('provider') == 'google-gemini', data
-assert data.get('summary'), data
-print(f"OK model={data.get('model')} confidence={data.get('confidence')} summary_chars={len(data.get('summary',''))}")
-PY
+              echo "AI response validation failed"
+              cat /tmp/ai.json 2>/dev/null || true
+              failed=$((failed + 1))
             fi
             echo "::endgroup::"
             sleep 1
           done
 
+          echo "AI_PREWARM_RESULT passed=$passed failed=$failed total=${#slugs[@]}"
           if [ "$failed" -gt 0 ]; then
-            echo "$failed IPO AI analyses failed to prewarm"
             exit 1
           fi
