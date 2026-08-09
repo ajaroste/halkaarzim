@@ -1,16 +1,32 @@
 import type { IpoAiAnalysis } from "@/lib/gemini-ipo";
 
-function supabaseConfig() {
+function supabaseUrl(): string {
   const url = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/$/, "");
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
-  if (!url || !serviceRoleKey) throw new Error("IPO AI cache is not configured");
-  return { url, serviceRoleKey };
+  if (!url) throw new Error("IPO AI cache URL is not configured");
+  return url;
 }
 
-function headers(serviceRoleKey: string): HeadersInit {
+function readKey(): string {
+  const key = (
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    ""
+  ).trim();
+  if (!key) throw new Error("IPO AI cache read key is not configured");
+  return key;
+}
+
+function writeKey(): string {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  if (!key) throw new Error("IPO AI cache write key is not configured");
+  return key;
+}
+
+function headers(key: string): HeadersInit {
   return {
-    apikey: serviceRoleKey,
-    Authorization: `Bearer ${serviceRoleKey}`,
+    apikey: key,
+    Authorization: `Bearer ${key}`,
     "Content-Type": "application/json"
   };
 }
@@ -42,14 +58,15 @@ function toAnalysis(row: CacheRow): IpoAiAnalysis {
 }
 
 export async function getCachedIpoAiAnalysis(slug: string): Promise<IpoAiAnalysis | null> {
-  const { url, serviceRoleKey } = supabaseConfig();
+  const url = supabaseUrl();
+  const key = readKey();
   const query = new URLSearchParams({
     slug: `eq.${slug}`,
     select: "provider,model,summary,strengths,risks,data_gaps,confidence",
     limit: "1"
   });
   const response = await fetch(`${url}/rest/v1/ipo_ai_analyses?${query}`, {
-    headers: headers(serviceRoleKey),
+    headers: headers(key),
     cache: "no-store"
   });
   if (!response.ok) throw new Error(`IPO AI cache read failed ${response.status}`);
@@ -58,11 +75,12 @@ export async function getCachedIpoAiAnalysis(slug: string): Promise<IpoAiAnalysi
 }
 
 export async function storeIpoAiAnalysisOnce(slug: string, analysis: IpoAiAnalysis): Promise<IpoAiAnalysis> {
-  const { url, serviceRoleKey } = supabaseConfig();
+  const url = supabaseUrl();
+  const key = writeKey();
   const response = await fetch(`${url}/rest/v1/ipo_ai_analyses?on_conflict=slug`, {
     method: "POST",
     headers: {
-      ...headers(serviceRoleKey),
+      ...headers(key),
       Prefer: "resolution=ignore-duplicates,return=representation"
     },
     body: JSON.stringify({
@@ -80,7 +98,6 @@ export async function storeIpoAiAnalysisOnce(slug: string, analysis: IpoAiAnalys
   const rows = await response.json() as CacheRow[];
   if (rows[0]) return toAnalysis(rows[0]);
 
-  // A concurrent request may have inserted the same slug first. Always return the persisted winner.
   const persisted = await getCachedIpoAiAnalysis(slug);
   if (!persisted) throw new Error("IPO AI cache write completed without persisted row");
   return persisted;
