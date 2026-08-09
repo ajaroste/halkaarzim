@@ -15,6 +15,12 @@ const statusPriority: Record<IpoStatus, number> = {
   draft: 6
 };
 
+function formatCompactLots(value: number) {
+  if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Milyar`;
+  if (value >= 1_000_000) return `${(value / 1_000_000).toLocaleString("tr-TR", { maximumFractionDigits: 1 })} Milyon`;
+  return value.toLocaleString("tr-TR");
+}
+
 export default function HomePage() {
   const featured = [...ipos]
     .sort((a, b) => statusPriority[a.status] - statusPriority[b.status] || b.approvalDate.localeCompare(a.approvalDate))
@@ -60,7 +66,7 @@ export default function HomePage() {
 
     <section className="homeMetricsV2"><div className="container homeMetricsV2Grid">
       <article><span>01</span><strong>{ipos.length}</strong><p>Takip edilen halka arz</p></article>
-      <article><span>02</span><strong>{totalLots.toLocaleString("tr-TR")}</strong><p>Toplam temel arz lotu</p></article>
+      <article className="homeMetricLots"><span>02</span><strong>{formatCompactLots(totalLots)}</strong><p>Toplam temel arz lotu</p><small>{totalLots.toLocaleString("tr-TR")} lot</small></article>
       <article><span>03</span><strong>{bulletinCount}</strong><p>Resmî SPK bülteni</p></article>
       <article><span>04</span><strong>{listedCount}</strong><p>İşlem görmeye başlayan</p></article>
     </div></section>
