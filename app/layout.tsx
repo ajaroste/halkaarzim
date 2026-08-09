@@ -16,6 +16,7 @@ import "./mobile-fix-v3.css";
 import "./mobile-responsive-v4.css";
 import "./iphone13-responsive.css";
 import "./comments-v2.css";
+import "./explorer-search.css";
 import { CookieBanner } from "@/components/CookieBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 import { LegalConsentGate } from "@/components/LegalConsentGate";
