@@ -38,13 +38,14 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   const ipo = getIpoBySlug(slug);
   if (!ipo) return response({ error: "Halka arz bulunamadı." }, 404);
 
+  // Persistent cache is an optimization, not a hard dependency. If it is
+  // temporarily unavailable we still generate the AI result normally.
   try {
     const cached = await getCachedIpoAiAnalysis(slug);
     if (cached) return response(cached, 200, true);
   } catch (error) {
     const reason = safeReason(error);
-    console.error("IPO AI persistent cache read failed", reason, error instanceof Error ? error.message : error);
-    return response({ error: "AI analizi kalıcı önbelleği kullanılamıyor.", reason }, 503);
+    console.error("IPO AI persistent cache read failed; continuing without cache", reason, error instanceof Error ? error.message : error);
   }
 
   if (!process.env.GEMINI_API_KEY) return response({ error: "AI analizi yapılandırılmadı.", reason: "missing_api_key" }, 503);
@@ -98,8 +99,16 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   try {
     const analysis = await generateGeminiIpoAnalysis(facts);
-    const persisted = await storeIpoAiAnalysisOnce(slug, analysis);
-    return response(persisted, 200, true);
+
+    // A cache write failure must not hide a valid Gemini result from users.
+    try {
+      const persisted = await storeIpoAiAnalysisOnce(slug, analysis);
+      return response(persisted, 200, true);
+    } catch (cacheError) {
+      const reason = safeReason(cacheError);
+      console.error("IPO AI persistent cache write failed; returning generated analysis", reason, cacheError instanceof Error ? cacheError.message : cacheError);
+      return response(analysis, 200, false);
+    }
   } catch (error) {
     const reason = safeReason(error);
     console.error("Runtime IPO AI analysis failed", reason, error instanceof Error ? error.message : error);
