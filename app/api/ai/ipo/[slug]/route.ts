@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getIpoBySlug } from "@/data/ipos";
 import { generateGeminiIpoAnalysis } from "@/lib/gemini-ipo";
+import { getCachedIpoAiAnalysis, storeIpoAiAnalysisOnce } from "@/lib/ipo-ai-cache";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,7 +12,7 @@ function response(body: unknown, status = 200, cache = false) {
     status,
     headers: {
       "Cache-Control": cache
-        ? "public, s-maxage=21600, stale-while-revalidate=43200"
+        ? "public, s-maxage=31536000, stale-while-revalidate=86400"
         : "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff"
     }
@@ -22,6 +23,8 @@ function safeReason(error: unknown) {
   if (!(error instanceof Error)) return "unknown_error";
   const message = error.message || "unknown_error";
   if (/GEMINI_API_KEY/i.test(message)) return "missing_api_key";
+  if (/IPO AI cache is not configured/i.test(message)) return "ai_cache_not_configured";
+  if (/IPO AI cache (read|write)/i.test(message)) return "ai_cache_error";
   if (/Gemini upstream \d+/i.test(message)) return message.replace(/[^a-zA-Z0-9 _-]/g, "").slice(0, 80);
   if (/JSON|parse/i.test(message)) return "invalid_model_json";
   if (/boş yanıt/i.test(message)) return "empty_model_response";
@@ -34,6 +37,16 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   const { slug } = await params;
   const ipo = getIpoBySlug(slug);
   if (!ipo) return response({ error: "Halka arz bulunamadı." }, 404);
+
+  try {
+    const cached = await getCachedIpoAiAnalysis(slug);
+    if (cached) return response(cached, 200, true);
+  } catch (error) {
+    const reason = safeReason(error);
+    console.error("IPO AI persistent cache read failed", reason, error instanceof Error ? error.message : error);
+    return response({ error: "AI analizi kalıcı önbelleği kullanılamıyor.", reason }, 503);
+  }
+
   if (!process.env.GEMINI_API_KEY) return response({ error: "AI analizi yapılandırılmadı.", reason: "missing_api_key" }, 503);
 
   const facts = {
@@ -85,7 +98,8 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   try {
     const analysis = await generateGeminiIpoAnalysis(facts);
-    return response(analysis, 200, true);
+    const persisted = await storeIpoAiAnalysisOnce(slug, analysis);
+    return response(persisted, 200, true);
   } catch (error) {
     const reason = safeReason(error);
     console.error("Runtime IPO AI analysis failed", reason, error instanceof Error ? error.message : error);
