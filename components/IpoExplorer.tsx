@@ -53,7 +53,13 @@ export function IpoExplorer({ items }: { items: Ipo[] }) {
   return (
     <>
       <div className="explorerTools">
-        <label className="searchBox"><span aria-hidden="true">⌕</span><input aria-label="Halka arz ara" value={query} onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)} placeholder="Şirket, kod, bülten veya sektör ara" /></label>
+        <label className="searchBox">
+          <span className="searchIcon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg>
+          </span>
+          <input aria-label="Halka arz ara" value={query} onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)} placeholder="Şirket, kod, bülten veya sektör ara" />
+          {query && <button className="searchClear" type="button" aria-label="Aramayı temizle" onClick={() => setQuery("")}>×</button>}
+        </label>
         <label className="sortBox"><span>Sırala</span><select aria-label="Halka arzları sırala" value={sort} onChange={(e: ChangeEvent<HTMLSelectElement>) => setSort(e.target.value as SortMode)}><option value="newest">En yeni onay</option><option value="oldest">En eski onay</option><option value="price-asc">Fiyat: düşükten yükseğe</option><option value="price-desc">Fiyat: yüksekten düşüğe</option><option value="company">Şirket adına göre</option></select></label>
       </div>
       <div className="tabs" role="tablist" aria-label="Halka arz durum filtresi">
