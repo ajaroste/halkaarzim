@@ -1,0 +1,87 @@
+import type { IpoAiAnalysis } from "@/lib/gemini-ipo";
+
+function supabaseConfig() {
+  const url = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/$/, "");
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  if (!url || !serviceRoleKey) throw new Error("IPO AI cache is not configured");
+  return { url, serviceRoleKey };
+}
+
+function headers(serviceRoleKey: string): HeadersInit {
+  return {
+    apikey: serviceRoleKey,
+    Authorization: `Bearer ${serviceRoleKey}`,
+    "Content-Type": "application/json"
+  };
+}
+
+type CacheRow = {
+  provider: "google-gemini";
+  model: string;
+  summary: string;
+  strengths: unknown;
+  risks: unknown;
+  data_gaps: unknown;
+  confidence: number;
+};
+
+function stringList(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function toAnalysis(row: CacheRow): IpoAiAnalysis {
+  return {
+    provider: "google-gemini",
+    model: row.model,
+    summary: row.summary,
+    strengths: stringList(row.strengths),
+    risks: stringList(row.risks),
+    dataGaps: stringList(row.data_gaps),
+    confidence: row.confidence
+  };
+}
+
+export async function getCachedIpoAiAnalysis(slug: string): Promise<IpoAiAnalysis | null> {
+  const { url, serviceRoleKey } = supabaseConfig();
+  const query = new URLSearchParams({
+    slug: `eq.${slug}`,
+    select: "provider,model,summary,strengths,risks,data_gaps,confidence",
+    limit: "1"
+  });
+  const response = await fetch(`${url}/rest/v1/ipo_ai_analyses?${query}`, {
+    headers: headers(serviceRoleKey),
+    cache: "no-store"
+  });
+  if (!response.ok) throw new Error(`IPO AI cache read failed ${response.status}`);
+  const rows = await response.json() as CacheRow[];
+  return rows[0] ? toAnalysis(rows[0]) : null;
+}
+
+export async function storeIpoAiAnalysisOnce(slug: string, analysis: IpoAiAnalysis): Promise<IpoAiAnalysis> {
+  const { url, serviceRoleKey } = supabaseConfig();
+  const response = await fetch(`${url}/rest/v1/ipo_ai_analyses?on_conflict=slug`, {
+    method: "POST",
+    headers: {
+      ...headers(serviceRoleKey),
+      Prefer: "resolution=ignore-duplicates,return=representation"
+    },
+    body: JSON.stringify({
+      slug,
+      provider: analysis.provider,
+      model: analysis.model,
+      summary: analysis.summary,
+      strengths: analysis.strengths,
+      risks: analysis.risks,
+      data_gaps: analysis.dataGaps,
+      confidence: analysis.confidence
+    })
+  });
+  if (!response.ok) throw new Error(`IPO AI cache write failed ${response.status}`);
+  const rows = await response.json() as CacheRow[];
+  if (rows[0]) return toAnalysis(rows[0]);
+
+  // A concurrent request may have inserted the same slug first. Always return the persisted winner.
+  const persisted = await getCachedIpoAiAnalysis(slug);
+  if (!persisted) throw new Error("IPO AI cache write completed without persisted row");
+  return persisted;
+}
