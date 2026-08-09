@@ -21,6 +21,13 @@ function formatCompactLots(value: number) {
   return value.toLocaleString("tr-TR");
 }
 
+function MetricIcon({ type }: { type: "tracking" | "lots" | "bulletin" | "listed" }) {
+  if (type === "tracking") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18 9 12l4 3 7-9"/><path d="M15 6h5v5"/><circle cx="4" cy="18" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="13" cy="15" r="1.5"/></svg>;
+  if (type === "lots") return <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v4c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 10v4c0 1.7 3.1 3 7 3s7-1.3 7-3v-4"/><path d="M5 14v4c0 1.7 3.1 3 7 3s7-1.3 7-3v-4"/></svg>;
+  if (type === "bulletin") return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6M10 17h6"/></svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5c3.2-2.2 6.2-2.5 8-2-0.1 2.8-1.2 6.2-4.7 8.8l-2.7 2.1-3.5-3.5z"/><circle cx="15.6" cy="7.4" r="1.4"/><path d="m10.2 10.8-3.8.4-2.6 2.6 4.5.5M13.2 13.8l-.4 3.8-2.6 2.6-.5-4.5M7.5 17.5l-2.8 2.8"/></svg>;
+}
+
 export default function HomePage() {
   const featured = [...ipos]
     .sort((a, b) => statusPriority[a.status] - statusPriority[b.status] || b.approvalDate.localeCompare(a.approvalDate))
@@ -65,10 +72,10 @@ export default function HomePage() {
     </section>
 
     <section className="homeMetricsV2"><div className="container homeMetricsV2Grid">
-      <article><span>01</span><strong>{ipos.length}</strong><p>Takip edilen halka arz</p></article>
-      <article className="homeMetricLots"><span>02</span><strong>{formatCompactLots(totalLots)}</strong><p>Toplam temel arz lotu</p><small>{totalLots.toLocaleString("tr-TR")} lot</small></article>
-      <article><span>03</span><strong>{bulletinCount}</strong><p>Resmî SPK bülteni</p></article>
-      <article><span>04</span><strong>{listedCount}</strong><p>İşlem görmeye başlayan</p></article>
+      <article className="homeMetricCard homeMetricTracking"><span className="homeMetricIndex">01</span><div className="homeMetricIcon"><MetricIcon type="tracking" /></div><strong>{ipos.length}</strong><p>Takip edilen halka arz</p></article>
+      <article className="homeMetricCard homeMetricLots"><span className="homeMetricIndex">02</span><div className="homeMetricIcon"><MetricIcon type="lots" /></div><strong>{formatCompactLots(totalLots)}</strong><p>Toplam temel arz lotu</p><small>{totalLots.toLocaleString("tr-TR")} lot</small></article>
+      <article className="homeMetricCard homeMetricBulletin"><span className="homeMetricIndex">03</span><div className="homeMetricIcon"><MetricIcon type="bulletin" /></div><strong>{bulletinCount}</strong><p>Resmî SPK bülteni</p></article>
+      <article className="homeMetricCard homeMetricListed"><span className="homeMetricIndex">04</span><div className="homeMetricIcon"><MetricIcon type="listed" /></div><strong>{listedCount}</strong><p>İşlem görmeye başlayan</p></article>
     </div></section>
 
     <section className="section homeFeaturedV2"><div className="container">
