@@ -2,12 +2,17 @@ name: SPK data, AI and notification sync
 
 on:
   schedule:
-    - cron: "20 5 * * *"
+    - cron: "0 5 * * *"
+    - cron: "0 10 * * *"
+    - cron: "0 16 * * *"
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - ".github/workflows/data-sync.yml"
+      - "data/manual/**"
+      - "scripts/update_all.py"
+      - "scripts/enrich_ipo_data.py"
 
 permissions:
   contents: write
