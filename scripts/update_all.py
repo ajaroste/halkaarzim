@@ -40,15 +40,26 @@ def atomic_write(path: Path, payload: dict) -> None:
 def main() -> None:
     if not DATA_PATH.exists():
         raise SystemExit("data/generated/ipos.json bulunamadı")
+
     payload = json.loads(DATA_PATH.read_text(encoding="utf-8"))
-    items = apply_manual_overrides(payload.get("items", []))
+    original_items = payload.get("items", [])
+    items = apply_manual_overrides(original_items)
     validate(items)
+
+    update_mode = "official-snapshot-plus-reviewed-public-sources"
+    network_sync_requested = os.getenv("ALLOW_NETWORK_SYNC", "false").lower() == "true"
+    changed = items != original_items or payload.get("updateMode") != update_mode
+
+    if not changed:
+        print(f"No IPO data change; kept existing snapshot timestamp for {len(items)} records")
+        return
+
     payload["items"] = items
     payload["generatedAt"] = datetime.now(timezone.utc).isoformat()
-    payload["updateMode"] = "official-snapshot-plus-reviewed-public-sources"
-    payload["networkSyncRequested"] = os.getenv("ALLOW_NETWORK_SYNC", "false").lower() == "true"
+    payload["updateMode"] = update_mode
+    payload["networkSyncRequested"] = network_sync_requested
     atomic_write(DATA_PATH, payload)
-    print(f"Validated and enriched {len(items)} IPO records")
+    print(f"Updated {len(items)} IPO records with real data changes")
 
 
 if __name__ == "__main__":
