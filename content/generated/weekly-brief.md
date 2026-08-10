@@ -1,6 +1,6 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-09T06:03:21.639529+00:00
+> İçerik paketi: 2026-08-10T06:46:21.417243+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Meysu Gıda Sanayi ve Ticaret A.Ş.
