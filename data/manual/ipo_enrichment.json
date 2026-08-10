@@ -1,0 +1,30 @@
+{
+  "items": [
+    {
+      "company": "Çitlekçi Mağazacılık Gıda A.Ş.",
+      "ticker": "CITAS",
+      "price": 73.70,
+      "dates": "10-11-12 Ağustos 2026",
+      "collectionStart": "2026-08-10",
+      "collectionEnd": "2026-08-12",
+      "distribution": "Eşit Dağıtım",
+      "intermediary": "Tera Yatırım Menkul Değerler A.Ş.",
+      "market": "Yıldız Pazar",
+      "lotCount": 36500000,
+      "status": "active",
+      "statusLabel": "Talep topluyor",
+      "dataNotes": [
+        "Talep toplama tarihleri 10-11-12 Ağustos 2026 olarak güncellendi.",
+        "Dağıtım yöntemi eşit dağıtım, aracı kurum Tera Yatırım ve pazar Yıldız Pazar olarak gözden geçirilmiş halka arz kaynağından doğrulandı."
+      ],
+      "sources": [
+        {
+          "title": "Çitlekçi Mağazacılık Gıda A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://halkarz.com/citlekci-magazacilik-gida-a-s/"
+        }
+      ]
+    }
+  ]
+}
