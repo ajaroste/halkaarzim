@@ -57,6 +57,11 @@ function toAnalysis(row: CacheRow): IpoAiAnalysis {
   };
 }
 
+function looksComplete(analysis: IpoAiAnalysis): boolean {
+  const summary = analysis.summary.trim();
+  return summary.length >= 220 && /[.!?…]["')\]]?$/.test(summary);
+}
+
 export async function getCachedIpoAiAnalysis(slug: string): Promise<IpoAiAnalysis | null> {
   const url = supabaseUrl();
   const key = readKey();
@@ -71,17 +76,21 @@ export async function getCachedIpoAiAnalysis(slug: string): Promise<IpoAiAnalysi
   });
   if (!response.ok) throw new Error(`IPO AI cache read failed ${response.status}`);
   const rows = await response.json() as CacheRow[];
-  return rows[0] ? toAnalysis(rows[0]) : null;
+  if (!rows[0]) return null;
+  const analysis = toAnalysis(rows[0]);
+  return looksComplete(analysis) ? analysis : null;
 }
 
 export async function storeIpoAiAnalysisOnce(slug: string, analysis: IpoAiAnalysis): Promise<IpoAiAnalysis> {
   const url = supabaseUrl();
   const key = writeKey();
+  if (!looksComplete(analysis)) throw new Error("IPO AI cache write refused incomplete analysis");
+
   const response = await fetch(`${url}/rest/v1/ipo_ai_analyses?on_conflict=slug`, {
     method: "POST",
     headers: {
       ...headers(key),
-      Prefer: "resolution=ignore-duplicates,return=representation"
+      Prefer: "resolution=merge-duplicates,return=representation"
     },
     body: JSON.stringify({
       slug,
