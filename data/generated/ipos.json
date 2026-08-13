@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T13:07:23.789639+00:00",
+  "generatedAt": "2026-08-13T06:10:40.847761+00:00",
   "source": "SPK resmî bültenleri + etiketli ikincil kamuya açık takvim verisi",
   "recordCount": 33,
   "items": [
@@ -9,7 +9,7 @@
       "ticker": "CITAS",
       "company": "Çitlekçi Mağazacılık Gıda A.Ş.",
       "sector": "Gıda Perakendesi",
-      "status": "active",
+      "status": "completed",
       "statusLabel": "Talep topluyor",
       "price": 73.7,
       "dates": "10-11-12 Ağustos 2026",
