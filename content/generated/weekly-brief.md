@@ -1,13 +1,13 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T07:59:33.281589+00:00
+> İçerik paketi: 2026-08-14T08:05:19.284773+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş.
 
 Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş. halka arz özeti
 
-• Durum: Arz tamamlandı
+• Durum: Arzı tamamlandı
 • Fiyat: 21,50 TL
 • Talep: 28-29-30 Ocak 2026
 • Sermaye artırımı: %100.0
@@ -21,7 +21,7 @@ Yatırım tavsiyesi değildir.
 
 Netcad Yazılım A.Ş. halka arz özeti
 
-• Durum: Arz tamamlandı
+• Durum: Arzı tamamlandı
 • Fiyat: 46,00 TL
 • Talep: 28-29-30 Ocak 2026
 • Sermaye artırımı: %30.0
@@ -63,7 +63,7 @@ Yatırım tavsiyesi değildir.
 
 Empa Elektronik Sanayi ve Ticaret A.Ş. halka arz özeti
 
-• Durum: Arz tamamlandı
+• Durum: Arzı tamamlandı
 • Fiyat: 22,00 TL
 • Talep: 19-20 Şubat 2026
 • Sermaye artırımı: %76.3
