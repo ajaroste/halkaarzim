@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T08:08:57.687003+00:00",
+  "generatedAt": "2026-08-14T08:10:03.770291+00:00",
   "source": "SPK resmî bültenleri + etiketli ikincil kamuya açık takvim verisi",
   "recordCount": 33,
   "items": [
@@ -166,7 +166,7 @@
       "performance": null,
       "bulletinNo": "2026/49",
       "approvalDate": "2026-08-05",
-      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
+      "sourceUpdatedAt": "2026-08-14T08:10:02.463940+00:00",
       "aiScore": 55,
       "aiSummary": "Doğrulanan mevcut alanlarda arzın %57.7 bölümü sermaye artırımı, %42.3 bölümü ortak satışıdır. Takvim ve sonuç alanlarıyla veri kapsamı %56 düzeyindedir. Bu bir getiri tahmini değil, kaynak kapsamlı ön analizdir.",
       "highlights": [
@@ -359,7 +359,7 @@
       "performance": null,
       "bulletinNo": "2026/49",
       "approvalDate": "2026-08-05",
-      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
+      "sourceUpdatedAt": "2026-08-14T08:10:02.463940+00:00",
       "aiScore": 75,
       "aiSummary": "Doğrulanan mevcut alanlarda arzın %100.0 bölümü sermaye artırımı, %0.0 bölümü ortak satışıdır. Takvim ve sonuç alanlarıyla veri kapsamı %56 düzeyindedir. Bu bir getiri tahmini değil, kaynak kapsamlı ön analizdir.",
       "highlights": [

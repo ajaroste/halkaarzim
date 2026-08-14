@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-14T08:08:57.950589+00:00",
-  "sourceGeneratedAt": "2026-08-14T08:08:57.687003+00:00",
+  "generatedAt": "2026-08-14T08:10:03.943779+00:00",
+  "sourceGeneratedAt": "2026-08-14T08:10:03.770291+00:00",
   "siteUrl": "https://halkaarzim.vercel.app",
   "disclaimer": "Paylaşım metinleri yatırım tavsiyesi içermez; yayın öncesi kaynak ve tarih kontrolü yapılmalıdır.",
   "posts": [
@@ -9,7 +9,7 @@
       "slug": "turker-vangolu-enerji-yatirim",
       "company": "Türker Vangölü Enerji Yatırım A.Ş.",
       "status": "active",
-      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
+      "sourceUpdatedAt": "2026-08-14T08:10:02.463940+00:00",
       "url": "https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim",
       "x": "Türker Vangölü Enerji Yatırım A.Ş. halka arz özeti\n\n• Durum: Talep topluyor\n• Fiyat: 136,00 TL\n• Talep: 12-13-14 Ağustos 2026\n• Sermaye artırımı: %57.7\n• Ortak satışı: %42.3\n\n5 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim\n\nYatırım tavsiyesi değildir.",
       "telegramHtml": "📌 <b>Türker Vangölü Enerji Yatırım A.Ş.</b>\nTalep topluyor · VEYAS\n\n💰 Fiyat: <b>136,00 TL</b>\n📅 Talep: 12-13-14 Ağustos 2026\n🏢 Sermaye artırımı: %57.7\n👥 Ortak satışı: %42.3\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim\n\n<i>Yatırım tavsiyesi değildir.</i>",
@@ -41,6 +41,44 @@
         }
       ],
       "shortVideoScript": "Türker Vangölü Enerji Yatırım A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 136,00 TL. Arzın yaklaşık yüzde 57.7 bölümü sermaye artırımı, yüzde 42.3 bölümü ortak satışından oluşuyor. Talep tarihi: 12-13-14 Ağustos 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "ea5b2229-c096-536e-bf4f-b4ce8b32e1c8",
+      "slug": "kapeks-kimya-sanayi",
+      "company": "Kapeks Kimya Sanayi A.Ş.",
+      "status": "active",
+      "sourceUpdatedAt": "2026-08-14T08:10:02.463940+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi",
+      "x": "Kapeks Kimya Sanayi A.Ş. halka arz özeti\n\n• Durum: Talep topluyor\n• Fiyat: 94,00 TL\n• Talep: 12-13-14 Ağustos 2026\n• Sermaye artırımı: %100.0\n• Ortak satışı: %0.0\n\n5 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Kapeks Kimya Sanayi A.Ş.</b>\nTalep topluyor · KPEKS\n\n💰 Fiyat: <b>94,00 TL</b>\n📅 Talep: 12-13-14 Ağustos 2026\n🏢 Sermaye artırımı: %100.0\n👥 Ortak satışı: %0.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Kapeks Kimya Sanayi A.Ş. halka arz",
+          "body": "Talep topluyor · KPEKS"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 94,00 TL\nTalep: 12-13-14 Ağustos 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %100.0\nOrtak satışı %0.0"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi"
+        }
+      ],
+      "shortVideoScript": "Kapeks Kimya Sanayi A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 94,00 TL. Arzın yaklaşık yüzde 100.0 bölümü sermaye artırımı, yüzde 0.0 bölümü ortak satışından oluşuyor. Talep tarihi: 12-13-14 Ağustos 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
     },
     {
       "ipoId": "1b5c255c-2efc-5334-a00b-b7276fb4cd8b",
@@ -79,44 +117,6 @@
         }
       ],
       "shortVideoScript": "Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 85,40 TL. Arzın yaklaşık yüzde 80.6 bölümü sermaye artırımı, yüzde 19.4 bölümü ortak satışından oluşuyor. Talep tarihi: 12-13-14 Ağustos 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "ea5b2229-c096-536e-bf4f-b4ce8b32e1c8",
-      "slug": "kapeks-kimya-sanayi",
-      "company": "Kapeks Kimya Sanayi A.Ş.",
-      "status": "active",
-      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi",
-      "x": "Kapeks Kimya Sanayi A.Ş. halka arz özeti\n\n• Durum: Talep topluyor\n• Fiyat: 94,00 TL\n• Talep: 12-13-14 Ağustos 2026\n• Sermaye artırımı: %100.0\n• Ortak satışı: %0.0\n\n5 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Kapeks Kimya Sanayi A.Ş.</b>\nTalep topluyor · KPEKS\n\n💰 Fiyat: <b>94,00 TL</b>\n📅 Talep: 12-13-14 Ağustos 2026\n🏢 Sermaye artırımı: %100.0\n👥 Ortak satışı: %0.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Kapeks Kimya Sanayi A.Ş. halka arz",
-          "body": "Talep topluyor · KPEKS"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 94,00 TL\nTalep: 12-13-14 Ağustos 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %100.0\nOrtak satışı %0.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi"
-        }
-      ],
-      "shortVideoScript": "Kapeks Kimya Sanayi A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 94,00 TL. Arzın yaklaşık yüzde 100.0 bölümü sermaye artırımı, yüzde 0.0 bölümü ortak satışından oluşuyor. Talep tarihi: 12-13-14 Ağustos 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
     },
     {
       "ipoId": "289e3024-2ae6-517e-9798-e6986266ccd2",

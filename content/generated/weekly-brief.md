@@ -1,6 +1,6 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T08:08:57.950589+00:00
+> İçerik paketi: 2026-08-14T08:10:03.943779+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Türker Vangölü Enerji Yatırım A.Ş.
@@ -17,20 +17,6 @@ Türker Vangölü Enerji Yatırım A.Ş. halka arz özeti
 
 Yatırım tavsiyesi değildir.
 
-## Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş.
-
-Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş. halka arz özeti
-
-• Durum: Talep topluyor
-• Fiyat: 85,40 TL
-• Talep: 12-13-14 Ağustos 2026
-• Sermaye artırımı: %80.6
-• Ortak satışı: %19.4
-
-4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/teknika-plast-teknik-kalip-plastik-sanayi-ve-ticaret
-
-Yatırım tavsiyesi değildir.
-
 ## Kapeks Kimya Sanayi A.Ş.
 
 Kapeks Kimya Sanayi A.Ş. halka arz özeti
@@ -42,6 +28,20 @@ Kapeks Kimya Sanayi A.Ş. halka arz özeti
 • Ortak satışı: %0.0
 
 5 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi
+
+Yatırım tavsiyesi değildir.
+
+## Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş.
+
+Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş. halka arz özeti
+
+• Durum: Talep topluyor
+• Fiyat: 85,40 TL
+• Talep: 12-13-14 Ağustos 2026
+• Sermaye artırımı: %80.6
+• Ortak satışı: %19.4
+
+4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/teknika-plast-teknik-kalip-plastik-sanayi-ve-ticaret
 
 Yatırım tavsiyesi değildir.
 
