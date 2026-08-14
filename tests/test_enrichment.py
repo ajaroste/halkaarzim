@@ -22,6 +22,7 @@ class EnrichmentTests(unittest.TestCase):
         self.assertEqual(compute_status({"demandStart": "2026-09-01", "demandEnd": "2026-09-03"}, today), "upcoming")
         self.assertEqual(compute_status({"demandStart": "2026-08-05", "demandEnd": "2026-08-07"}, today), "active")
         self.assertEqual(compute_status({"postponed": True}, today), "delayed")
+        self.assertEqual(compute_status({"status": "active"}, today), "active")
 
     def test_manual_sources_are_public_and_secure(self) -> None:
         rows = load_manual_overrides()

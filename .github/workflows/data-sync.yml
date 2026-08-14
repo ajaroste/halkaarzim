@@ -2,9 +2,8 @@ name: SPK data, AI and notification sync
 
 on:
   schedule:
-    - cron: "0 5 * * *"
-    - cron: "0 10 * * *"
-    - cron: "0 16 * * *"
+    # Türkiye saatiyle yaklaşık her iki saatte bir; dakikayı :17 seçerek GitHub cron yoğunluğunu azaltır.
+    - cron: "17 */2 * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -12,6 +11,7 @@ on:
       - ".github/workflows/data-sync.yml"
       - "data/manual/**"
       - "scripts/update_all.py"
+      - "scripts/public_calendar.py"
       - "scripts/enrich_ipo_data.py"
 
 permissions:
@@ -44,12 +44,26 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
 
-      - name: Update official and reviewed public-source data
+      - name: Update official and live public-source data
         run: python scripts/update_all.py
         env:
           ALLOW_NETWORK_SYNC: "true"
+          NETWORK_SYNC_REQUIRED: "true"
+
+      - name: Detect IPO data changes
+        id: ipo_changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/generated/ipos.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "IPO snapshot unchanged"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "IPO snapshot changed"
+          fi
 
       - name: Generate source-bound AI reports when configured
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' }}
         run: python scripts/generate_ai_reports.py
         env:
           ENABLE_AI_GENERATION: ${{ env.AI_ADMIN_TOKEN != '' && env.AI_ENDPOINT != '' }}
@@ -57,35 +71,37 @@ jobs:
           AI_REQUIRED: "false"
 
       - name: Generate social and newsletter content pack
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' }}
         run: python scripts/generate_growth_content.py
 
       - name: Run Python validation
-        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
+        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_public_calendar tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
 
       - name: Sync Supabase when configured
-        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
         run: python scripts/sync_supabase.py
         env:
           ENABLE_NOTIFICATION_ENQUEUE: "true"
 
       - name: Send free Web Push notifications
-        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' && env.VAPID_PRIVATE_KEY != '' }}
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' && env.VAPID_PRIVATE_KEY != '' }}
         run: python scripts/send_notifications.py
 
       - name: Send Telegram channel update when configured
-        if: ${{ env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
         run: python scripts/send_telegram_updates.py
         env:
           TELEGRAM_MAX_MESSAGES: "2"
 
       - name: Commit updated snapshots and content pack
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' }}
         run: |
-          if git diff --quiet -- data/generated content/generated; then
-            echo "No data or content change"
-            exit 0
-          fi
           git config user.name "halkaarzim-data-bot"
           git config user.email "halkaarzim-data-bot@users.noreply.github.com"
           git add data/generated content/generated
+          if git diff --cached --quiet; then
+            echo "No data or content change"
+            exit 0
+          fi
           git commit -m "data: update IPO snapshots and growth content"
           git push
