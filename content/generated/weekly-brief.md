@@ -1,63 +1,7 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T06:07:34.182221+00:00
+> İçerik paketi: 2026-08-14T07:59:33.281589+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
-
-## Meysu Gıda Sanayi ve Ticaret A.Ş.
-
-Meysu Gıda Sanayi ve Ticaret A.Ş. halka arz özeti
-
-• Durum: İşlem görüyor
-• Fiyat: 7,50 TL
-• Talep: 5-6-7 Ocak 2026
-• Sermaye artırımı: %68.6
-• Ortak satışı: %31.4
-
-3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/meysu-gida-sanayi-ve-ticaret
-
-Yatırım tavsiyesi değildir.
-
-## Formül Plastik ve Metal Sanayi A.Ş.
-
-Formül Plastik ve Metal Sanayi A.Ş. halka arz özeti
-
-• Durum: İşlem görüyor
-• Fiyat: 30,24 TL
-• Talep: 7-8-9 Ocak 2026
-• Sermaye artırımı: %75.0
-• Ortak satışı: %25.0
-
-3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/formul-plastik-ve-metal-sanayi
-
-Yatırım tavsiyesi değildir.
-
-## Z Gayrimenkul Yatırım Ortaklığı A.Ş.
-
-Z Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz özeti
-
-• Durum: İşlem görüyor
-• Fiyat: 9,77 TL
-• Talep: 7-8-9 Ocak 2026
-• Sermaye artırımı: %50.0
-• Ortak satışı: %50.0
-
-3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/z-gayrimenkul-yatirim-ortakligi
-
-Yatırım tavsiyesi değildir.
-
-## Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş.
-
-Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş. halka arz özeti
-
-• Durum: İşlem görüyor
-• Fiyat: 18,00 TL
-• Talep: 14-15-16 Ocak 2026
-• Sermaye artırımı: %83.3
-• Ortak satışı: %16.7
-
-4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri
-
-Yatırım tavsiyesi değildir.
 
 ## Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş.
 
@@ -84,5 +28,61 @@ Netcad Yazılım A.Ş. halka arz özeti
 • Ortak satışı: %70.0
 
 2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/netcad-yazilim
+
+Yatırım tavsiyesi değildir.
+
+## Best Brands Grup Enerji Yatırım A.Ş.
+
+Best Brands Grup Enerji Yatırım A.Ş. halka arz özeti
+
+• Durum: İşlem görüyor
+• Fiyat: 14,70 TL
+• Talep: 5-6 Şubat 2026
+• Sermaye artırımı: %70.0
+• Ortak satışı: %30.0
+
+4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/best-brands-grup-enerji-yatirim
+
+Yatırım tavsiyesi değildir.
+
+## Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş.
+
+Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. halka arz özeti
+
+• Durum: İşlem görüyor
+• Fiyat: 11,20 TL
+• Talep: 11-12-13 Şubat 2026
+• Sermaye artırımı: %85.7
+• Ortak satışı: %14.3
+
+4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret
+
+Yatırım tavsiyesi değildir.
+
+## Empa Elektronik Sanayi ve Ticaret A.Ş.
+
+Empa Elektronik Sanayi ve Ticaret A.Ş. halka arz özeti
+
+• Durum: Arz tamamlandı
+• Fiyat: 22,00 TL
+• Talep: 19-20 Şubat 2026
+• Sermaye artırımı: %76.3
+• Ortak satışı: %23.7
+
+2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/empa-elektronik-sanayi-ve-ticaret
+
+Yatırım tavsiyesi değildir.
+
+## Luxera Gayrimenkul Yatırım Ortaklığı A.Ş.
+
+Luxera Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz özeti
+
+• Durum: İşlem görüyor
+• Fiyat: 12,05 TL
+• Talep: 2-3-4 Mart 2026
+• Sermaye artırımı: %75.0
+• Ortak satışı: %25.0
+
+4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/luxera-gayrimenkul-yatirim-ortakligi
 
 Yatırım tavsiyesi değildir.
