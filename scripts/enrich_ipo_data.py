@@ -6,9 +6,11 @@ import unicodedata
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 MANUAL_PATH = ROOT / "data" / "manual" / "ipo_enrichment.json"
+ISTANBUL = ZoneInfo("Europe/Istanbul")
 
 
 def normalize_company_name(value: str) -> str:
@@ -35,7 +37,7 @@ def _as_date(value: str | date | None) -> date | None:
 
 def compute_status(item: dict[str, Any], today: date | None = None) -> str:
     """Return the canonical status consumed by the public app and domain contract."""
-    today = today or date.today()
+    today = today or datetime.now(ISTANBUL).date()
     if item.get("postponed"):
         return "delayed"
     first_trade = _as_date(item.get("firstTradeDate"))
