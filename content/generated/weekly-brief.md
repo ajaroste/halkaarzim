@@ -1,6 +1,6 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T19:17:41.621457+00:00
+> İçerik paketi: 2026-08-14T20:49:09.863122+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Çitlekçi Mağazacılık Gıda A.Ş.
