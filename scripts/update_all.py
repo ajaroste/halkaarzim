@@ -6,6 +6,7 @@ import re
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
 
 from scripts.enrich_ipo_data import apply_manual_overrides
 from scripts.sync_public_calendar import (
@@ -49,9 +50,15 @@ def _valid_percent(value: object) -> bool:
     return 0 <= number <= 100
 
 
-def _restore(original: dict, item: dict, field: str) -> None:
-    if field in original:
-        item[field] = original[field]
+def _restore(
+    original: dict,
+    item: dict,
+    field: str,
+    validator: Callable[[object], bool] | None = None,
+) -> None:
+    original_value = original.get(field)
+    if field in original and (validator is None or validator(original_value)):
+        item[field] = original_value
     else:
         item.pop(field, None)
 
@@ -65,14 +72,14 @@ def sanitize_secondary_merge(original_items: list[dict], merged_items: list[dict
         original = originals.get(item.get("id"), {})
 
         if item.get("ticker") and not _valid_ticker(item.get("ticker")):
-            _restore(original, item, "ticker")
+            _restore(original, item, "ticker", _valid_ticker)
         if item.get("market") and not _valid_market(item.get("market")):
-            _restore(original, item, "market")
+            _restore(original, item, "market", _valid_market)
         if item.get("publicFloat") not in (None, "") and not _valid_percent(item.get("publicFloat")):
-            _restore(original, item, "publicFloat")
+            _restore(original, item, "publicFloat", _valid_percent)
         for field in ("distribution", "intermediary"):
             if item.get(field) not in (None, "") and not _has_letters(item.get(field)):
-                _restore(original, item, field)
+                _restore(original, item, field, _has_letters)
 
         # A bad/ambiguous source column must not create a metadata-only change.
         comparable_item = {k: v for k, v in item.items() if k not in {"sources", "sourceUpdatedAt"}}
