@@ -14,6 +14,7 @@ on:
       - "scripts/update_all.py"
       - "scripts/enrich_ipo_data.py"
       - "scripts/sync_public_calendar.py"
+      - "tests/test_enrichment.py"
       - "tests/test_public_calendar_sync.py"
 
 permissions:
@@ -52,6 +53,7 @@ jobs:
           ALLOW_NETWORK_SYNC: "true"
           PUBLIC_CALENDAR_REQUIRED: "true"
           PUBLIC_CALENDAR_MIN_MATCHES: "3"
+          PUBLIC_CALENDAR_DEBUG: "true"
 
       - name: Generate source-bound AI reports when configured
         run: python scripts/generate_ai_reports.py
