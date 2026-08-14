@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from datetime import date
 
-from scripts.enrich_ipo_data import clean_ticker, compute_status, load_manual_overrides, normalize_company_name
+from scripts.enrich_ipo_data import apply_manual_overrides, clean_ticker, compute_status, load_manual_overrides, normalize_company_name
 
 
 class EnrichmentTests(unittest.TestCase):
@@ -22,6 +22,28 @@ class EnrichmentTests(unittest.TestCase):
         self.assertEqual(compute_status({"demandStart": "2026-09-01", "demandEnd": "2026-09-03"}, today), "upcoming")
         self.assertEqual(compute_status({"demandStart": "2026-08-05", "demandEnd": "2026-08-07"}, today), "active")
         self.assertEqual(compute_status({"postponed": True}, today), "delayed")
+        self.assertEqual(compute_status({"statusLabel": "Talep toplama ertelendi"}, today), "delayed")
+
+    def test_apply_overrides_keeps_status_label_canonical(self) -> None:
+        item = {
+            "company": "Test Enerji A.Ş.",
+            "ticker": None,
+            "collectionStart": "2026-08-05",
+            "collectionEnd": "2026-08-07",
+            "sources": [{"url": "https://example.com/source"}],
+        }
+        enriched = apply_manual_overrides([item])[0]
+        # Runtime date can differ from the fixture; verify label always follows computed status.
+        labels = {
+            "active": "Talep topluyor",
+            "upcoming": "Yaklaşan",
+            "approved": "SPK onaylı",
+            "completed": "Arzı tamamlandı",
+            "listed": "İşlem görüyor",
+            "delayed": "Ertelendi",
+            "draft": "Taslak",
+        }
+        self.assertEqual(enriched["statusLabel"], labels[enriched["status"]])
 
     def test_manual_sources_are_public_and_secure(self) -> None:
         rows = load_manual_overrides()
