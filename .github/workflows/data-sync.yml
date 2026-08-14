@@ -12,6 +12,7 @@ on:
       - "data/manual/**"
       - "scripts/update_all.py"
       - "scripts/public_calendar.py"
+      - "scripts/public_page_status.py"
       - "scripts/enrich_ipo_data.py"
 
 permissions:
@@ -75,7 +76,7 @@ jobs:
         run: python scripts/generate_growth_content.py
 
       - name: Run Python validation
-        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_public_calendar tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
+        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_public_calendar tests.test_public_page_status tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
 
       - name: Sync Supabase when configured
         if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}

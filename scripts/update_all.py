@@ -8,6 +8,7 @@ from pathlib import Path
 
 from scripts.enrich_ipo_data import apply_manual_overrides
 from scripts.public_calendar import fetch_public_export, merge_public_records
+from scripts.public_page_status import fetch_public_page_records, merge_public_page_statuses
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "generated" / "ipos.json"
@@ -52,20 +53,34 @@ def main() -> None:
             records, source_url = fetch_public_export()
             items, stats = merge_public_records(items, records, source_url)
             print(
-                "Public calendar sync: "
+                "Public Excel sync: "
                 f"{len(records)} rows, {stats['matched']} matched, "
                 f"{stats['changed']} changed, {stats['added']} added, {stats['ignored']} ignored"
             )
         except Exception as exc:
             if os.getenv("NETWORK_SYNC_REQUIRED", "true").lower() == "true":
                 raise
-            print(f"WARNING: public calendar sync skipped: {exc}")
+            print(f"WARNING: public Excel sync skipped: {exc}")
+
+        # Excel dışa aktarımı bazı yeni halka arzlarda takvimin gerisinde kalabiliyor.
+        # Ana sayfadaki canlı durum kartları ikinci kaynak olarak okunur; bu katman
+        # özellikle 'Talep Toplama' gibi anlık statüleri yakalar.
+        try:
+            page_records, page_url = fetch_public_page_records(items)
+            items, page_stats = merge_public_page_statuses(items, page_records, page_url)
+            print(
+                "Public page status sync: "
+                f"{len(page_records)} rows, {page_stats['matched']} matched, "
+                f"{page_stats['changed']} changed"
+            )
+        except Exception as exc:
+            print(f"WARNING: public page status fallback skipped: {exc}")
 
     # Elle doğrulanmış kayıtlar son katmandır; otomatik kaynak bunları ezemez.
     items = apply_manual_overrides(items)
     validate(items)
 
-    update_mode = "official-snapshot-plus-live-public-calendar-v2"
+    update_mode = "official-snapshot-plus-live-public-calendar-v3"
     changed = (
         items != original_items
         or payload.get("updateMode") != update_mode
@@ -83,7 +98,7 @@ def main() -> None:
     payload["updateMode"] = update_mode
     payload["networkSyncRequested"] = network_sync_requested
     atomic_write(DATA_PATH, payload)
-    print(f"Updated {len(items)} IPO records with live calendar and reviewed overrides")
+    print(f"Updated {len(items)} IPO records with live calendar, page status and reviewed overrides")
 
 
 if __name__ == "__main__":

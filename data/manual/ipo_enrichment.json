@@ -25,6 +25,96 @@
           "url": "https://halkarz.com/citlekci-magazacilik-gida-a-s/"
         }
       ]
+    },
+    {
+      "company": "Türker Vangölü Enerji Yatırım A.Ş.",
+      "ticker": "VEYAS",
+      "price": 136.00,
+      "dates": "12-13-14 Ağustos 2026",
+      "collectionStart": "2026-08-12",
+      "collectionEnd": "2026-08-14",
+      "distribution": "Eşit Dağıtım",
+      "intermediary": "Halk Yatırım Menkul Değerler A.Ş., Ziraat Yatırım Menkul Değerler A.Ş., Vakıf Yatırım Menkul Değerler A.Ş.",
+      "market": "Yıldız Pazar",
+      "lotCount": 65000000,
+      "status": "active",
+      "statusLabel": "Talep topluyor",
+      "dataNotes": [
+        "VEYAS kodu ve 12-13-14 Ağustos 2026 talep toplama takvimi güncel duyuruyla eşleştirildi.",
+        "Ana veri dışa aktarımı gecikirse canlı sayfa durumu ikinci otomatik kaynak olarak kullanılır."
+      ],
+      "sources": [
+        {
+          "title": "VEYAS İçin Geri Sayım Başladı: Halka Arz Talep Toplama Tarihleri Belli Oldu",
+          "page": "Talep toplama takvimi",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/haber/veyas-icin-geri-sayim-basladi-halka-arz-talep-toplama-tarihleri-belli-oldu-589189"
+        },
+        {
+          "title": "Türker Vangölü Enerji Yatırım A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/turker-vangolu-enerji-yatirim-as"
+        }
+      ]
+    },
+    {
+      "company": "Kapeks Kimya Sanayi A.Ş.",
+      "ticker": "KPEKS",
+      "price": 94.00,
+      "dates": "12-13-14 Ağustos 2026",
+      "collectionStart": "2026-08-12",
+      "collectionEnd": "2026-08-14",
+      "distribution": "Eşit Dağıtım",
+      "intermediary": "Türkiye Kalkınma ve Yatırım Bankası A.Ş., Ziraat Yatırım Menkul Değerler A.Ş., Yatırım Finansman Menkul Değerler A.Ş.",
+      "market": "Yıldız Pazar",
+      "lotCount": 25100000,
+      "status": "active",
+      "statusLabel": "Talep topluyor",
+      "dataNotes": [
+        "KPEKS kodu ve 12-13-14 Ağustos 2026 talep toplama takvimi güncel takvim bilgisiyle eşleştirildi.",
+        "Canlı halka arz sayfası talep toplama durumunu otomatik olarak izler."
+      ],
+      "sources": [
+        {
+          "title": "Kapeks Kimya Sanayi A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/kapeks-kimya-sanayi-as"
+        },
+        {
+          "title": "Kapeks Halka Arzına Bu Bankalardan Girilecek! KPEKS'te Akbank Detayı",
+          "page": "KPEKS kodu ve talep toplama süreci",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/haber/kapeks-halka-arzina-bu-bankalardan-girilecek-kpekste-akbank-detayi-325460"
+        }
+      ]
+    },
+    {
+      "company": "Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş.",
+      "ticker": "TNKKA",
+      "price": 85.40,
+      "dates": "12-13-14 Ağustos 2026",
+      "collectionStart": "2026-08-12",
+      "collectionEnd": "2026-08-14",
+      "distribution": "Eşit Dağıtım",
+      "intermediary": "Tera Yatırım Menkul Değerler A.Ş.",
+      "market": "Yıldız Pazar",
+      "lotCount": 31000000,
+      "status": "active",
+      "statusLabel": "Talep topluyor",
+      "dataNotes": [
+        "TNKKA kodu ve 12-13-14 Ağustos 2026 talep toplama takvimi güncel takvim bilgisiyle eşleştirildi.",
+        "Canlı halka arz sayfası talep toplama durumunu otomatik olarak izler."
+      ],
+      "sources": [
+        {
+          "title": "Teknika Plast Teknik Kalıp Plastik San. ve Tic. A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/teknika-plast-teknik-kalip-plastik-san-ve-tic-as"
+        }
+      ]
     }
   ]
 }
