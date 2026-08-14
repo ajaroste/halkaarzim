@@ -12,6 +12,16 @@ ROOT = Path(__file__).resolve().parents[1]
 MANUAL_PATH = ROOT / "data" / "manual" / "ipo_enrichment.json"
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 
+STATUS_LABELS = {
+    "active": "Talep topluyor",
+    "upcoming": "Yaklaşan",
+    "approved": "SPK onaylı",
+    "completed": "Arzı tamamlandı",
+    "listed": "İşlem görüyor",
+    "delayed": "Ertelendi",
+    "draft": "Taslak",
+}
+
 
 def normalize_company_name(value: str) -> str:
     text = value.lower().replace("ı", "i")
@@ -35,11 +45,23 @@ def _as_date(value: str | date | None) -> date | None:
     return datetime.fromisoformat(value[:10]).date()
 
 
+def _status_text(value: Any) -> str:
+    text = str(value or "").lower().replace("ı", "i")
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+
 def compute_status(item: dict[str, Any], today: date | None = None) -> str:
     """Return the canonical status consumed by the public app and domain contract."""
     today = today or datetime.now(ISTANBUL).date()
-    if item.get("postponed"):
+    raw_status = _status_text(item.get("status"))
+    raw_label = _status_text(item.get("statusLabel"))
+
+    if item.get("postponed") or raw_status in {"delayed", "postponed"} or "ertelen" in raw_label:
         return "delayed"
+    if raw_status == "draft" or "taslak" in raw_label:
+        return "draft"
+
     first_trade = _as_date(item.get("firstTradeDate"))
     demand_start = _as_date(item.get("collectionStart") or item.get("demandStart"))
     demand_end = _as_date(item.get("collectionEnd") or item.get("demandEnd"))
@@ -51,6 +73,8 @@ def compute_status(item: dict[str, Any], today: date | None = None) -> str:
         return "upcoming"
     if demand_end and demand_end < today:
         return "completed"
+    if raw_status in STATUS_LABELS:
+        return raw_status
     return "approved"
 
 
@@ -73,7 +97,9 @@ def apply_manual_overrides(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if key not in {"company", "sources"} and value not in (None, ""):
                 item[key] = value
         item["ticker"] = clean_ticker(item.get("ticker"))
-        item["status"] = compute_status(item)
+        status = compute_status(item)
+        item["status"] = status
+        item["statusLabel"] = STATUS_LABELS[status]
         sources = list(item.get("sources") or [])
         for source in override.get("sources", []):
             if source.get("url") and not any(x.get("url") == source["url"] for x in sources):
