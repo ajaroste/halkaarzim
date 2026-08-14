@@ -1,13 +1,13 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T08:10:03.943779+00:00
+> İçerik paketi: 2026-08-14T08:12:11.632937+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Türker Vangölü Enerji Yatırım A.Ş.
 
 Türker Vangölü Enerji Yatırım A.Ş. halka arz özeti
 
-• Durum: Talep topluyor
+• Durum: İşlem görüyor
 • Fiyat: 136,00 TL
 • Talep: 12-13-14 Ağustos 2026
 • Sermaye artırımı: %57.7
@@ -17,25 +17,11 @@ Türker Vangölü Enerji Yatırım A.Ş. halka arz özeti
 
 Yatırım tavsiyesi değildir.
 
-## Kapeks Kimya Sanayi A.Ş.
-
-Kapeks Kimya Sanayi A.Ş. halka arz özeti
-
-• Durum: Talep topluyor
-• Fiyat: 94,00 TL
-• Talep: 12-13-14 Ağustos 2026
-• Sermaye artırımı: %100.0
-• Ortak satışı: %0.0
-
-5 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi
-
-Yatırım tavsiyesi değildir.
-
 ## Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş.
 
 Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş. halka arz özeti
 
-• Durum: Talep topluyor
+• Durum: İşlem görüyor
 • Fiyat: 85,40 TL
 • Talep: 12-13-14 Ağustos 2026
 • Sermaye artırımı: %80.6
@@ -45,11 +31,25 @@ Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş. halka arz özeti
 
 Yatırım tavsiyesi değildir.
 
+## Kapeks Kimya Sanayi A.Ş.
+
+Kapeks Kimya Sanayi A.Ş. halka arz özeti
+
+• Durum: İşlem görüyor
+• Fiyat: 94,00 TL
+• Talep: 12-13-14 Ağustos 2026
+• Sermaye artırımı: %100.0
+• Ortak satışı: %0.0
+
+5 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi
+
+Yatırım tavsiyesi değildir.
+
 ## Çitlekçi Mağazacılık Gıda A.Ş.
 
 Çitlekçi Mağazacılık Gıda A.Ş. halka arz özeti
 
-• Durum: Arzı tamamlandı
+• Durum: İşlem görüyor
 • Fiyat: 73,70 TL
 • Talep: 10-11-12 Ağustos 2026
 • Sermaye artırımı: %82.2
@@ -59,30 +59,30 @@ Yatırım tavsiyesi değildir.
 
 Yatırım tavsiyesi değildir.
 
+## Quick Sigorta A.Ş.
+
+Quick Sigorta A.Ş. halka arz özeti
+
+• Durum: İşlem görüyor
+• Fiyat: 76,60 TL
+• Talep: 29-30-31 Temmuz 2026
+• Sermaye artırımı: %100.0
+• Ortak satışı: %0.0
+
+4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/quick-sigorta
+
+Yatırım tavsiyesi değildir.
+
 ## Metgün Enerji Yatırımları A.Ş.
 
 Metgün Enerji Yatırımları A.Ş. halka arz özeti
 
-• Durum: Arzı tamamlandı
+• Durum: İşlem görüyor
 • Fiyat: 20,00 TL
 • Talep: 20-21-22 Temmuz 2026
 • Sermaye artırımı: %66.8
 • Ortak satışı: %33.2
 
 2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/metgun-enerji-yatirimlari
-
-Yatırım tavsiyesi değildir.
-
-## Masfen Enerji A.Ş.
-
-Masfen Enerji A.Ş. halka arz özeti
-
-• Durum: Arzı tamamlandı
-• Fiyat: 45,68 TL
-• Talep: 22-23-24 Temmuz 2026
-• Sermaye artırımı: %64.7
-• Ortak satışı: %35.3
-
-2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/masfen-enerji
 
 Yatırım tavsiyesi değildir.
