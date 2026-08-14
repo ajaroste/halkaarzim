@@ -14,6 +14,9 @@ on:
       - "scripts/public_calendar.py"
       - "scripts/public_page_status.py"
       - "scripts/enrich_ipo_data.py"
+      - "tests/test_enrichment.py"
+      - "tests/test_public_calendar.py"
+      - "tests/test_public_page_status.py"
 
 permissions:
   contents: write
