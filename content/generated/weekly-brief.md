@@ -1,6 +1,6 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T08:12:11.632937+00:00
+> İçerik paketi: 2026-08-14T08:12:42.435625+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Türker Vangölü Enerji Yatırım A.Ş.
