@@ -22,11 +22,24 @@ STATUS_LABELS = {
 }
 
 
+def _ascii_text(value: Any) -> str:
+    text = str(value or "").lower().replace("ı", "i")
+    return unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+
+
 def normalize_company_name(value: str) -> str:
-    text = value.lower().replace("ı", "i")
-    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
-    text = re.sub(r"\b(a\.?s\.?|anonim sirketi|sanayi|ticaret|ve)\b", " ", text)
-    return re.sub(r"[^a-z0-9]+", " ", text).strip()
+    """Normalize company names so public-source abbreviations still match our records."""
+    text = _ascii_text(value)
+    # Leading brand hints such as "(Intercity)" are not part of the legal title.
+    text = re.sub(r"\([^)]*\)", " ", text)
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    ignored = {
+        "a", "s", "as", "anonim", "anonimortaklik", "sirket", "sirketi",
+        "san", "sanayi", "tic", "ticaret", "ve", "ltd", "limited", "sti",
+        "st", "inc", "corp", "corporation",
+    }
+    tokens = [token for token in text.split() if token not in ignored]
+    return " ".join(tokens).strip()
 
 
 def clean_ticker(value: str | None) -> str | None:
@@ -35,7 +48,9 @@ def clean_ticker(value: str | None) -> str | None:
     ticker = value.upper().strip().replace("BIST:", "")
     ticker = re.sub(r"\.(H|E)$", "", ticker)
     ticker = re.sub(r"[^A-Z0-9]", "", ticker)
-    return ticker or None
+    if not ticker or len(ticker) < 3 or len(ticker) > 8 or not re.search(r"[A-Z]", ticker):
+        return None
+    return ticker
 
 
 def _as_date(value: str | date | None) -> date | None:
@@ -44,11 +59,21 @@ def _as_date(value: str | date | None) -> date | None:
     return datetime.fromisoformat(value[:10]).date()
 
 
+def _status_text(value: Any) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", _ascii_text(value)).strip()
+
+
 def compute_status(item: dict[str, Any], today: date | None = None) -> str:
     """Return the canonical status consumed by the public app and domain contract."""
     today = today or datetime.now(ZoneInfo("Europe/Istanbul")).date()
-    if item.get("postponed"):
+    raw_status = _status_text(item.get("status"))
+    raw_label = _status_text(item.get("statusLabel"))
+
+    if item.get("postponed") or raw_status in {"delayed", "postponed"} or "ertelen" in raw_label:
         return "delayed"
+    if raw_status == "draft" or "taslak" in raw_label:
+        return "draft"
+
     first_trade = _as_date(item.get("firstTradeDate"))
     demand_start = _as_date(item.get("collectionStart") or item.get("demandStart"))
     demand_end = _as_date(item.get("collectionEnd") or item.get("demandEnd"))
@@ -61,11 +86,8 @@ def compute_status(item: dict[str, Any], today: date | None = None) -> str:
     if demand_end and demand_end < today:
         return "completed"
 
-    # Kaynak 'talep topluyor' gibi bir durumu bildiriyor ama henüz tarih alanları
-    # yayınlanmadıysa bunu SPK onaylıya geri düşürme. Tarihler geldiğinde üstteki
-    # zaman kuralları yine belirleyici olur.
-    raw_status = str(item.get("status") or "").lower()
-    if raw_status in {"active", "upcoming", "approved", "completed", "listed", "delayed", "draft"}:
+    # Preserve a source status only when dates/trading data cannot decide it.
+    if raw_status in STATUS_LABELS:
         return raw_status
     return "approved"
 
