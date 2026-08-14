@@ -63,6 +63,16 @@ def _status_text(value: Any) -> str:
     return re.sub(r"[^a-z0-9]+", " ", _ascii_text(value)).strip()
 
 
+def _validated_first_trade(item: dict[str, Any]) -> date | None:
+    first_trade = _as_date(item.get("firstTradeDate"))
+    demand_end = _as_date(item.get("collectionEnd") or item.get("demandEnd"))
+    # Borsa işlemi talep toplama bitmeden başlayamaz. Some secondary exports
+    # expose the demand-start date under a similarly named column; ignore it.
+    if first_trade and demand_end and first_trade <= demand_end:
+        return None
+    return first_trade
+
+
 def compute_status(item: dict[str, Any], today: date | None = None) -> str:
     """Return the canonical status consumed by the public app and domain contract."""
     today = today or datetime.now(ZoneInfo("Europe/Istanbul")).date()
@@ -74,7 +84,7 @@ def compute_status(item: dict[str, Any], today: date | None = None) -> str:
     if raw_status == "draft" or "taslak" in raw_label:
         return "draft"
 
-    first_trade = _as_date(item.get("firstTradeDate"))
+    first_trade = _validated_first_trade(item)
     demand_start = _as_date(item.get("collectionStart") or item.get("demandStart"))
     demand_end = _as_date(item.get("collectionEnd") or item.get("demandEnd"))
     if first_trade and first_trade <= today:
@@ -110,6 +120,11 @@ def apply_manual_overrides(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
         for key, value in override.items():
             if key not in {"company", "sources"} and value not in (None, ""):
                 item[key] = value
+
+        # Remove an impossible first-trade date before deriving public status.
+        if item.get("firstTradeDate") and _validated_first_trade(item) is None:
+            item.pop("firstTradeDate", None)
+
         item["ticker"] = clean_ticker(item.get("ticker"))
         item["status"] = compute_status(item)
         item["statusLabel"] = STATUS_LABELS[item["status"]]
