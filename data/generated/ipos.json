@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T08:02:27.741121+00:00",
+  "generatedAt": "2026-08-14T08:08:57.687003+00:00",
   "source": "SPK resmî bültenleri + etiketli ikincil kamuya açık takvim verisi",
   "recordCount": 33,
   "items": [
@@ -93,19 +93,19 @@
     {
       "id": "74651958-3df4-5835-a3cf-f4415a752567",
       "slug": "turker-vangolu-enerji-yatirim",
-      "ticker": null,
+      "ticker": "VEYAS",
       "company": "Türker Vangölü Enerji Yatırım A.Ş.",
       "sector": "Enerji",
-      "status": "approved",
-      "statusLabel": "SPK onaylı",
+      "status": "active",
+      "statusLabel": "Talep topluyor",
       "price": 136.0,
-      "dates": "Talep toplama tarihleri henüz açıklanmadı",
-      "collectionStart": null,
-      "collectionEnd": null,
+      "dates": "12-13-14 Ağustos 2026",
+      "collectionStart": "2026-08-12",
+      "collectionEnd": "2026-08-14",
       "lotCount": 65000000,
       "maxLotCount": 77500000,
       "retailLots": 0,
-      "distribution": "Henüz açıklanmadı",
+      "distribution": "Eşit Dağıtım",
       "risk": "Belirsiz",
       "reportVersion": "ön-analiz-1",
       "reportDate": "2026-08-05",
@@ -130,6 +130,24 @@
           "page": "Takvim ve sonuç alanları",
           "kind": "İkincil kamuya açık veri",
           "url": "https://api.halkaarz.com.tr/api/companies/export?format=xlsx&group=first&limit=700"
+        },
+        {
+          "title": "HalkaArz.com.tr güncel halka arz takvimi",
+          "page": "Ana sayfa güncel halka arz kartları",
+          "kind": "İkincil kamuya açık veri",
+          "url": "https://www.halkaarz.com.tr/"
+        },
+        {
+          "title": "VEYAS İçin Geri Sayım Başladı: Halka Arz Talep Toplama Tarihleri Belli Oldu",
+          "page": "Talep toplama takvimi",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/haber/veyas-icin-geri-sayim-basladi-halka-arz-talep-toplama-tarihleri-belli-oldu-589189"
+        },
+        {
+          "title": "Türker Vangölü Enerji Yatırım A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/turker-vangolu-enerji-yatirim-as"
         }
       ],
       "agenda": [
@@ -148,7 +166,7 @@
       "performance": null,
       "bulletinNo": "2026/49",
       "approvalDate": "2026-08-05",
-      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
       "aiScore": 55,
       "aiSummary": "Doğrulanan mevcut alanlarda arzın %57.7 bölümü sermaye artırımı, %42.3 bölümü ortak satışıdır. Takvim ve sonuç alanlarıyla veri kapsamı %56 düzeyindedir. Bu bir getiri tahmini değil, kaynak kapsamlı ön analizdir.",
       "highlights": [
@@ -162,28 +180,32 @@
       "aiProvider": "rules-v1",
       "participantCount": 0,
       "offerSize": 0.0,
-      "intermediary": "Halk Yatırım Menkul Değerler A.Ş., Vakıf Yatırım Menkul Değerler A.Ş., Ziraat Yatırım Menkul Değerler A.Ş.",
+      "intermediary": "Halk Yatırım Menkul Değerler A.Ş., Ziraat Yatırım Menkul Değerler A.Ş., Vakıf Yatırım Menkul Değerler A.Ş.",
       "publicFloat": 0.0,
       "allocationText": "",
       "dataCompleteness": 56,
-      "dataNotes": []
+      "dataNotes": [
+        "VEYAS kodu ve 12-13-14 Ağustos 2026 talep toplama takvimi güncel duyuruyla eşleştirildi.",
+        "Ana veri dışa aktarımı gecikirse canlı sayfa durumu ikinci otomatik kaynak olarak kullanılır."
+      ],
+      "market": "Yıldız Pazar"
     },
     {
       "id": "1b5c255c-2efc-5334-a00b-b7276fb4cd8b",
       "slug": "teknika-plast-teknik-kalip-plastik-sanayi-ve-ticaret",
-      "ticker": null,
+      "ticker": "TNKKA",
       "company": "Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş.",
       "sector": "Plastik",
-      "status": "approved",
-      "statusLabel": "SPK onaylı",
+      "status": "active",
+      "statusLabel": "Talep topluyor",
       "price": 85.4,
-      "dates": "Talep toplama tarihleri henüz açıklanmadı",
-      "collectionStart": null,
-      "collectionEnd": null,
+      "dates": "12-13-14 Ağustos 2026",
+      "collectionStart": "2026-08-12",
+      "collectionEnd": "2026-08-14",
       "lotCount": 31000000,
       "maxLotCount": 31000000,
       "retailLots": 0,
-      "distribution": "Henüz açıklanmadı",
+      "distribution": "Eşit Dağıtım",
       "risk": "Belirsiz",
       "reportVersion": "ön-analiz-1",
       "reportDate": "2026-08-05",
@@ -208,6 +230,18 @@
           "page": "Takvim ve sonuç alanları",
           "kind": "İkincil kamuya açık veri",
           "url": "https://api.halkaarz.com.tr/api/companies/export?format=xlsx&group=first&limit=700"
+        },
+        {
+          "title": "HalkaArz.com.tr güncel halka arz takvimi",
+          "page": "Ana sayfa güncel halka arz kartları",
+          "kind": "İkincil kamuya açık veri",
+          "url": "https://www.halkaarz.com.tr/"
+        },
+        {
+          "title": "Teknika Plast Teknik Kalıp Plastik San. ve Tic. A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/teknika-plast-teknik-kalip-plastik-san-ve-tic-as"
         }
       ],
       "agenda": [
@@ -226,7 +260,7 @@
       "performance": null,
       "bulletinNo": "2026/49",
       "approvalDate": "2026-08-05",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.527606+00:00",
+      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
       "aiScore": 68,
       "aiSummary": "Doğrulanan mevcut alanlarda arzın %80.6 bölümü sermaye artırımı, %19.4 bölümü ortak satışıdır. Takvim ve sonuç alanlarıyla veri kapsamı %56 düzeyindedir. Bu bir getiri tahmini değil, kaynak kapsamlı ön analizdir.",
       "highlights": [
@@ -243,24 +277,28 @@
       "publicFloat": 0.0,
       "allocationText": "",
       "dataCompleteness": 56,
-      "dataNotes": []
+      "dataNotes": [
+        "TNKKA kodu ve 12-13-14 Ağustos 2026 talep toplama takvimi güncel takvim bilgisiyle eşleştirildi.",
+        "Canlı halka arz sayfası talep toplama durumunu otomatik olarak izler."
+      ],
+      "market": "Yıldız Pazar"
     },
     {
       "id": "ea5b2229-c096-536e-bf4f-b4ce8b32e1c8",
       "slug": "kapeks-kimya-sanayi",
-      "ticker": null,
+      "ticker": "KPEKS",
       "company": "Kapeks Kimya Sanayi A.Ş.",
       "sector": "Kimya",
-      "status": "approved",
-      "statusLabel": "SPK onaylı",
+      "status": "active",
+      "statusLabel": "Talep topluyor",
       "price": 94.0,
-      "dates": "Talep toplama tarihleri henüz açıklanmadı",
-      "collectionStart": null,
-      "collectionEnd": null,
+      "dates": "12-13-14 Ağustos 2026",
+      "collectionStart": "2026-08-12",
+      "collectionEnd": "2026-08-14",
       "lotCount": 25100000,
       "maxLotCount": 25100000,
       "retailLots": 0,
-      "distribution": "Henüz açıklanmadı",
+      "distribution": "Eşit Dağıtım",
       "risk": "Belirsiz",
       "reportVersion": "ön-analiz-1",
       "reportDate": "2026-08-05",
@@ -285,6 +323,24 @@
           "page": "Takvim ve sonuç alanları",
           "kind": "İkincil kamuya açık veri",
           "url": "https://api.halkaarz.com.tr/api/companies/export?format=xlsx&group=first&limit=700"
+        },
+        {
+          "title": "HalkaArz.com.tr güncel halka arz takvimi",
+          "page": "Ana sayfa güncel halka arz kartları",
+          "kind": "İkincil kamuya açık veri",
+          "url": "https://www.halkaarz.com.tr/"
+        },
+        {
+          "title": "Kapeks Kimya Sanayi A.Ş. halka arz bilgileri",
+          "page": "Halka Arz Bilgileri",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/kapeks-kimya-sanayi-as"
+        },
+        {
+          "title": "Kapeks Halka Arzına Bu Bankalardan Girilecek! KPEKS'te Akbank Detayı",
+          "page": "KPEKS kodu ve talep toplama süreci",
+          "kind": "Gözden geçirilmiş halka arz veri kaynağı",
+          "url": "https://www.halkaarz.com.tr/haber/kapeks-halka-arzina-bu-bankalardan-girilecek-kpekste-akbank-detayi-325460"
         }
       ],
       "agenda": [
@@ -303,7 +359,7 @@
       "performance": null,
       "bulletinNo": "2026/49",
       "approvalDate": "2026-08-05",
-      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "sourceUpdatedAt": "2026-08-14T08:08:57.685831+00:00",
       "aiScore": 75,
       "aiSummary": "Doğrulanan mevcut alanlarda arzın %100.0 bölümü sermaye artırımı, %0.0 bölümü ortak satışıdır. Takvim ve sonuç alanlarıyla veri kapsamı %56 düzeyindedir. Bu bir getiri tahmini değil, kaynak kapsamlı ön analizdir.",
       "highlights": [
@@ -315,11 +371,15 @@
       "aiProvider": "rules-v1",
       "participantCount": 0,
       "offerSize": 0.0,
-      "intermediary": "Türkiye Sınai Kalkınma Bankası A.Ş., Yatırım Finansman Menkul Değerler A.Ş., Ziraat Yatırım Menkul Değerler A.Ş.",
+      "intermediary": "Türkiye Kalkınma ve Yatırım Bankası A.Ş., Ziraat Yatırım Menkul Değerler A.Ş., Yatırım Finansman Menkul Değerler A.Ş.",
       "publicFloat": 0.0,
       "allocationText": "",
       "dataCompleteness": 56,
-      "dataNotes": []
+      "dataNotes": [
+        "KPEKS kodu ve 12-13-14 Ağustos 2026 talep toplama takvimi güncel takvim bilgisiyle eşleştirildi.",
+        "Canlı halka arz sayfası talep toplama durumunu otomatik olarak izler."
+      ],
+      "market": "Yıldız Pazar"
     },
     {
       "id": "982fe2b3-8f30-505f-8c80-4d9e9d10f145",
@@ -2816,6 +2876,6 @@
     "recordsUpdated": 0,
     "fieldsApplied": 0
   },
-  "updateMode": "official-snapshot-plus-live-public-calendar-v2",
+  "updateMode": "official-snapshot-plus-live-public-calendar-v3",
   "networkSyncRequested": true
 }
