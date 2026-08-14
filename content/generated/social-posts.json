@@ -1,9 +1,427 @@
 {
-  "generatedAt": "2026-08-14T06:07:34.182221+00:00",
-  "sourceGeneratedAt": "2026-08-13T06:10:40.847761+00:00",
+  "generatedAt": "2026-08-14T08:02:27.922283+00:00",
+  "sourceGeneratedAt": "2026-08-14T08:02:27.741121+00:00",
   "siteUrl": "https://halkaarzim.vercel.app",
   "disclaimer": "Paylaşım metinleri yatırım tavsiyesi içermez; yayın öncesi kaynak ve tarih kontrolü yapılmalıdır.",
   "posts": [
+    {
+      "ipoId": "289e3024-2ae6-517e-9798-e6986266ccd2",
+      "slug": "citlekci-magazacilik-gida",
+      "company": "Çitlekçi Mağazacılık Gıda A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/citlekci-magazacilik-gida",
+      "x": "Çitlekçi Mağazacılık Gıda A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 73,70 TL\n• Talep: 10-11-12 Ağustos 2026\n• Sermaye artırımı: %82.2\n• Ortak satışı: %17.8\n\n3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/citlekci-magazacilik-gida\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Çitlekçi Mağazacılık Gıda A.Ş.</b>\nArzı tamamlandı · CITAS\n\n💰 Fiyat: <b>73,70 TL</b>\n📅 Talep: 10-11-12 Ağustos 2026\n🏢 Sermaye artırımı: %82.2\n👥 Ortak satışı: %17.8\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/citlekci-magazacilik-gida\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Çitlekçi Mağazacılık Gıda A.Ş. halka arz",
+          "body": "Arzı tamamlandı · CITAS"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 73,70 TL\nTalep: 10-11-12 Ağustos 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %82.2\nOrtak satışı %17.8"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/citlekci-magazacilik-gida"
+        }
+      ],
+      "shortVideoScript": "Çitlekçi Mağazacılık Gıda A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 73,70 TL. Arzın yaklaşık yüzde 82.2 bölümü sermaye artırımı, yüzde 17.8 bölümü ortak satışından oluşuyor. Talep tarihi: 10-11-12 Ağustos 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "74651958-3df4-5835-a3cf-f4415a752567",
+      "slug": "turker-vangolu-enerji-yatirim",
+      "company": "Türker Vangölü Enerji Yatırım A.Ş.",
+      "status": "approved",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim",
+      "x": "Türker Vangölü Enerji Yatırım A.Ş. halka arz özeti\n\n• Durum: SPK onaylı\n• Fiyat: 136,00 TL\n• Talep: Talep toplama tarihleri henüz açıklanmadı\n• Sermaye artırımı: %57.7\n• Ortak satışı: %42.3\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Türker Vangölü Enerji Yatırım A.Ş.</b>\nSPK onaylı · Kod bekleniyor\n\n💰 Fiyat: <b>136,00 TL</b>\n📅 Talep: Talep toplama tarihleri henüz açıklanmadı\n🏢 Sermaye artırımı: %57.7\n👥 Ortak satışı: %42.3\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Türker Vangölü Enerji Yatırım A.Ş. halka arz",
+          "body": "SPK onaylı · Kod bekleniyor"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 136,00 TL\nTalep: Talep toplama tarihleri henüz açıklanmadı"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %57.7\nOrtak satışı %42.3"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/turker-vangolu-enerji-yatirim"
+        }
+      ],
+      "shortVideoScript": "Türker Vangölü Enerji Yatırım A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 136,00 TL. Arzın yaklaşık yüzde 57.7 bölümü sermaye artırımı, yüzde 42.3 bölümü ortak satışından oluşuyor. Talep tarihi: Talep toplama tarihleri henüz açıklanmadı. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "ea5b2229-c096-536e-bf4f-b4ce8b32e1c8",
+      "slug": "kapeks-kimya-sanayi",
+      "company": "Kapeks Kimya Sanayi A.Ş.",
+      "status": "approved",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi",
+      "x": "Kapeks Kimya Sanayi A.Ş. halka arz özeti\n\n• Durum: SPK onaylı\n• Fiyat: 94,00 TL\n• Talep: Talep toplama tarihleri henüz açıklanmadı\n• Sermaye artırımı: %100.0\n• Ortak satışı: %0.0\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Kapeks Kimya Sanayi A.Ş.</b>\nSPK onaylı · Kod bekleniyor\n\n💰 Fiyat: <b>94,00 TL</b>\n📅 Talep: Talep toplama tarihleri henüz açıklanmadı\n🏢 Sermaye artırımı: %100.0\n👥 Ortak satışı: %0.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Kapeks Kimya Sanayi A.Ş. halka arz",
+          "body": "SPK onaylı · Kod bekleniyor"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 94,00 TL\nTalep: Talep toplama tarihleri henüz açıklanmadı"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %100.0\nOrtak satışı %0.0"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/kapeks-kimya-sanayi"
+        }
+      ],
+      "shortVideoScript": "Kapeks Kimya Sanayi A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 94,00 TL. Arzın yaklaşık yüzde 100.0 bölümü sermaye artırımı, yüzde 0.0 bölümü ortak satışından oluşuyor. Talep tarihi: Talep toplama tarihleri henüz açıklanmadı. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "bf461898-bb75-535d-9bfa-7b0b12f20c25",
+      "slug": "metgun-enerji-yatirimlari",
+      "company": "Metgün Enerji Yatırımları A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/metgun-enerji-yatirimlari",
+      "x": "Metgün Enerji Yatırımları A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 20,00 TL\n• Talep: 20-21-22 Temmuz 2026\n• Sermaye artırımı: %66.8\n• Ortak satışı: %33.2\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/metgun-enerji-yatirimlari\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Metgün Enerji Yatırımları A.Ş.</b>\nArzı tamamlandı · METEN\n\n💰 Fiyat: <b>20,00 TL</b>\n📅 Talep: 20-21-22 Temmuz 2026\n🏢 Sermaye artırımı: %66.8\n👥 Ortak satışı: %33.2\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/metgun-enerji-yatirimlari\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Metgün Enerji Yatırımları A.Ş. halka arz",
+          "body": "Arzı tamamlandı · METEN"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 20,00 TL\nTalep: 20-21-22 Temmuz 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %66.8\nOrtak satışı %33.2"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/metgun-enerji-yatirimlari"
+        }
+      ],
+      "shortVideoScript": "Metgün Enerji Yatırımları A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 20,00 TL. Arzın yaklaşık yüzde 66.8 bölümü sermaye artırımı, yüzde 33.2 bölümü ortak satışından oluşuyor. Talep tarihi: 20-21-22 Temmuz 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "aafa18c3-2fdc-526b-bb7b-e06b528c09b5",
+      "slug": "masfen-enerji",
+      "company": "Masfen Enerji A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/masfen-enerji",
+      "x": "Masfen Enerji A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 45,68 TL\n• Talep: 22-23-24 Temmuz 2026\n• Sermaye artırımı: %64.7\n• Ortak satışı: %35.3\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/masfen-enerji\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Masfen Enerji A.Ş.</b>\nArzı tamamlandı · MASFN\n\n💰 Fiyat: <b>45,68 TL</b>\n📅 Talep: 22-23-24 Temmuz 2026\n🏢 Sermaye artırımı: %64.7\n👥 Ortak satışı: %35.3\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/masfen-enerji\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Masfen Enerji A.Ş. halka arz",
+          "body": "Arzı tamamlandı · MASFN"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 45,68 TL\nTalep: 22-23-24 Temmuz 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %64.7\nOrtak satışı %35.3"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/masfen-enerji"
+        }
+      ],
+      "shortVideoScript": "Masfen Enerji A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 45,68 TL. Arzın yaklaşık yüzde 64.7 bölümü sermaye artırımı, yüzde 35.3 bölümü ortak satışından oluşuyor. Talep tarihi: 22-23-24 Temmuz 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "9e943096-0039-5b1c-9d6e-8748c1c922f2",
+      "slug": "kardemir-celik-sanayi",
+      "company": "Kardemir Çelik Sanayi A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/kardemir-celik-sanayi",
+      "x": "Kardemir Çelik Sanayi A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 35,00 TL\n• Talep: 22-23-24 Temmuz 2026\n• Sermaye artırımı: %85.9\n• Ortak satışı: %14.1\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/kardemir-celik-sanayi\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Kardemir Çelik Sanayi A.Ş.</b>\nArzı tamamlandı · KARCL\n\n💰 Fiyat: <b>35,00 TL</b>\n📅 Talep: 22-23-24 Temmuz 2026\n🏢 Sermaye artırımı: %85.9\n👥 Ortak satışı: %14.1\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/kardemir-celik-sanayi\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Kardemir Çelik Sanayi A.Ş. halka arz",
+          "body": "Arzı tamamlandı · KARCL"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 35,00 TL\nTalep: 22-23-24 Temmuz 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %85.9\nOrtak satışı %14.1"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/kardemir-celik-sanayi"
+        }
+      ],
+      "shortVideoScript": "Kardemir Çelik Sanayi A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 35,00 TL. Arzın yaklaşık yüzde 85.9 bölümü sermaye artırımı, yüzde 14.1 bölümü ortak satışından oluşuyor. Talep tarihi: 22-23-24 Temmuz 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "0c76c919-9c34-53e5-b8c6-7f9b5047eb0b",
+      "slug": "soho-giyim-ve-enerji",
+      "company": "Soho Giyim ve Enerji A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/soho-giyim-ve-enerji",
+      "x": "Soho Giyim ve Enerji A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 15,00 TL\n• Talep: 30 Haziran, 1 Temmuz 2026\n• Sermaye artırımı: %100.0\n• Ortak satışı: %0.0\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/soho-giyim-ve-enerji\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Soho Giyim ve Enerji A.Ş.</b>\nArzı tamamlandı · SOHOE\n\n💰 Fiyat: <b>15,00 TL</b>\n📅 Talep: 30 Haziran, 1 Temmuz 2026\n🏢 Sermaye artırımı: %100.0\n👥 Ortak satışı: %0.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/soho-giyim-ve-enerji\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Soho Giyim ve Enerji A.Ş. halka arz",
+          "body": "Arzı tamamlandı · SOHOE"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 15,00 TL\nTalep: 30 Haziran, 1 Temmuz 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %100.0\nOrtak satışı %0.0"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/soho-giyim-ve-enerji"
+        }
+      ],
+      "shortVideoScript": "Soho Giyim ve Enerji A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 15,00 TL. Arzın yaklaşık yüzde 100.0 bölümü sermaye artırımı, yüzde 0.0 bölümü ortak satışından oluşuyor. Talep tarihi: 30 Haziran, 1 Temmuz 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "57837dcb-53f5-55af-a05b-8b0da7a59cf3",
+      "slug": "beta-enerji-ve-teknoloji",
+      "company": "Beta Enerji ve Teknoloji A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/beta-enerji-ve-teknoloji",
+      "x": "Beta Enerji ve Teknoloji A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 40,00 TL\n• Talep: 23-24-25 Haziran 2026\n• Sermaye artırımı: %90.5\n• Ortak satışı: %9.5\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/beta-enerji-ve-teknoloji\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Beta Enerji ve Teknoloji A.Ş.</b>\nArzı tamamlandı · BETAE\n\n💰 Fiyat: <b>40,00 TL</b>\n📅 Talep: 23-24-25 Haziran 2026\n🏢 Sermaye artırımı: %90.5\n👥 Ortak satışı: %9.5\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/beta-enerji-ve-teknoloji\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Beta Enerji ve Teknoloji A.Ş. halka arz",
+          "body": "Arzı tamamlandı · BETAE"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 40,00 TL\nTalep: 23-24-25 Haziran 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %90.5\nOrtak satışı %9.5"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/beta-enerji-ve-teknoloji"
+        }
+      ],
+      "shortVideoScript": "Beta Enerji ve Teknoloji A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 40,00 TL. Arzın yaklaşık yüzde 90.5 bölümü sermaye artırımı, yüzde 9.5 bölümü ortak satışından oluşuyor. Talep tarihi: 23-24-25 Haziran 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "50ba01ab-86fa-56cc-b411-0a34ca486512",
+      "slug": "ekinciler-demir-ve-celik-sanayi",
+      "company": "Ekinciler Demir ve Çelik Sanayi A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/ekinciler-demir-ve-celik-sanayi",
+      "x": "Ekinciler Demir ve Çelik Sanayi A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 45,00 TL\n• Talep: 13-14-15 Mayıs 2026\n• Sermaye artırımı: %76.9\n• Ortak satışı: %23.1\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/ekinciler-demir-ve-celik-sanayi\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Ekinciler Demir ve Çelik Sanayi A.Ş.</b>\nArzı tamamlandı · EKDMR\n\n💰 Fiyat: <b>45,00 TL</b>\n📅 Talep: 13-14-15 Mayıs 2026\n🏢 Sermaye artırımı: %76.9\n👥 Ortak satışı: %23.1\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/ekinciler-demir-ve-celik-sanayi\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Ekinciler Demir ve Çelik Sanayi A.Ş. halka arz",
+          "body": "Arzı tamamlandı · EKDMR"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 45,00 TL\nTalep: 13-14-15 Mayıs 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %76.9\nOrtak satışı %23.1"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/ekinciler-demir-ve-celik-sanayi"
+        }
+      ],
+      "shortVideoScript": "Ekinciler Demir ve Çelik Sanayi A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 45,00 TL. Arzın yaklaşık yüzde 76.9 bölümü sermaye artırımı, yüzde 23.1 bölümü ortak satışından oluşuyor. Talep tarihi: 13-14-15 Mayıs 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "f2e0b009-119e-572e-94d8-ce959590a666",
+      "slug": "agaoglu-avrasya-gayrimenkul-yatirim-ortakligi",
+      "company": "Ağaoğlu Avrasya Gayrimenkul Yatırım Ortaklığı A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/agaoglu-avrasya-gayrimenkul-yatirim-ortakligi",
+      "x": "Ağaoğlu Avrasya Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 21,10 TL\n• Talep: 1-2-3 Nisan 2026\n• Sermaye artırımı: %60.0\n• Ortak satışı: %40.0\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/agaoglu-avrasya-gayrimenkul-yatirim-ortakligi\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Ağaoğlu Avrasya Gayrimenkul Yatırım Ortaklığı A.Ş.</b>\nArzı tamamlandı · AAGYO\n\n💰 Fiyat: <b>21,10 TL</b>\n📅 Talep: 1-2-3 Nisan 2026\n🏢 Sermaye artırımı: %60.0\n👥 Ortak satışı: %40.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/agaoglu-avrasya-gayrimenkul-yatirim-ortakligi\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Ağaoğlu Avrasya Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz",
+          "body": "Arzı tamamlandı · AAGYO"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 21,10 TL\nTalep: 1-2-3 Nisan 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %60.0\nOrtak satışı %40.0"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/agaoglu-avrasya-gayrimenkul-yatirim-ortakligi"
+        }
+      ],
+      "shortVideoScript": "Ağaoğlu Avrasya Gayrimenkul Yatırım Ortaklığı A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 21,10 TL. Arzın yaklaşık yüzde 60.0 bölümü sermaye artırımı, yüzde 40.0 bölümü ortak satışından oluşuyor. Talep tarihi: 1-2-3 Nisan 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
+    {
+      "ipoId": "527fec4c-6005-5824-b008-b153726fc5c5",
+      "slug": "netcad-yazilim",
+      "company": "Netcad Yazılım A.Ş.",
+      "status": "completed",
+      "sourceUpdatedAt": "2026-08-14T08:02:27.734037+00:00",
+      "url": "https://halkaarzim.vercel.app/arz/netcad-yazilim",
+      "x": "Netcad Yazılım A.Ş. halka arz özeti\n\n• Durum: Arzı tamamlandı\n• Fiyat: 46,00 TL\n• Talep: 28-29-30 Ocak 2026\n• Sermaye artırımı: %30.0\n• Ortak satışı: %70.0\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/netcad-yazilim\n\nYatırım tavsiyesi değildir.",
+      "telegramHtml": "📌 <b>Netcad Yazılım A.Ş.</b>\nArzı tamamlandı · Kod bekleniyor\n\n💰 Fiyat: <b>46,00 TL</b>\n📅 Talep: 28-29-30 Ocak 2026\n🏢 Sermaye artırımı: %30.0\n👥 Ortak satışı: %70.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/netcad-yazilim\n\n<i>Yatırım tavsiyesi değildir.</i>",
+      "instagramCarousel": [
+        {
+          "slide": 1,
+          "headline": "Netcad Yazılım A.Ş. halka arz",
+          "body": "Arzı tamamlandı · Kod bekleniyor"
+        },
+        {
+          "slide": 2,
+          "headline": "Temel bilgiler",
+          "body": "Fiyat: 46,00 TL\nTalep: 28-29-30 Ocak 2026"
+        },
+        {
+          "slide": 3,
+          "headline": "Arz yapısı",
+          "body": "Sermaye artırımı %30.0\nOrtak satışı %70.0"
+        },
+        {
+          "slide": 4,
+          "headline": "Eksik veriyi de gösteriyoruz",
+          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
+        },
+        {
+          "slide": 5,
+          "headline": "Kaynağından incele",
+          "body": "https://halkaarzim.vercel.app/arz/netcad-yazilim"
+        }
+      ],
+      "shortVideoScript": "Netcad Yazılım A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 46,00 TL. Arzın yaklaşık yüzde 30.0 bölümü sermaye artırımı, yüzde 70.0 bölümü ortak satışından oluşuyor. Talep tarihi: 28-29-30 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
+    },
     {
       "ipoId": "678ea6f9-e0ef-55cb-8cc2-6b1157e81205",
       "slug": "meysu-gida-sanayi-ve-ticaret",
@@ -41,424 +459,6 @@
         }
       ],
       "shortVideoScript": "Meysu Gıda Sanayi ve Ticaret A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 7,50 TL. Arzın yaklaşık yüzde 68.6 bölümü sermaye artırımı, yüzde 31.4 bölümü ortak satışından oluşuyor. Talep tarihi: 5-6-7 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "7abbe5e6-aa35-5411-923e-6ea9e5b5e338",
-      "slug": "formul-plastik-ve-metal-sanayi",
-      "company": "Formül Plastik ve Metal Sanayi A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.708175+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/formul-plastik-ve-metal-sanayi",
-      "x": "Formül Plastik ve Metal Sanayi A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 30,24 TL\n• Talep: 7-8-9 Ocak 2026\n• Sermaye artırımı: %75.0\n• Ortak satışı: %25.0\n\n3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/formul-plastik-ve-metal-sanayi\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Formül Plastik ve Metal Sanayi A.Ş.</b>\nİşlem görüyor · FRMPL\n\n💰 Fiyat: <b>30,24 TL</b>\n📅 Talep: 7-8-9 Ocak 2026\n🏢 Sermaye artırımı: %75.0\n👥 Ortak satışı: %25.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/formul-plastik-ve-metal-sanayi\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Formül Plastik ve Metal Sanayi A.Ş. halka arz",
-          "body": "İşlem görüyor · FRMPL"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 30,24 TL\nTalep: 7-8-9 Ocak 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %75.0\nOrtak satışı %25.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/formul-plastik-ve-metal-sanayi"
-        }
-      ],
-      "shortVideoScript": "Formül Plastik ve Metal Sanayi A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 30,24 TL. Arzın yaklaşık yüzde 75.0 bölümü sermaye artırımı, yüzde 25.0 bölümü ortak satışından oluşuyor. Talep tarihi: 7-8-9 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "91595581-cfe6-5bb2-83f9-7604c28b02c2",
-      "slug": "z-gayrimenkul-yatirim-ortakligi",
-      "company": "Z Gayrimenkul Yatırım Ortaklığı A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.704081+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/z-gayrimenkul-yatirim-ortakligi",
-      "x": "Z Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 9,77 TL\n• Talep: 7-8-9 Ocak 2026\n• Sermaye artırımı: %50.0\n• Ortak satışı: %50.0\n\n3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/z-gayrimenkul-yatirim-ortakligi\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Z Gayrimenkul Yatırım Ortaklığı A.Ş.</b>\nİşlem görüyor · ZGYO\n\n💰 Fiyat: <b>9,77 TL</b>\n📅 Talep: 7-8-9 Ocak 2026\n🏢 Sermaye artırımı: %50.0\n👥 Ortak satışı: %50.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/z-gayrimenkul-yatirim-ortakligi\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Z Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz",
-          "body": "İşlem görüyor · ZGYO"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 9,77 TL\nTalep: 7-8-9 Ocak 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %50.0\nOrtak satışı %50.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/z-gayrimenkul-yatirim-ortakligi"
-        }
-      ],
-      "shortVideoScript": "Z Gayrimenkul Yatırım Ortaklığı A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 9,77 TL. Arzın yaklaşık yüzde 50.0 bölümü sermaye artırımı, yüzde 50.0 bölümü ortak satışından oluşuyor. Talep tarihi: 7-8-9 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "541ca1ef-9dc0-5b83-8a90-c7e5d72147de",
-      "slug": "ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri",
-      "company": "Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.699685+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri",
-      "x": "Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 18,00 TL\n• Talep: 14-15-16 Ocak 2026\n• Sermaye artırımı: %83.3\n• Ortak satışı: %16.7\n\n4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş.</b>\nİşlem görüyor · UCAYM\n\n💰 Fiyat: <b>18,00 TL</b>\n📅 Talep: 14-15-16 Ocak 2026\n🏢 Sermaye artırımı: %83.3\n👥 Ortak satışı: %16.7\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş. halka arz",
-          "body": "İşlem görüyor · UCAYM"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 18,00 TL\nTalep: 14-15-16 Ocak 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %83.3\nOrtak satışı %16.7"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/ucay-muhendislik-enerji-ve-iklimlendirme-teknolojileri"
-        }
-      ],
-      "shortVideoScript": "Üçay Mühendislik Enerji ve İklimlendirme Teknolojileri A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 18,00 TL. Arzın yaklaşık yüzde 83.3 bölümü sermaye artırımı, yüzde 16.7 bölümü ortak satışından oluşuyor. Talep tarihi: 14-15-16 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "223cbf6b-eef0-522d-86b7-67758e619ee6",
-      "slug": "akhan-un-fabrikasi-ve-tarim-urunleri-gida-sanayi-ticaret",
-      "company": "Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş.",
-      "status": "completed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.695491+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/akhan-un-fabrikasi-ve-tarim-urunleri-gida-sanayi-ticaret",
-      "x": "Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş. halka arz özeti\n\n• Durum: Arz tamamlandı\n• Fiyat: 21,50 TL\n• Talep: 28-29-30 Ocak 2026\n• Sermaye artırımı: %100.0\n• Ortak satışı: %0.0\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/akhan-un-fabrikasi-ve-tarim-urunleri-gida-sanayi-ticaret\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş.</b>\nArz tamamlandı · Kod bekleniyor\n\n💰 Fiyat: <b>21,50 TL</b>\n📅 Talep: 28-29-30 Ocak 2026\n🏢 Sermaye artırımı: %100.0\n👥 Ortak satışı: %0.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/akhan-un-fabrikasi-ve-tarim-urunleri-gida-sanayi-ticaret\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş. halka arz",
-          "body": "Arz tamamlandı · Kod bekleniyor"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 21,50 TL\nTalep: 28-29-30 Ocak 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %100.0\nOrtak satışı %0.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/akhan-un-fabrikasi-ve-tarim-urunleri-gida-sanayi-ticaret"
-        }
-      ],
-      "shortVideoScript": "Akhan Un Fabrikası ve Tarım Ürünleri Gıda Sanayi Ticaret A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 21,50 TL. Arzın yaklaşık yüzde 100.0 bölümü sermaye artırımı, yüzde 0.0 bölümü ortak satışından oluşuyor. Talep tarihi: 28-29-30 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "527fec4c-6005-5824-b008-b153726fc5c5",
-      "slug": "netcad-yazilim",
-      "company": "Netcad Yazılım A.Ş.",
-      "status": "completed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.684381+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/netcad-yazilim",
-      "x": "Netcad Yazılım A.Ş. halka arz özeti\n\n• Durum: Arz tamamlandı\n• Fiyat: 46,00 TL\n• Talep: 28-29-30 Ocak 2026\n• Sermaye artırımı: %30.0\n• Ortak satışı: %70.0\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/netcad-yazilim\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Netcad Yazılım A.Ş.</b>\nArz tamamlandı · Kod bekleniyor\n\n💰 Fiyat: <b>46,00 TL</b>\n📅 Talep: 28-29-30 Ocak 2026\n🏢 Sermaye artırımı: %30.0\n👥 Ortak satışı: %70.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/netcad-yazilim\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Netcad Yazılım A.Ş. halka arz",
-          "body": "Arz tamamlandı · Kod bekleniyor"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 46,00 TL\nTalep: 28-29-30 Ocak 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %30.0\nOrtak satışı %70.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/netcad-yazilim"
-        }
-      ],
-      "shortVideoScript": "Netcad Yazılım A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 46,00 TL. Arzın yaklaşık yüzde 30.0 bölümü sermaye artırımı, yüzde 70.0 bölümü ortak satışından oluşuyor. Talep tarihi: 28-29-30 Ocak 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "bcccfc22-6589-537f-9440-a0d67aafaf58",
-      "slug": "best-brands-grup-enerji-yatirim",
-      "company": "Best Brands Grup Enerji Yatırım A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.680280+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/best-brands-grup-enerji-yatirim",
-      "x": "Best Brands Grup Enerji Yatırım A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 14,70 TL\n• Talep: 5-6 Şubat 2026\n• Sermaye artırımı: %70.0\n• Ortak satışı: %30.0\n\n4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/best-brands-grup-enerji-yatirim\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Best Brands Grup Enerji Yatırım A.Ş.</b>\nİşlem görüyor · BESTE\n\n💰 Fiyat: <b>14,70 TL</b>\n📅 Talep: 5-6 Şubat 2026\n🏢 Sermaye artırımı: %70.0\n👥 Ortak satışı: %30.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/best-brands-grup-enerji-yatirim\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Best Brands Grup Enerji Yatırım A.Ş. halka arz",
-          "body": "İşlem görüyor · BESTE"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 14,70 TL\nTalep: 5-6 Şubat 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %70.0\nOrtak satışı %30.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/best-brands-grup-enerji-yatirim"
-        }
-      ],
-      "shortVideoScript": "Best Brands Grup Enerji Yatırım A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 14,70 TL. Arzın yaklaşık yüzde 70.0 bölümü sermaye artırımı, yüzde 30.0 bölümü ortak satışından oluşuyor. Talep tarihi: 5-6 Şubat 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "c0796fb5-9487-5b43-b3c7-3cde1c413c5e",
-      "slug": "ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret",
-      "company": "Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.676225+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret",
-      "x": "Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 11,20 TL\n• Talep: 11-12-13 Şubat 2026\n• Sermaye artırımı: %85.7\n• Ortak satışı: %14.3\n\n4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş.</b>\nİşlem görüyor · ATATR\n\n💰 Fiyat: <b>11,20 TL</b>\n📅 Talep: 11-12-13 Şubat 2026\n🏢 Sermaye artırımı: %85.7\n👥 Ortak satışı: %14.3\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. halka arz",
-          "body": "İşlem görüyor · ATATR"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 11,20 TL\nTalep: 11-12-13 Şubat 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %85.7\nOrtak satışı %14.3"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/ata-turizm-isletmecilik-tasimacilik-madencilik-kuyumculuk-sanayi-ve-dis-ticaret"
-        }
-      ],
-      "shortVideoScript": "Ata Turizm İşletmecilik Taşımacılık Madencilik Kuyumculuk Sanayi ve Dış Ticaret A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 11,20 TL. Arzın yaklaşık yüzde 85.7 bölümü sermaye artırımı, yüzde 14.3 bölümü ortak satışından oluşuyor. Talep tarihi: 11-12-13 Şubat 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "0d7931b8-ba29-58f2-9661-6cbaf893cab5",
-      "slug": "empa-elektronik-sanayi-ve-ticaret",
-      "company": "Empa Elektronik Sanayi ve Ticaret A.Ş.",
-      "status": "completed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.667413+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/empa-elektronik-sanayi-ve-ticaret",
-      "x": "Empa Elektronik Sanayi ve Ticaret A.Ş. halka arz özeti\n\n• Durum: Arz tamamlandı\n• Fiyat: 22,00 TL\n• Talep: 19-20 Şubat 2026\n• Sermaye artırımı: %76.3\n• Ortak satışı: %23.7\n\n2 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/empa-elektronik-sanayi-ve-ticaret\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Empa Elektronik Sanayi ve Ticaret A.Ş.</b>\nArz tamamlandı · EMPAE\n\n💰 Fiyat: <b>22,00 TL</b>\n📅 Talep: 19-20 Şubat 2026\n🏢 Sermaye artırımı: %76.3\n👥 Ortak satışı: %23.7\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/empa-elektronik-sanayi-ve-ticaret\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Empa Elektronik Sanayi ve Ticaret A.Ş. halka arz",
-          "body": "Arz tamamlandı · EMPAE"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 22,00 TL\nTalep: 19-20 Şubat 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %76.3\nOrtak satışı %23.7"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/empa-elektronik-sanayi-ve-ticaret"
-        }
-      ],
-      "shortVideoScript": "Empa Elektronik Sanayi ve Ticaret A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 22,00 TL. Arzın yaklaşık yüzde 76.3 bölümü sermaye artırımı, yüzde 23.7 bölümü ortak satışından oluşuyor. Talep tarihi: 19-20 Şubat 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "94da8117-ad64-520f-bbe8-73beb0c05343",
-      "slug": "luxera-gayrimenkul-yatirim-ortakligi",
-      "company": "Luxera Gayrimenkul Yatırım Ortaklığı A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.658180+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/luxera-gayrimenkul-yatirim-ortakligi",
-      "x": "Luxera Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 12,05 TL\n• Talep: 2-3-4 Mart 2026\n• Sermaye artırımı: %75.0\n• Ortak satışı: %25.0\n\n4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/luxera-gayrimenkul-yatirim-ortakligi\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Luxera Gayrimenkul Yatırım Ortaklığı A.Ş.</b>\nİşlem görüyor · LXGYO\n\n💰 Fiyat: <b>12,05 TL</b>\n📅 Talep: 2-3-4 Mart 2026\n🏢 Sermaye artırımı: %75.0\n👥 Ortak satışı: %25.0\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/luxera-gayrimenkul-yatirim-ortakligi\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Luxera Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz",
-          "body": "İşlem görüyor · LXGYO"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 12,05 TL\nTalep: 2-3-4 Mart 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %75.0\nOrtak satışı %25.0"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/luxera-gayrimenkul-yatirim-ortakligi"
-        }
-      ],
-      "shortVideoScript": "Luxera Gayrimenkul Yatırım Ortaklığı A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 12,05 TL. Arzın yaklaşık yüzde 75.0 bölümü sermaye artırımı, yüzde 25.0 bölümü ortak satışından oluşuyor. Talep tarihi: 2-3-4 Mart 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "a7516e80-cea4-5e85-8ed4-b888361f3690",
-      "slug": "savur-gayrimenkul-yatirim-ortakligi",
-      "company": "Savur Gayrimenkul Yatırım Ortaklığı A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.654135+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/savur-gayrimenkul-yatirim-ortakligi",
-      "x": "Savur Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 3,64 TL\n• Talep: 26-27 Şubat, 2 Mart 2026\n• Sermaye artırımı: %70.5\n• Ortak satışı: %29.5\n\n4 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/savur-gayrimenkul-yatirim-ortakligi\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Savur Gayrimenkul Yatırım Ortaklığı A.Ş.</b>\nİşlem görüyor · SVGYO\n\n💰 Fiyat: <b>3,64 TL</b>\n📅 Talep: 26-27 Şubat, 2 Mart 2026\n🏢 Sermaye artırımı: %70.5\n👥 Ortak satışı: %29.5\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/savur-gayrimenkul-yatirim-ortakligi\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Savur Gayrimenkul Yatırım Ortaklığı A.Ş. halka arz",
-          "body": "İşlem görüyor · SVGYO"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 3,64 TL\nTalep: 26-27 Şubat, 2 Mart 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %70.5\nOrtak satışı %29.5"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/savur-gayrimenkul-yatirim-ortakligi"
-        }
-      ],
-      "shortVideoScript": "Savur Gayrimenkul Yatırım Ortaklığı A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 3,64 TL. Arzın yaklaşık yüzde 70.5 bölümü sermaye artırımı, yüzde 29.5 bölümü ortak satışından oluşuyor. Talep tarihi: 26-27 Şubat, 2 Mart 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
-    },
-    {
-      "ipoId": "5fde4020-6b63-5f95-9c91-fe14d745b8ed",
-      "slug": "gentas-kimya-sanayi-ve-ticaret-pazarlama",
-      "company": "Gentaş Kimya Sanayi ve Ticaret Pazarlama A.Ş.",
-      "status": "listed",
-      "sourceUpdatedAt": "2026-08-06T09:36:39.649680+00:00",
-      "url": "https://halkaarzim.vercel.app/arz/gentas-kimya-sanayi-ve-ticaret-pazarlama",
-      "x": "Gentaş Kimya Sanayi ve Ticaret Pazarlama A.Ş. halka arz özeti\n\n• Durum: İşlem görüyor\n• Fiyat: 11,00 TL\n• Talep: 2-3 Mart 2026\n• Sermaye artırımı: %67.3\n• Ortak satışı: %32.7\n\n3 kaynak ve eksik veri notları: https://halkaarzim.vercel.app/arz/gentas-kimya-sanayi-ve-ticaret-pazarlama\n\nYatırım tavsiyesi değildir.",
-      "telegramHtml": "📌 <b>Gentaş Kimya Sanayi ve Ticaret Pazarlama A.Ş.</b>\nİşlem görüyor · GENKM\n\n💰 Fiyat: <b>11,00 TL</b>\n📅 Talep: 2-3 Mart 2026\n🏢 Sermaye artırımı: %67.3\n👥 Ortak satışı: %32.7\n\n🔎 Kaynaklı ön analiz: https://halkaarzim.vercel.app/arz/gentas-kimya-sanayi-ve-ticaret-pazarlama\n\n<i>Yatırım tavsiyesi değildir.</i>",
-      "instagramCarousel": [
-        {
-          "slide": 1,
-          "headline": "Gentaş Kimya Sanayi ve Ticaret Pazarlama A.Ş. halka arz",
-          "body": "İşlem görüyor · GENKM"
-        },
-        {
-          "slide": 2,
-          "headline": "Temel bilgiler",
-          "body": "Fiyat: 11,00 TL\nTalep: 2-3 Mart 2026"
-        },
-        {
-          "slide": 3,
-          "headline": "Arz yapısı",
-          "body": "Sermaye artırımı %67.3\nOrtak satışı %32.7"
-        },
-        {
-          "slide": 4,
-          "headline": "Eksik veriyi de gösteriyoruz",
-          "body": "Açıklanmayan tarih, kod ve finansal alanlar tahmin edilmez."
-        },
-        {
-          "slide": 5,
-          "headline": "Kaynağından incele",
-          "body": "https://halkaarzim.vercel.app/arz/gentas-kimya-sanayi-ve-ticaret-pazarlama"
-        }
-      ],
-      "shortVideoScript": "Gentaş Kimya Sanayi ve Ticaret Pazarlama A.Ş. halka arzında açıklanan temel veriler şöyle: fiyat 11,00 TL. Arzın yaklaşık yüzde 67.3 bölümü sermaye artırımı, yüzde 32.7 bölümü ortak satışından oluşuyor. Talep tarihi: 2-3 Mart 2026. Açıklanmayan bilgileri tahmin etmiyoruz. Kaynaklı detay HalkaArzım'da."
     }
   ]
 }
