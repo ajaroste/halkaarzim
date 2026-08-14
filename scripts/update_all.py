@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -12,6 +13,7 @@ from scripts.sync_public_calendar import (
     PublicCalendarSyncError,
     fetch_public_rows,
     merge_public_calendar,
+    normalize_company_name,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +25,69 @@ def env_bool(name: str, default: bool = False) -> bool:
     if value is None:
         return default
     return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _has_letters(value: object) -> bool:
+    return bool(re.search(r"[A-Za-zÇĞİÖŞÜçğıöşü]", str(value or "")))
+
+
+def _valid_ticker(value: object) -> bool:
+    ticker = re.sub(r"[^A-Z0-9]", "", str(value or "").upper())
+    return 3 <= len(ticker) <= 8 and bool(re.search(r"[A-Z]", ticker))
+
+
+def _valid_market(value: object) -> bool:
+    text = str(value or "").strip().lower()
+    return _has_letters(text) and ("pazar" in text or "market" in text)
+
+
+def _valid_percent(value: object) -> bool:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return False
+    return 0 <= number <= 100
+
+
+def _restore(original: dict, item: dict, field: str) -> None:
+    if field in original:
+        item[field] = original[field]
+    else:
+        item.pop(field, None)
+
+
+def sanitize_secondary_merge(original_items: list[dict], merged_items: list[dict]) -> list[dict]:
+    """Reject obviously malformed cells if the external XLSX schema drifts."""
+    originals = {item.get("id"): item for item in original_items}
+    output: list[dict] = []
+    for merged in merged_items:
+        item = dict(merged)
+        original = originals.get(item.get("id"), {})
+
+        if item.get("ticker") and not _valid_ticker(item.get("ticker")):
+            _restore(original, item, "ticker")
+        if item.get("market") and not _valid_market(item.get("market")):
+            _restore(original, item, "market")
+        if item.get("publicFloat") not in (None, "") and not _valid_percent(item.get("publicFloat")):
+            _restore(original, item, "publicFloat")
+        for field in ("distribution", "intermediary"):
+            if item.get(field) not in (None, "") and not _has_letters(item.get(field)):
+                _restore(original, item, field)
+
+        # A bad/ambiguous source column must not create a metadata-only change.
+        comparable_item = {k: v for k, v in item.items() if k not in {"sources", "sourceUpdatedAt"}}
+        comparable_original = {k: v for k, v in original.items() if k not in {"sources", "sourceUpdatedAt"}}
+        if original and comparable_item == comparable_original:
+            if "sources" in original:
+                item["sources"] = original["sources"]
+            else:
+                item.pop("sources", None)
+            if "sourceUpdatedAt" in original:
+                item["sourceUpdatedAt"] = original["sourceUpdatedAt"]
+            else:
+                item.pop("sourceUpdatedAt", None)
+        output.append(item)
+    return output
 
 
 def validate(items: list[dict]) -> None:
@@ -37,6 +102,10 @@ def validate(items: list[dict]) -> None:
             raise ValueError(f"Kaynak veya şirket adı eksik: {item.get('company')}")
         if not any(str(source.get("url", "")).startswith("https://") for source in item["sources"]):
             raise ValueError(f"HTTPS resmî kaynak eksik: {item['company']}")
+        if item.get("ticker") and not _valid_ticker(item.get("ticker")):
+            raise ValueError(f"Geçersiz borsa kodu: {item['company']} -> {item.get('ticker')}")
+        if item.get("market") and not _valid_market(item.get("market")):
+            raise ValueError(f"Geçersiz pazar alanı: {item['company']} -> {item.get('market')}")
         ids.add(item["id"])
         slugs.add(item["slug"])
 
@@ -50,6 +119,16 @@ def atomic_write(path: Path, payload: dict) -> None:
     temporary.replace(path)
 
 
+def _debug_source_rows(source_rows: list[dict]) -> None:
+    if not env_bool("PUBLIC_CALENDAR_DEBUG"):
+        return
+    wanted = ("turker vangolu", "teknika plast", "kapeks kimya")
+    for row in source_rows:
+        key = normalize_company_name(row.get("company"))
+        if any(target in key for target in wanted):
+            print("PUBLIC_CALENDAR_DEBUG " + json.dumps(row, ensure_ascii=False, default=str, sort_keys=True))
+
+
 def sync_live_public_calendar(items: list[dict]) -> list[dict]:
     if not env_bool("ALLOW_NETWORK_SYNC"):
         print("Network IPO sync disabled; using repository snapshot and reviewed overrides")
@@ -61,7 +140,9 @@ def sync_live_public_calendar(items: list[dict]) -> list[dict]:
 
     try:
         source_rows = fetch_public_rows(source_url)
+        _debug_source_rows(source_rows)
         merged, report = merge_public_calendar(items, source_rows, source_url)
+        merged = sanitize_secondary_merge(items, merged)
         expected_matches = min(minimum_matches, len(items))
         if report.matched_rows < expected_matches:
             raise PublicCalendarSyncError(
@@ -70,7 +151,7 @@ def sync_live_public_calendar(items: list[dict]) -> list[dict]:
             )
         print(
             "Public calendar sync: "
-            f"rows={report.source_rows}, matched={report.matched_rows}, changed={report.changed_items}"
+            f"rows={report.source_rows}, matched={report.matched_rows}, source_changes={report.changed_items}"
         )
         if report.unmatched_companies:
             print("Unmatched public-calendar rows (sample): " + " | ".join(report.unmatched_companies[:10]))
