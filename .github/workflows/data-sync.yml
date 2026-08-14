@@ -7,12 +7,14 @@ on:
     - cron: "0 16 * * *"
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, agent/auto-ipo-sync-fix]
     paths:
       - ".github/workflows/data-sync.yml"
       - "data/manual/**"
       - "scripts/update_all.py"
       - "scripts/enrich_ipo_data.py"
+      - "scripts/sync_public_calendar.py"
+      - "tests/test_public_calendar_sync.py"
 
 permissions:
   contents: write
@@ -48,6 +50,8 @@ jobs:
         run: python scripts/update_all.py
         env:
           ALLOW_NETWORK_SYNC: "true"
+          PUBLIC_CALENDAR_REQUIRED: "true"
+          PUBLIC_CALENDAR_MIN_MATCHES: "3"
 
       - name: Generate source-bound AI reports when configured
         run: python scripts/generate_ai_reports.py
@@ -60,7 +64,7 @@ jobs:
         run: python scripts/generate_growth_content.py
 
       - name: Run Python validation
-        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
+        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_public_calendar_sync tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
 
       - name: Sync Supabase when configured
         if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
