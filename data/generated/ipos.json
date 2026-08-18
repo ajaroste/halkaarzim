@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T06:24:12.510459+00:00",
+  "generatedAt": "2026-08-18T08:57:04.124841+00:00",
   "source": "SPK resmî bültenleri + etiketli ikincil kamuya açık takvim verisi",
   "recordCount": 33,
   "items": [
@@ -67,7 +67,7 @@
       "performance": null,
       "bulletinNo": "2026/49",
       "approvalDate": "2026-08-05",
-      "sourceUpdatedAt": "2026-08-18T06:24:11.409605+00:00",
+      "sourceUpdatedAt": "2026-08-18T08:57:02.673398+00:00",
       "aiScore": 68,
       "aiSummary": "Doğrulanan mevcut alanlarda arzın %82.2 bölümü sermaye artırımı, %17.8 bölümü ortak satışıdır. Takvim ve sonuç alanlarıyla veri kapsamı %56 düzeyindedir. Bu bir getiri tahmini değil, kaynak kapsamlı ön analizdir.",
       "highlights": [
@@ -78,8 +78,8 @@
         "Henüz işlenmeyen alanlar: talep toplama tarihi, borsa kodu, katılımcı sonucu, fon kullanım planı, finansal tablolar."
       ],
       "aiProvider": "rules-v1",
-      "participantCount": 0,
-      "offerSize": 0.0,
+      "participantCount": 556728,
+      "offerSize": 2690050000,
       "intermediary": "Tera Yatırım Menkul Değerler A.Ş.",
       "publicFloat": 0.0,
       "allocationText": "",
