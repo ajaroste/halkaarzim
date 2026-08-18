@@ -4,6 +4,7 @@ import unittest
 from datetime import date
 
 from scripts.enrich_ipo_data import apply_manual_overrides, clean_ticker, compute_status, load_manual_overrides, normalize_company_name
+from scripts.update_all import preserve_unchanged_source_timestamps
 
 
 class EnrichmentTests(unittest.TestCase):
@@ -41,6 +42,38 @@ class EnrichmentTests(unittest.TestCase):
         self.assertEqual(compute_status(item, date(2026, 8, 14)), "active")
         cleaned = apply_manual_overrides([item])[0]
         self.assertNotIn("firstTradeDate", cleaned)
+
+    def test_timestamp_only_refresh_is_suppressed(self) -> None:
+        original = [{
+            "id": "ipo-1",
+            "company": "Örnek Enerji A.Ş.",
+            "status": "completed",
+            "sourceUpdatedAt": "2026-08-18T06:00:00+00:00",
+            "sources": [{"url": "https://example.com/source"}],
+        }]
+        refreshed = [{
+            **original[0],
+            "sourceUpdatedAt": "2026-08-18T08:00:00+00:00",
+        }]
+        stabilized = preserve_unchanged_source_timestamps(original, refreshed)
+        self.assertEqual(stabilized, original)
+
+    def test_real_data_change_keeps_new_source_timestamp(self) -> None:
+        original = [{
+            "id": "ipo-1",
+            "company": "Örnek Enerji A.Ş.",
+            "status": "approved",
+            "sourceUpdatedAt": "2026-08-18T06:00:00+00:00",
+            "sources": [{"url": "https://example.com/source"}],
+        }]
+        changed = [{
+            **original[0],
+            "status": "upcoming",
+            "sourceUpdatedAt": "2026-08-18T08:00:00+00:00",
+        }]
+        stabilized = preserve_unchanged_source_timestamps(original, changed)
+        self.assertEqual(stabilized[0]["status"], "upcoming")
+        self.assertEqual(stabilized[0]["sourceUpdatedAt"], "2026-08-18T08:00:00+00:00")
 
     def test_manual_sources_are_public_and_secure(self) -> None:
         rows = load_manual_overrides()
