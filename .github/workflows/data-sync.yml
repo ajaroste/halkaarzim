@@ -2,7 +2,7 @@ name: SPK data, AI and notification sync
 
 on:
   schedule:
-    # Türkiye saatiyle yaklaşık her iki saatte bir; dakikayı :17 seçerek GitHub cron yoğunluğunu azaltır.
+    # GitHub Actions senkronizasyonu yaklaşık iki saatte bir çalışır; dakikayı :17 seçerek cron yoğunluğunu azaltır.
     - cron: "17 */2 * * *"
   workflow_dispatch:
   push:
