@@ -423,7 +423,13 @@ def _is_missing_number(value: Any) -> bool:
         return True
 
 
-def _merge_record(item: dict[str, Any], record: dict[str, Any], source_url: str, now_iso: str) -> tuple[dict[str, Any], bool]:
+def _merge_record(
+    item: dict[str, Any],
+    record: dict[str, Any],
+    source_url: str,
+    now_iso: str,
+    today: date,
+) -> tuple[dict[str, Any], bool]:
     merged = deepcopy(item)
     changed = False
 
@@ -449,7 +455,7 @@ def _merge_record(item: dict[str, Any], record: dict[str, Any], source_url: str,
     if record.get("status") and merged.get("status") != record["status"]:
         merged["status"] = record["status"]
         changed = True
-    computed = compute_status(merged)
+    computed = compute_status(merged, today=today)
     if merged.get("status") != computed:
         merged["status"] = computed
         changed = True
@@ -508,7 +514,7 @@ def _should_add_new(record: dict[str, Any], today: date) -> bool:
     return False
 
 
-def _new_item(record: dict[str, Any], source_url: str, now_iso: str) -> dict[str, Any]:
+def _new_item(record: dict[str, Any], source_url: str, now_iso: str, today: date) -> dict[str, Any]:
     company = str(record["company"])
     stable_id = str(uuid.uuid5(NAMESPACE, normalize_company_name(company)))
     item: dict[str, Any] = {
@@ -566,7 +572,7 @@ def _new_item(record: dict[str, Any], source_url: str, now_iso: str) -> dict[str
         "approvalDate": "",
         "sourceUpdatedAt": now_iso,
     }
-    item["status"] = compute_status(item)
+    item["status"] = compute_status(item, today=today)
     item["statusLabel"] = STATUS_LABELS[item["status"]]
     return item
 
@@ -591,13 +597,13 @@ def merge_public_records(
             continue
         index = _find_existing_index(key, by_name)
         if index is not None:
-            merged, changed = _merge_record(output[index], record, source_url, now_iso)
+            merged, changed = _merge_record(output[index], record, source_url, now_iso, today)
             output[index] = merged
             by_name[key] = index
             stats["matched"] += 1
             stats["changed"] += int(changed)
         elif _should_add_new(record, today):
-            item = _new_item(record, source_url, now_iso)
+            item = _new_item(record, source_url, now_iso, today)
             by_name[key] = len(output)
             output.append(item)
             stats["added"] += 1
