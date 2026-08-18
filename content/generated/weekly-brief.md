@@ -1,6 +1,6 @@
 # HalkaArzım Haftalık Kaynaklı Özet
 
-> İçerik paketi: 2026-08-14T20:49:09.863122+00:00
+> İçerik paketi: 2026-08-18T06:08:56.441443+00:00
 > Genel bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
 
 ## Çitlekçi Mağazacılık Gıda A.Ş.
@@ -21,7 +21,7 @@ Yatırım tavsiyesi değildir.
 
 Türker Vangölü Enerji Yatırım A.Ş. halka arz özeti
 
-• Durum: Talep topluyor
+• Durum: Arzı tamamlandı
 • Fiyat: 136,00 TL
 • Talep: 12-13-14 Ağustos 2026
 • Sermaye artırımı: %57.7
@@ -35,7 +35,7 @@ Yatırım tavsiyesi değildir.
 
 Teknika Plast Teknik Kalıp Plastik Sanayi ve Ticaret A.Ş. halka arz özeti
 
-• Durum: Talep topluyor
+• Durum: Arzı tamamlandı
 • Fiyat: 85,40 TL
 • Talep: 12-13-14 Ağustos 2026
 • Sermaye artırımı: %80.6
@@ -49,7 +49,7 @@ Yatırım tavsiyesi değildir.
 
 Kapeks Kimya Sanayi A.Ş. halka arz özeti
 
-• Durum: Talep topluyor
+• Durum: Arzı tamamlandı
 • Fiyat: 94,00 TL
 • Talep: 12-13-14 Ağustos 2026
 • Sermaye artırımı: %100.0
