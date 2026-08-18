@@ -39,6 +39,36 @@ def atomic_write(path: Path, payload: dict) -> None:
     temporary.replace(path)
 
 
+def _without_source_timestamp(item: dict) -> dict:
+    comparable = dict(item)
+    comparable.pop("sourceUpdatedAt", None)
+    return comparable
+
+
+def preserve_unchanged_source_timestamps(original_items: list[dict], items: list[dict]) -> list[dict]:
+    """Do not create snapshot diffs when only sourceUpdatedAt was refreshed.
+
+    Live sources may temporarily report a raw status that is immediately normalized
+    back to the same canonical value. In that case merge layers can touch
+    sourceUpdatedAt even though no user-visible data changed. Preserve the previous
+    timestamp for semantically identical records so scheduled syncs stay no-op.
+    """
+    original_by_id = {item.get("id"): item for item in original_items if item.get("id")}
+    output: list[dict] = []
+
+    for item in items:
+        current = dict(item)
+        previous = original_by_id.get(current.get("id"))
+        if previous and _without_source_timestamp(previous) == _without_source_timestamp(current):
+            if "sourceUpdatedAt" in previous:
+                current["sourceUpdatedAt"] = previous["sourceUpdatedAt"]
+            else:
+                current.pop("sourceUpdatedAt", None)
+        output.append(current)
+
+    return output
+
+
 def main() -> None:
     if not DATA_PATH.exists():
         raise SystemExit("data/generated/ipos.json bulunamadı")
@@ -78,6 +108,10 @@ def main() -> None:
 
     # Elle doğrulanmış kayıtlar son katmandır; otomatik kaynak bunları ezemez.
     items = apply_manual_overrides(items)
+
+    # Kaynak katmanları yalnızca sourceUpdatedAt alanını oynattıysa eski zamanı
+    # geri koy. Böylece gerçek veri değişmedikçe snapshot, commit ve deploy oluşmaz.
+    items = preserve_unchanged_source_timestamps(original_items, items)
     validate(items)
 
     update_mode = "official-snapshot-plus-live-public-calendar-v3"
