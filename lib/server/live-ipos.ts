@@ -1,5 +1,6 @@
 import { ipos as staticIpos } from "@/data/ipos";
 import type { Ipo, IpoStatus } from "@/data/ipos";
+import { canonicalCompanySlug } from "@/lib/company-identity.mjs";
 import { discoverLiveOnlyIpos } from "@/lib/server/live-discovery";
 
 type DbCompany = {
@@ -97,9 +98,25 @@ function sourceFor(row: DbIpo) {
   };
 }
 
+function baselineFor(company: DbCompany): Ipo | undefined {
+  const exact = staticIpos.find((item) => item.slug === company.slug);
+  if (exact) return exact;
+  const identity = canonicalCompanySlug(company.slug);
+  return identity ? staticIpos.find((item) => canonicalCompanySlug(item.slug) === identity) : undefined;
+}
+
+function protectedStatus(row: DbIpo, baseline: Ipo | undefined): IpoStatus {
+  const incoming = uiStatus(row);
+  // A secondary/live calendar must not downgrade terminal states already confirmed by
+  // Borsa/KAP or a verified manual override in the last-known-good layer.
+  if (baseline?.status === "listed") return "listed";
+  if (baseline?.status === "delayed" && incoming !== "delayed") return "delayed";
+  return incoming;
+}
+
 function mergeRow(row: DbIpo, company: DbCompany): Ipo {
-  const baseline = staticIpos.find((item) => item.slug === company.slug);
-  const status = uiStatus(row);
+  const baseline = baselineFor(company);
+  const status = protectedStatus(row, baseline);
   const checkedAt = row.source_checked_at || row.published_at || new Date().toISOString();
   const liveSource = sourceFor(row);
   const price = numberValue(row.offer_price, baseline?.price || 0);
@@ -114,7 +131,8 @@ function mergeRow(row: DbIpo, company: DbCompany): Ipo {
     return {
       ...baseline,
       id: row.id,
-      company: company.legal_name || baseline.company,
+      slug: baseline.slug,
+      company: baseline.company || company.legal_name,
       ticker: company.ticker || baseline.ticker,
       sector: company.sector || baseline.sector,
       status,
@@ -203,6 +221,20 @@ function sortLive(items: Ipo[]) {
   });
 }
 
+function qualityScore(item: Ipo): number {
+  return (item.ticker ? 4 : 0) + (item.firstTradeDate ? 3 : 0) + Math.min(item.sources.length, 3) + (item.sector !== "Diğer" ? 1 : 0);
+}
+
+function dedupeByCompanyIdentity(items: Ipo[]): Ipo[] {
+  const chosen = new Map<string, Ipo>();
+  for (const item of items) {
+    const key = canonicalCompanySlug(item.slug) || item.slug;
+    const current = chosen.get(key);
+    if (!current || qualityScore(item) > qualityScore(current)) chosen.set(key, item);
+  }
+  return [...chosen.values()];
+}
+
 async function fetchDbIpos(): Promise<DbIpo[]> {
   const common = "id,company_id,status,offer_price,total_lots,distribution_method,collection_start,collection_end,first_trade_date,market_name,intermediary,capital_increase_lots,shareholder_sale_lots,source_checked_at,published_at";
   try {
@@ -221,13 +253,13 @@ export async function getLiveIpos(): Promise<Ipo[]> {
       fetchDbIpos()
     ]);
     const companyById = new Map(companies.map((company) => [company.id, company]));
-    const mapped = rows.flatMap((row) => {
+    const mapped = dedupeByCompanyIdentity(rows.flatMap((row) => {
       const company = companyById.get(row.company_id);
       return company ? [mergeRow(row, company)] : [];
-    });
+    }));
     if (mapped.length) {
-      const liveSlugs = new Set(mapped.map((item) => item.slug));
-      const lastKnownGood = staticIpos.filter((item) => !liveSlugs.has(item.slug));
+      const liveIdentities = new Set(mapped.map((item) => canonicalCompanySlug(item.slug) || item.slug));
+      const lastKnownGood = staticIpos.filter((item) => !liveIdentities.has(canonicalCompanySlug(item.slug) || item.slug));
       baseItems = [...mapped, ...lastKnownGood];
     } else {
       console.warn("[live-ipos] Supabase returned no published IPO rows; bundled snapshot retained");
@@ -238,9 +270,10 @@ export async function getLiveIpos(): Promise<Ipo[]> {
 
   const existingSlugs = new Set(baseItems.map((item) => item.slug));
   const newlyDiscovered = await discoverLiveOnlyIpos(existingSlugs);
-  return sortLive([...baseItems, ...newlyDiscovered]);
+  return sortLive(dedupeByCompanyIdentity([...baseItems, ...newlyDiscovered]));
 }
 
 export async function getLiveIpoBySlug(slug: string): Promise<Ipo | undefined> {
-  return (await getLiveIpos()).find((ipo) => ipo.slug === slug);
+  const identity = canonicalCompanySlug(slug);
+  return (await getLiveIpos()).find((ipo) => ipo.slug === slug || (identity && canonicalCompanySlug(ipo.slug) === identity));
 }
