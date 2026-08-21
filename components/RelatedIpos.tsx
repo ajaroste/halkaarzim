@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ipos } from "@/data/ipos";
+import { getMergedIpos } from "@/lib/official-ipos";
 
-export function RelatedIpos({ currentSlug, sector }: { currentSlug: string; sector: string }) {
+export async function RelatedIpos({ currentSlug, sector }: { currentSlug: string; sector: string }) {
+  const ipos = await getMergedIpos();
   const related = ipos
     .filter((ipo) => ipo.slug !== currentSlug)
     .sort((a, b) => Number(b.sector === sector) - Number(a.sector === sector))

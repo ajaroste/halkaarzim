@@ -3,7 +3,8 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { IpoCard } from "@/components/IpoCard";
 import { AdSlot } from "@/components/AdSlot";
-import { ipos, type IpoStatus } from "@/data/ipos";
+import type { IpoStatus } from "@/data/ipos";
+import { getMergedIpos } from "@/lib/official-ipos";
 
 const statusPriority: Record<IpoStatus, number> = {
   active: 0,
@@ -28,7 +29,10 @@ function MetricIcon({ type }: { type: "tracking" | "lots" | "bulletin" | "listed
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5c3.2-2.2 6.2-2.5 8-2-0.1 2.8-1.2 6.2-4.7 8.8l-2.7 2.1-3.5-3.5z"/><circle cx="15.6" cy="7.4" r="1.4"/><path d="m10.2 10.8-3.8.4-2.6 2.6 4.5.5M13.2 13.8l-.4 3.8-2.6 2.6-.5-4.5M7.5 17.5l-2.8 2.8"/></svg>;
 }
 
-export default function HomePage() {
+export const revalidate = 300;
+
+export default async function HomePage() {
+  const ipos = await getMergedIpos();
   const featured = [...ipos]
     .sort((a, b) => statusPriority[a.status] - statusPriority[b.status] || b.approvalDate.localeCompare(a.approvalDate))
     .slice(0, 4);

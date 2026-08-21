@@ -17,7 +17,8 @@ import { ShareActions } from "@/components/ShareActions";
 import { RelatedIpos } from "@/components/RelatedIpos";
 import { formatTry } from "@/lib/domain";
 import { publicAnalysisList, publicAnalysisText } from "@/lib/public-analysis";
-import { getIpoBySlug, ipos } from "@/data/ipos";
+import { ipos } from "@/data/ipos";
+import { getMergedIpoBySlug } from "@/lib/official-ipos";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
 
@@ -29,7 +30,7 @@ export function generateStaticParams() { return ipos.map((ipo) => ({ slug: ipo.s
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const ipo = getIpoBySlug(slug);
+  const ipo = await getMergedIpoBySlug(slug);
   if (!ipo) return {};
   const code = ipo.ticker || "Halka arz";
   const summary = publicAnalysisText(ipo.aiSummary);
@@ -52,7 +53,7 @@ function EmptyState({ title, text }: { title: string; text: string }) {
 
 export default async function IpoDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ipo = getIpoBySlug(slug);
+  const ipo = await getMergedIpoBySlug(slug);
   if (!ipo) notFound();
   const code = ipo.ticker || "Kod bekleniyor";
   const capitalRatio = ipo.lotCount ? Math.round(ipo.capitalIncreaseShares / ipo.lotCount * 100) : 0;
