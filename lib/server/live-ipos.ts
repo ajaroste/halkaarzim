@@ -1,5 +1,6 @@
 import { ipos as staticIpos } from "@/data/ipos";
 import type { Ipo, IpoStatus } from "@/data/ipos";
+import { discoverLiveOnlyIpos } from "@/lib/server/live-discovery";
 
 type DbCompany = {
   id: string;
@@ -213,6 +214,7 @@ async function fetchDbIpos(): Promise<DbIpo[]> {
 }
 
 export async function getLiveIpos(): Promise<Ipo[]> {
+  let baseItems: Ipo[] = staticIpos;
   try {
     const [companies, rows] = await Promise.all([
       rest<DbCompany[]>("companies?select=id,legal_name,short_name,slug,ticker,sector&limit=5000"),
@@ -223,15 +225,20 @@ export async function getLiveIpos(): Promise<Ipo[]> {
       const company = companyById.get(row.company_id);
       return company ? [mergeRow(row, company)] : [];
     });
-    if (!mapped.length) throw new Error("Supabase returned no published IPO rows");
-
-    const liveSlugs = new Set(mapped.map((item) => item.slug));
-    const lastKnownGood = staticIpos.filter((item) => !liveSlugs.has(item.slug));
-    return sortLive([...mapped, ...lastKnownGood]);
+    if (mapped.length) {
+      const liveSlugs = new Set(mapped.map((item) => item.slug));
+      const lastKnownGood = staticIpos.filter((item) => !liveSlugs.has(item.slug));
+      baseItems = [...mapped, ...lastKnownGood];
+    } else {
+      console.warn("[live-ipos] Supabase returned no published IPO rows; bundled snapshot retained");
+    }
   } catch (error) {
-    console.warn("[live-ipos] falling back to bundled snapshot", error instanceof Error ? error.message : String(error));
-    return staticIpos;
+    console.warn("[live-ipos] Supabase unavailable; bundled snapshot retained", error instanceof Error ? error.message : String(error));
   }
+
+  const existingSlugs = new Set(baseItems.map((item) => item.slug));
+  const newlyDiscovered = await discoverLiveOnlyIpos(existingSlugs);
+  return sortLive([...baseItems, ...newlyDiscovered]);
 }
 
 export async function getLiveIpoBySlug(slug: string): Promise<Ipo | undefined> {
