@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
-import { ipos } from "@/data/ipos";
+import { getMergedIpos } from "@/lib/official-ipos";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
   const lastModified = new Date();
+  const ipos = await getMergedIpos();
   const pages: MetadataRoute.Sitemap = [
     { url: base, lastModified, changeFrequency: "daily", priority: 1 },
     { url: `${base}/halka-arzlar`, lastModified, changeFrequency: "daily", priority: 0.95 },
