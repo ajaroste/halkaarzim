@@ -1,22 +1,9 @@
 name: SPK data, AI and notification sync
 
 on:
-  schedule:
-    # GitHub Actions senkronizasyonu yaklaşık iki saatte bir çalışır; dakikayı :17 seçerek cron yoğunluğunu azaltır.
-    - cron: "17 */2 * * *"
+  # Production IPO discovery is handled by Supabase Cron + the official SPK Edge Function.
+  # Keep this legacy pipeline manual-only as an emergency snapshot/content fallback.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/data-sync.yml"
-      - "data/manual/**"
-      - "scripts/update_all.py"
-      - "scripts/public_calendar.py"
-      - "scripts/public_page_status.py"
-      - "scripts/enrich_ipo_data.py"
-      - "tests/test_enrichment.py"
-      - "tests/test_public_calendar.py"
-      - "tests/test_public_page_status.py"
 
 permissions:
   contents: write
