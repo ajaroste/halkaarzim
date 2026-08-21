@@ -246,8 +246,9 @@ export async function runLiveIpoSync(options: { dryRun?: boolean } = {}): Promis
       }
     }
 
+    const finishedAt = new Date().toISOString();
+    await logRun({ id: runId, source: "halkarz", source_url: sourceUrl, status: "success", started_at: startedAt, finished_at: finishedAt, discovered_count: discovered, parsed_count: records.length, added_count: added, updated_count: updated, detail_error_count: detailErrors });
     await saveSnapshot(runId, sourceUrl, records);
-    await logRun({ id: runId, source: "halkarz", source_url: sourceUrl, status: "success", started_at: startedAt, finished_at: new Date().toISOString(), discovered_count: discovered, parsed_count: records.length, added_count: added, updated_count: updated, detail_error_count: detailErrors });
     console.info("[ipo-sync] completed", { discovered, parsed: records.length, added, updated, unchanged, detailErrors });
     return { ok: true, dryRun: false, source: sourceUrl, discovered, parsed: records.length, added, updated, unchanged, detailErrors };
   } catch (error) {
