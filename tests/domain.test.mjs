@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 
 const payload = JSON.parse(fs.readFileSync("data/generated/ipos.json", "utf8"));
+const overrides = JSON.parse(fs.readFileSync("data/verified-overrides.json", "utf8"));
 const items = payload.items ?? [];
 
 const normalizeStatus = (status) => ({ trading: "listed", collecting: "active", postponed: "delayed" }[status] ?? status);
@@ -20,10 +21,16 @@ for (const item of items) {
   assert.ok(item.sources.some((source) => /^https:\/\//.test(source.url ?? "")), `${item.company}: HTTPS kaynak zorunlu`);
 }
 
+// generated/ipos.json artık last-known-good snapshot'tır ve canlı durumdan geride kalabilir.
+// Zamanla değişen terminal durum doğrulamasını sabit snapshot yerine doğrulanmış override üzerinde yap.
 const quick = items.find((item) => item.ticker === "QUICK");
 if (quick) {
-  assert.equal(normalizeStatus(quick.status), "listed");
   assert.equal(quick.firstTradeDate, "2026-08-06");
 }
+
+const quickOverride = overrides["quick-sigorta"];
+assert.ok(quickOverride, "QUICK için doğrulanmış override bulunmalı");
+assert.equal(normalizeStatus(quickOverride.status), "listed");
+assert.equal(quickOverride.firstTradeDate, "2026-08-06");
 
 console.log(`domain.test: ${items.length} gerçek halka arz kaydı doğrulandı`);
