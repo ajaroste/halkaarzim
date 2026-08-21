@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { canonicalCompanySlug } from "../company-identity.mjs";
 import { extractHalkarzCompanyLinks, parseHalkarzDetailPage } from "../ipo-live-source.mjs";
 import type { LiveSourceLink, LiveSourceRecord } from "../ipo-live-source.mjs";
 
@@ -206,6 +207,11 @@ export async function runLiveIpoSync(options: { dryRun?: boolean } = {}): Promis
       dbRequest<DbIpo[]>("ipos?select=id,company_id,status,offer_price,total_lots,distribution_method,collection_start,collection_end,intermediary,live_source_url,live_date_text,source_checked_at&limit=5000")
     ]);
     const companyBySlug = new Map(companies.map((company) => [company.slug, company]));
+    const companyByIdentity = new Map(
+      companies
+        .map((company) => [canonicalCompanySlug(company.slug), company] as const)
+        .filter(([identity]) => Boolean(identity))
+    );
     const ipoByCompany = new Map(ipos.map((ipo) => [ipo.company_id, ipo]));
     const now = new Date().toISOString();
     let added = 0;
@@ -213,13 +219,24 @@ export async function runLiveIpoSync(options: { dryRun?: boolean } = {}): Promis
     let unchanged = 0;
 
     for (const record of records) {
-      let company = companyBySlug.get(record.slug);
+      const identity = canonicalCompanySlug(record.slug);
+      let company = companyBySlug.get(record.slug) || (identity ? companyByIdentity.get(identity) : undefined);
       if (!company) {
         company = { id: randomUUID(), slug: record.slug, legal_name: record.company, short_name: record.company, ticker: null, sector: null };
         await insertRow("companies", { ...company, created_at: now, updated_at: now });
         companyBySlug.set(record.slug, company);
-      } else if (company.legal_name !== record.company) {
-        await patchRow("companies", company.id, { legal_name: record.company, short_name: record.company, updated_at: now });
+        if (identity) companyByIdentity.set(identity, company);
+      } else {
+        // Remember source aliases so an abbreviated live slug resolves to the established issuer.
+        companyBySlug.set(record.slug, company);
+        if (identity) companyByIdentity.set(identity, company);
+
+        // Do not replace a full legal name with an abbreviated public-source label.
+        const incomingIsMoreDescriptive = record.company.length > company.legal_name.length;
+        if (incomingIsMoreDescriptive && company.legal_name !== record.company) {
+          await patchRow("companies", company.id, { legal_name: record.company, short_name: record.company, updated_at: now });
+          company = { ...company, legal_name: record.company, short_name: record.company };
+        }
       }
 
       const existing = ipoByCompany.get(company.id);
