@@ -224,7 +224,10 @@ export async function getLiveIpos(): Promise<Ipo[]> {
       return company ? [mergeRow(row, company)] : [];
     });
     if (!mapped.length) throw new Error("Supabase returned no published IPO rows");
-    return sortLive(mapped);
+
+    const liveSlugs = new Set(mapped.map((item) => item.slug));
+    const lastKnownGood = staticIpos.filter((item) => !liveSlugs.has(item.slug));
+    return sortLive([...mapped, ...lastKnownGood]);
   } catch (error) {
     console.warn("[live-ipos] falling back to bundled snapshot", error instanceof Error ? error.message : String(error));
     return staticIpos;
