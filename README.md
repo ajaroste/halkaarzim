@@ -9,12 +9,13 @@ HalkaArzım; Türkiye’deki halka arzları resmî ve açık kaynaklarla eşleş
 - Site: `https://halkaarzim.vercel.app`
 - Production: Vercel
 - Auth/veritabanı: Supabase
-- Günlük veri ve bildirim hattı: GitHub Actions
+- Canlı halka arz veri hattı: Vercel Cron/API → Supabase; veri güncellemesi GitHub commit veya deploy gerektirmez
 - AI sağlayıcısı: Gemini 2.5 Flash (server-only anahtar yapılandırıldığında)
 
 ## Özellikler
 
 - SPK kaynaklı halka arz kayıtları
+- Canlı halka arz keşfi ve Supabase tabanlı güncelleme hattı
 - Durum, tarih ve şirket filtreleri
 - Mobil ve masaüstü için yeniden tasarlanmış detay sayfaları
 - Sermaye artırımı / ortak satışı karşılaştırması
@@ -59,7 +60,7 @@ Tam CI sırası:
 
 - Production dependency audit
 - Python parser/enrichment testleri
-- Domain testleri
+- Domain ve canlı kaynak parser testleri
 - Supabase sözleşme testleri
 - Güvenlik contract ve secret taraması
 - TypeScript typecheck
@@ -69,6 +70,7 @@ Tam CI sırası:
 
 ## Production kurulumu
 
+- [Canlı veri mimarisi](docs/LIVE_DATA_ARCHITECTURE.md)
 - [Production ayarları](docs/PRODUCTION_SETUP.md)
 - [120 maddelik v1 kontrol listesi](docs/V1_RELEASE_CHECKLIST.md)
 - [Trafik ve kullanıcı kazanım planı](docs/GROWTH_PLAN.md)
@@ -79,11 +81,12 @@ Tam CI sırası:
 ## Kritik yayın öncesi işler
 
 1. Yeni Supabase migration’larını canlı projeye uygula.
-2. Sohbette ifşa olmuş eski VAPID anahtar çiftini döndür.
-3. Gemini ve AI yönetici secret’larını Vercel/GitHub’a ekle.
-4. Veri sorumlusu gerçek adı/unvanı, adresi ve iletişim e-postasını ekle.
-5. Hukuki metinleri Türkiye’de yetkili bir hukukçuya incelet.
-6. Son CI, Vercel, auth, profil, hesap silme, iPhone 13 ve masaüstü testlerini kapat.
+2. `CRON_SECRET`, `SUPABASE_URL` ve `SUPABASE_SERVICE_ROLE_KEY` değerlerini Vercel production ortamında doğrula.
+3. Sohbette ifşa olmuş eski VAPID anahtar çiftini döndür.
+4. Gemini ve AI yönetici secret’larını Vercel/GitHub’a ekle.
+5. Veri sorumlusu gerçek adı/unvanı, adresi ve iletişim e-postasını ekle.
+6. Hukuki metinleri Türkiye’de yetkili bir hukukçuya incelet.
+7. Son CI, Vercel, auth, profil, hesap silme, iPhone 13 ve masaüstü testlerini kapat.
 
 ## Sorumlu güvenlik bildirimi
 
