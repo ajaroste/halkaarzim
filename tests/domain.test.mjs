@@ -19,15 +19,13 @@ for (const item of items) {
   assert.ok(allowedStatuses.has(status), `${item.company}: bilinmeyen durum ${item.status}`);
   assert.ok(Array.isArray(item.sources) && item.sources.length > 0, `${item.company}: kaynak zorunlu`);
   assert.ok(item.sources.some((source) => /^https:\/\//.test(source.url ?? "")), `${item.company}: HTTPS kaynak zorunlu`);
+  if (item.firstTradeDate != null) {
+    assert.match(item.firstTradeDate, /^\d{4}-\d{2}-\d{2}$/, `${item.company}: firstTradeDate ISO tarih olmalı`);
+  }
 }
 
-// generated/ipos.json artık last-known-good snapshot'tır ve canlı durumdan geride kalabilir.
-// Zamanla değişen terminal durum doğrulamasını sabit snapshot yerine doğrulanmış override üzerinde yap.
-const quick = items.find((item) => item.ticker === "QUICK");
-if (quick) {
-  assert.equal(quick.firstTradeDate, "2026-08-06");
-}
-
+// generated/ipos.json bir last-known-good snapshot'tır; zamanla değişen/sonradan doğrulanan
+// alanları snapshot'a zorunlu kılmak yerine verified-overrides katmanında doğrula.
 const quickOverride = overrides["quick-sigorta"];
 assert.ok(quickOverride, "QUICK için doğrulanmış override bulunmalı");
 assert.equal(normalizeStatus(quickOverride.status), "listed");
