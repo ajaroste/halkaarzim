@@ -50,3 +50,27 @@ alter table public.ipo_sync_runs enable row level security;
 alter table public.ipo_sync_control enable row level security;
 revoke all on public.ipo_sync_runs from anon, authenticated;
 revoke all on public.ipo_sync_control from anon, authenticated;
+
+create or replace function public.trigger_official_spk_sync(p_dry_run boolean default true, p_max_bulletins integer default 8)
+returns bigint
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_secret text;
+  v_request_id bigint;
+begin
+  select secret_value into v_secret from public.ipo_sync_control where id = true;
+  if v_secret is null then raise exception 'sync secret unavailable'; end if;
+
+  select net.http_post(
+    url := 'https://yjffzuzldlchswaohwyk.supabase.co/functions/v1/spk-ipo-sync',
+    headers := jsonb_build_object('Content-Type','application/json','x-sync-secret',v_secret),
+    body := jsonb_build_object('dryRun',p_dry_run,'maxBulletins',greatest(1,least(16,p_max_bulletins)))
+  ) into v_request_id;
+  return v_request_id;
+end;
+$$;
+
+revoke all on function public.trigger_official_spk_sync(boolean, integer) from public, anon, authenticated;
