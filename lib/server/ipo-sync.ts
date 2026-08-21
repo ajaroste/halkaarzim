@@ -16,6 +16,8 @@ type DbIpo = {
   collection_start: string | null;
   collection_end: string | null;
   intermediary: string | null;
+  live_source_url: string | null;
+  live_date_text: string | null;
   source_checked_at: string | null;
 };
 
@@ -129,7 +131,9 @@ function buildIpoPatch(record: LiveSourceRecord, existing: DbIpo | undefined, no
   const patch: Record<string, unknown> = {
     status: effectiveStatus(record.status, existing?.status),
     source_checked_at: now,
-    updated_at: now
+    updated_at: now,
+    live_source_url: record.url,
+    live_date_text: record.dateText
   };
   if (record.price != null && record.price > 0) patch.offer_price = record.price;
   if (record.totalLots != null && record.totalLots > 0) patch.total_lots = Math.round(record.totalLots);
@@ -141,7 +145,7 @@ function buildIpoPatch(record: LiveSourceRecord, existing: DbIpo | undefined, no
 }
 
 function hasMeaningfulChange(existing: DbIpo, patch: Record<string, unknown>) {
-  const keys: Array<keyof DbIpo> = ["status", "offer_price", "total_lots", "distribution_method", "collection_start", "collection_end", "intermediary"];
+  const keys: Array<keyof DbIpo> = ["status", "offer_price", "total_lots", "distribution_method", "collection_start", "collection_end", "intermediary", "live_source_url", "live_date_text"];
   return keys.some((key) => key in patch && String(existing[key] ?? "") !== String(patch[key] ?? ""));
 }
 
@@ -199,7 +203,7 @@ export async function runLiveIpoSync(options: { dryRun?: boolean } = {}): Promis
 
     const [companies, ipos] = await Promise.all([
       dbRequest<DbCompany[]>("companies?select=id,slug,legal_name,short_name,ticker,sector&limit=5000"),
-      dbRequest<DbIpo[]>("ipos?select=id,company_id,status,offer_price,total_lots,distribution_method,collection_start,collection_end,intermediary,source_checked_at&limit=5000")
+      dbRequest<DbIpo[]>("ipos?select=id,company_id,status,offer_price,total_lots,distribution_method,collection_start,collection_end,intermediary,live_source_url,live_date_text,source_checked_at&limit=5000")
     ]);
     const companyBySlug = new Map(companies.map((company) => [company.slug, company]));
     const ipoByCompany = new Map(ipos.map((ipo) => [ipo.company_id, ipo]));
@@ -230,7 +234,7 @@ export async function runLiveIpoSync(options: { dryRun?: boolean } = {}): Promis
           published_at: now,
           created_at: now
         });
-        ipoByCompany.set(company.id, { id: ipoId, company_id: company.id, status: String(patch.status), offer_price: record.price, total_lots: record.totalLots, distribution_method: record.distribution, collection_start: record.collectionStart, collection_end: record.collectionEnd, intermediary: record.intermediary, source_checked_at: now });
+        ipoByCompany.set(company.id, { id: ipoId, company_id: company.id, status: String(patch.status), offer_price: record.price, total_lots: record.totalLots, distribution_method: record.distribution, collection_start: record.collectionStart, collection_end: record.collectionEnd, intermediary: record.intermediary, live_source_url: record.url, live_date_text: record.dateText, source_checked_at: now });
         added += 1;
         await enqueueNewIpo(ipoId, record);
       } else if (hasMeaningfulChange(existing, patch)) {
