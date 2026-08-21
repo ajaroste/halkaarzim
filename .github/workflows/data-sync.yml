@@ -1,0 +1,126 @@
+name: SPK data, AI and notification sync
+
+on:
+  schedule:
+    # GitHub Actions senkronizasyonu yaklaşık iki saatte bir çalışır; dakikayı :17 seçerek cron yoğunluğunu azaltır.
+    - cron: "17 */2 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/data-sync.yml"
+      - "data/manual/**"
+      - "scripts/update_all.py"
+      - "scripts/public_calendar.py"
+      - "scripts/public_page_status.py"
+      - "scripts/enrich_ipo_data.py"
+      - "tests/test_enrichment.py"
+      - "tests/test_public_calendar.py"
+      - "tests/test_public_page_status.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: halkaarzim-data-sync
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONPATH: "."
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+      VAPID_SUBJECT: ${{ vars.VAPID_SUBJECT }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHANNEL_ID: ${{ vars.TELEGRAM_CHANNEL_ID }}
+      AI_ENDPOINT: ${{ vars.AI_ENDPOINT }}
+      AI_ADMIN_TOKEN: ${{ secrets.AI_ADMIN_TOKEN }}
+      SITE_URL: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Update official and live public-source data
+        run: python scripts/update_all.py
+        env:
+          ALLOW_NETWORK_SYNC: "true"
+          NETWORK_SYNC_REQUIRED: "true"
+
+      - name: Detect IPO data changes
+        id: ipo_changes
+        shell: bash
+        run: |
+          if git diff --quiet -- data/generated/ipos.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "IPO snapshot unchanged"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "IPO snapshot changed"
+          fi
+
+      - name: Generate source-bound AI reports when configured
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' }}
+        run: python scripts/generate_ai_reports.py
+        env:
+          ENABLE_AI_GENERATION: ${{ env.AI_ADMIN_TOKEN != '' && env.AI_ENDPOINT != '' }}
+          AI_MAX_ITEMS: "5"
+          AI_REQUIRED: "false"
+
+      - name: Generate social and newsletter content pack
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' }}
+        run: python scripts/generate_growth_content.py
+
+      - name: Run Python validation
+        run: python -m unittest tests.test_spk_parser tests.test_enrichment tests.test_public_calendar tests.test_public_page_status tests.test_document_ingestion tests.test_document_facts tests.test_ai_generation tests.test_growth_content
+
+      - name: Sync Supabase when configured
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        run: python scripts/sync_supabase.py
+        env:
+          ENABLE_NOTIFICATION_ENQUEUE: "true"
+
+      - name: Send free Web Push notifications
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' && env.VAPID_PRIVATE_KEY != '' }}
+        run: python scripts/send_notifications.py
+
+      - name: Send Telegram channel update when configured
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' && env.TELEGRAM_BOT_TOKEN != '' && env.TELEGRAM_CHANNEL_ID != '' }}
+        run: python scripts/send_telegram_updates.py
+        env:
+          TELEGRAM_MAX_MESSAGES: "2"
+
+      - name: Commit updated snapshots and content pack
+        if: ${{ steps.ipo_changes.outputs.changed == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "halkaarzim-data-bot"
+          git config user.email "halkaarzim-data-bot@users.noreply.github.com"
+          git add data/generated content/generated
+          if git diff --cached --quiet; then
+            echo "No data or content change"
+            exit 0
+          fi
+          git commit -m "data: update IPO snapshots and growth content"
+
+          # A normal main commit can land while this job is running. Rebase the
+          # generated snapshot commit and retry instead of losing the update.
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push raced with a newer main commit; rebasing (attempt $attempt/3)"
+            git pull --rebase origin main
+          done
+          echo "Unable to push generated snapshot after 3 attempts" >&2
+          exit 1
