@@ -1,4 +1,5 @@
 import type { Ipo, IpoStatus } from "@/data/ipos";
+import { canonicalCompanySlug } from "../company-identity.mjs";
 import { extractHalkarzCompanyLinks, parseHalkarzDetailPage } from "../ipo-live-source.mjs";
 import type { LiveSourceLink, LiveSourceRecord } from "../ipo-live-source.mjs";
 
@@ -119,7 +120,16 @@ export async function discoverLiveOnlyIpos(existingSlugs: Set<string>): Promise<
       console.warn(`[live-discovery] safety gate: only ${links.length} active links found`);
       return [];
     }
-    const missing = links.filter((link) => !existingSlugs.has(link.slug)).slice(0, 8);
+
+    // Public sources often abbreviate “Sanayi/Ticaret” as “San./Tic.”, which produces
+    // a different literal slug for the same company. Compare a conservative canonical
+    // identity as well as the exact slug so read-through discovery never renders duplicates.
+    const existingIdentities = new Set([...existingSlugs].map(canonicalCompanySlug).filter(Boolean));
+    const missing = links.filter((link) => {
+      if (existingSlugs.has(link.slug)) return false;
+      const identity = canonicalCompanySlug(link.slug);
+      return !identity || !existingIdentities.has(identity);
+    }).slice(0, 8);
     if (!missing.length) return [];
 
     const records = await Promise.all(missing.map(async (link) => {
