@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { canonicalCompanySlug, sameCompanySlug } from "../lib/company-identity.mjs";
 import { extractHalkarzCompanyLinks, parseHalkarzDetailPage, parseTurkishDateRange, parseTurkishNumber, slugifyTurkish } from "../lib/ipo-live-source.mjs";
 
 test("Turkish dates parse same-month and cross-month ranges", () => {
@@ -13,6 +14,22 @@ test("Turkish numbers and company slugs normalize", () => {
   assert.equal(parseTurkishNumber("167.000.000 Lot"), 167000000);
   assert.equal(parseTurkishNumber("65.000.000 Lot 12.500.000 ek pay"), 65000000);
   assert.equal(slugifyTurkish("İntetra Teknoloji ve Bilişim Hizmetleri A.Ş."), "intetra-teknoloji-ve-bilisim-hizmetleri");
+});
+
+test("company identity treats San./Tic. abbreviations as the same issuer", () => {
+  const pairs = [
+    ["teknika-plast-teknik-kalip-plastik-san-ve-tic", "teknika-plast-teknik-kalip-plastik-sanayi-ve-ticaret"],
+    ["albayrak-hazir-beton-san-ve-tic", "albayrak-hazir-beton-sanayi-ve-ticaret"],
+    ["sa-ra-enerji-insaat-tic-ve-san", "sa-ra-enerji-insaat-ticaret-ve-sanayi"],
+    ["saat-ve-saat-san-ve-tic", "saat-ve-saat-sanayi-ve-ticaret"],
+    ["ekim-turizm-tic-ve-san", "ekim-turizm-ticaret-ve-sanayi"],
+    ["golda-gida-san-ve-tic", "golda-gida-sanayi-ve-ticaret"]
+  ];
+  for (const [liveSlug, canonicalSlug] of pairs) {
+    assert.equal(sameCompanySlug(liveSlug, canonicalSlug), true, `${liveSlug} aliası eşleşmeli`);
+    assert.equal(canonicalCompanySlug(liveSlug), canonicalCompanySlug(canonicalSlug));
+  }
+  assert.equal(sameCompanySlug("intetra-teknoloji-ve-bilisim-hizmetleri", "bakirci-gayrimenkul-yatirim-ortakligi"), false);
 });
 
 test("homepage parser stops before draft archive", () => {
