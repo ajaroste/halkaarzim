@@ -1,4 +1,4 @@
-import { ipos } from "@/data/ipos";
+import { getMergedIpos } from "@/lib/official-ipos";
 
 export const revalidate = 3600;
 
@@ -15,6 +15,7 @@ function escapeXml(value: string): string {
 export async function GET() {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
   const now = new Date().toUTCString();
+  const ipos = await getMergedIpos();
   const items = ipos.slice(0, 40).map((ipo) => {
     const link = `${base}/arz/${ipo.slug}`;
     const title = `${ipo.ticker || "Halka arz"} — ${ipo.company}`;
