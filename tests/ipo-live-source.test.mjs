@@ -11,6 +11,7 @@ test("Turkish dates parse same-month and cross-month ranges", () => {
 test("Turkish numbers and company slugs normalize", () => {
   assert.equal(parseTurkishNumber("53,60 ₺"), 53.6);
   assert.equal(parseTurkishNumber("167.000.000 Lot"), 167000000);
+  assert.equal(parseTurkishNumber("65.000.000 Lot 12.500.000 ek pay"), 65000000);
   assert.equal(slugifyTurkish("İntetra Teknoloji ve Bilişim Hizmetleri A.Ş."), "intetra-teknoloji-ve-bilisim-hizmetleri");
 });
 
