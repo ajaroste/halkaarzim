@@ -1,28 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
 import { extractText, getDocumentProxy } from "npm:unpdf@1.8.1";
+import { parseInitialPublicOfferings } from "./parser.mjs";
 
 const SPK_LIST_URL = "https://spk.gov.tr/spk-bultenleri/2026-yili-spk-bultenleri";
 const MAX_PDF_BYTES = 12 * 1024 * 1024;
 const DEFAULT_MAX_BULLETINS = 8;
-
-type ParsedIpo = {
-  sourceKey: string;
-  company: string;
-  slug: string;
-  bulletinNo: string;
-  approvalDate: string;
-  sourceUrl: string;
-  price: number;
-  currentCapital: number;
-  newCapital: number;
-  capitalIncreaseShares: number;
-  shareholderSaleShares: number;
-  extraSaleShares: number;
-  lotCount: number;
-  maxLotCount: number;
-  sourceHash: string;
-};
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -31,111 +14,9 @@ function json(data: unknown, status = 200) {
   });
 }
 
-function stripLegalSuffix(value: string) {
-  return value.replace(/\s+(?:A\.?\s*Ş\.?|Anonim\s+Şirketi)\s*$/iu, "").trim();
-}
-
-function trSlug(value: string) {
-  return stripLegalSuffix(value)
-    .toLocaleLowerCase("tr-TR")
-    .replaceAll("ı", "i")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
-function parseNumber(value: string | undefined) {
-  if (!value || value.trim() === "-" || value.trim() === "—") return 0;
-  let text = value.trim().replace(/[^0-9,.-]/g, "");
-  if (text.includes(",")) text = text.replaceAll(".", "").replace(",", ".");
-  else if ((text.match(/\./g) || []).length > 1 || (/\.\d{3}$/.test(text))) text = text.replaceAll(".", "");
-  const parsed = Number(text);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function normalizeCompany(value: string) {
-  return value.replace(/\s+/g, " ").replace(/\s+A\.?\s*Ş\.?$/iu, " A.Ş.").trim();
-}
-
-function parseBulletinMeta(text: string, sourceUrl: string) {
-  const numberMatch = text.match(/(?:BÜLTENİ|BULTENI)\s*(20\d{2})\s*\/\s*(\d+)/i);
-  const urlMatch = sourceUrl.match(/(20\d{2})[-_/](\d+)/);
-  const bulletinNo = numberMatch ? `${numberMatch[1]}/${Number(numberMatch[2])}` : urlMatch ? `${urlMatch[1]}/${Number(urlMatch[2])}` : "Bilinmiyor";
-  const dateMatch = text.match(/\b(\d{2})[./](\d{2})[./](20\d{2})\b/);
-  const approvalDate = dateMatch ? `${dateMatch[3]}-${dateMatch[2]}-${dateMatch[1]}` : new Date().toISOString().slice(0, 10);
-  return { bulletinNo, approvalDate };
-}
-
 async function sha256(value: string) {
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-function cleanIpoSection(raw: string) {
-  let section = raw
-    .replace(/\(\s*\d+\s*\)/g, " ")
-    .replace(/[¹²³⁴⁵⁶⁷⁸⁹⁰]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  section = section.replace(/^.*?Satış\s*Fiyatı\s*Bedelli\s*Bedelsiz\s*/iu, "");
-  return section;
-}
-
-async function parseInitialPublicOfferings(text: string, sourceUrl: string): Promise<ParsedIpo[]> {
-  const { bulletinNo, approvalDate } = parseBulletinMeta(text, sourceUrl);
-  const sectionMatch = text.match(/(?:1\.?\s*)?İlk\s+Halka\s+Arzlar([\s\S]*?)(?:\n\s*2\.|Halka\s+Açık\s+Ortaklıkların\s+(?:Pay\s+İhraçları|Başvuruları)|$)/iu);
-  if (!sectionMatch) return [];
-  const section = cleanIpoSection(sectionMatch[1]);
-  const companyPattern = /([A-ZÇĞİÖŞÜ][A-Za-zÇĞİÖŞÜçğıöşü0-9 .,&'()\/-]+?A\.?\s*Ş\.?)\s+/giu;
-  const matches = [...section.matchAll(companyPattern)];
-  const result: ParsedIpo[] = [];
-
-  for (let index = 0; index < matches.length; index += 1) {
-    const match = matches[index];
-    const start = (match.index || 0) + match[0].length;
-    const end = index + 1 < matches.length ? (matches[index + 1].index || section.length) : section.length;
-    const tail = section.slice(start, end);
-    const tokens = tail.match(/(?:\d{1,3}(?:\.\d{3})*(?:,\d+)?|\d+(?:,\d+)?|-)/g) || [];
-    if (tokens.length < 6) continue;
-
-    const company = normalizeCompany(match[1]);
-    if (/^(Ortaklık|Mevcut Sermaye|Yeni Sermaye)/iu.test(company) || company.length > 180) continue;
-
-    const values = tokens.slice(0, 7).map(parseNumber);
-    while (values.length < 7) values.push(0);
-    let [currentCapital, newCapital, capitalIncrease, , shareholderSale, extraSale, price] = values;
-    if (tokens.length === 6) {
-      [currentCapital, newCapital, capitalIncrease, , shareholderSale, price] = tokens.slice(0, 6).map(parseNumber);
-      extraSale = 0;
-    }
-    if (!company || price <= 0 || price > 10000 || capitalIncrease < 0 || shareholderSale < 0 || extraSale < 0) continue;
-    const lotCount = Math.round(capitalIncrease + shareholderSale);
-    if (lotCount <= 0 || lotCount > 5_000_000_000) continue;
-    const slug = trSlug(company);
-    if (!slug) continue;
-    const sourceKey = `${bulletinNo}|${slug}`;
-    const sourceHash = await sha256(`${sourceKey}|${price}|${currentCapital}|${newCapital}|${capitalIncrease}|${shareholderSale}|${extraSale}`);
-    result.push({
-      sourceKey,
-      company,
-      slug,
-      bulletinNo,
-      approvalDate,
-      sourceUrl,
-      price,
-      currentCapital: Math.round(currentCapital),
-      newCapital: Math.round(newCapital),
-      capitalIncreaseShares: Math.round(capitalIncrease),
-      shareholderSaleShares: Math.round(shareholderSale),
-      extraSaleShares: Math.round(extraSale),
-      lotCount,
-      maxLotCount: lotCount + Math.round(extraSale),
-      sourceHash,
-    });
-  }
-
-  return result;
 }
 
 function discoverPdfUrls(html: string) {
@@ -210,7 +91,7 @@ Deno.serve(async (req: Request) => {
     const pdfUrls = discoverPdfUrls(html).slice(0, maxBulletins);
     if (!pdfUrls.length) throw new Error("SPK bulletin PDF links could not be discovered");
 
-    const parsed: ParsedIpo[] = [];
+    const parsed: Array<Record<string, unknown>> = [];
     const bulletinErrors: Array<{ url: string; error: string }> = [];
     for (const pdfUrl of pdfUrls) {
       try {
@@ -221,7 +102,7 @@ Deno.serve(async (req: Request) => {
       }
     }
 
-    const unique = [...new Map(parsed.map((item) => [item.sourceKey, item])).values()];
+    const unique = [...new Map(parsed.map((item) => [String(item.sourceKey), item])).values()];
     if (!unique.length && bulletinErrors.length === pdfUrls.length) throw new Error("All SPK bulletin parses failed");
     if (unique.length > 40) throw new Error(`Sanity check failed: ${unique.length} IPO rows from ${pdfUrls.length} bulletins`);
 
@@ -230,30 +111,33 @@ Deno.serve(async (req: Request) => {
     let added = 0;
     let updated = 0;
     for (const item of unique) {
-      const { data: existingCompany } = await admin.from("companies").select("id").eq("slug", item.slug).maybeSingle();
+      const slug = String(item.slug);
+      const company = String(item.company);
+      const { data: existingCompany } = await admin.from("companies").select("id").eq("slug", slug).maybeSingle();
       let companyId = existingCompany?.id as string | undefined;
       if (!companyId) {
-        const { data: createdCompany, error } = await admin.from("companies").insert({ legal_name: item.company, short_name: item.company, slug: item.slug, updated_at: new Date().toISOString() }).select("id").single();
+        const { data: createdCompany, error } = await admin.from("companies").insert({ legal_name: company, short_name: company, slug, updated_at: new Date().toISOString() }).select("id").single();
         if (error) throw error;
         companyId = createdCompany.id;
       }
 
-      const { data: existing } = await admin.from("ipos").select("id,source_hash").eq("source_key", item.sourceKey).maybeSingle();
+      const sourceKey = String(item.sourceKey);
+      const { data: existing } = await admin.from("ipos").select("id,source_hash").eq("source_key", sourceKey).maybeSingle();
       const now = new Date().toISOString();
       const row = {
         company_id: companyId,
         status: "approved",
-        offer_price: item.price,
-        total_lots: item.lotCount,
-        capital_increase_lots: item.capitalIncreaseShares,
-        shareholder_sale_lots: item.shareholderSaleShares,
+        offer_price: Number(item.price),
+        total_lots: Number(item.lotCount),
+        capital_increase_lots: Number(item.capitalIncreaseShares),
+        shareholder_sale_lots: Number(item.shareholderSaleShares),
         currency: "TRY",
         source_checked_at: now,
         updated_at: now,
-        source_key: item.sourceKey,
-        spk_bulletin_no: item.bulletinNo,
-        spk_source_url: item.sourceUrl,
-        source_hash: item.sourceHash,
+        source_key: sourceKey,
+        spk_bulletin_no: String(item.bulletinNo),
+        spk_source_url: String(item.sourceUrl),
+        source_hash: String(item.sourceHash),
         source_payload: item,
       };
 
@@ -264,11 +148,11 @@ Deno.serve(async (req: Request) => {
         if (control.last_success_at) {
           await admin.from("notification_outbox").upsert({
             ipo_id: createdIpo.id,
-            event_key: `new_spk_ipo:${item.sourceKey}`,
+            event_key: `new_spk_ipo:${sourceKey}`,
             title: "Yeni SPK onaylı halka arz",
-            body: `${item.company} SPK bülteninde ilk halka arz olarak yayımlandı.`,
-            target_url: `/arz/${item.slug}`,
-            payload: { company: item.company, slug: item.slug, bulletinNo: item.bulletinNo, source: "spk" },
+            body: `${company} SPK bülteninde ilk halka arz olarak yayımlandı.`,
+            target_url: `/arz/${slug}`,
+            payload: { company, slug, bulletinNo: item.bulletinNo, source: "spk" },
           }, { onConflict: "ipo_id,event_key" });
         }
       } else if (existing.source_hash !== item.sourceHash) {
