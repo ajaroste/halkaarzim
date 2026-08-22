@@ -23,6 +23,10 @@ function writeKey(): string {
   return key;
 }
 
+export function isIpoAiCacheWriteConfigured(): boolean {
+  return Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY?.trim());
+}
+
 function headers(key: string): HeadersInit {
   return {
     apikey: key,
