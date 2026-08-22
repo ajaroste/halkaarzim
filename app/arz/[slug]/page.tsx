@@ -32,9 +32,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const ipo = await getMergedIpoBySlug(slug);
   if (!ipo) return {};
-  const code = ipo.ticker || "Halka arz";
   const summary = publicAnalysisText(ipo.aiSummary);
-  const title = `${code} Halka Arz: Fiyat, Lot, Tarih ve Ön Analiz`;
+  const title = ipo.ticker
+    ? `${ipo.ticker} Halka Arz: Fiyat, Lot, Tarih ve Ön Analiz`
+    : `${ipo.company} Halka Arz: Fiyat, Lot, Tarih ve Ön Analiz`;
   const description = `${ipo.company} halka arz fiyatı, lot bilgisi, talep tarihleri, arz yapısı ve kaynak bazlı ön analiz. ${summary}`.slice(0, 300);
   const url = `${siteUrl}/arz/${ipo.slug}`;
   return {
