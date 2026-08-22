@@ -23,9 +23,11 @@ import { LegalConsentGate } from "@/components/LegalConsentGate";
 import { NotificationManager } from "@/components/NotificationManager";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { ToastHost } from "@/components/ToastHost";
+import { ConsentAnalytics } from "@/components/ConsentAnalytics";
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://halkaarzim.vercel.app").replace(/\/+$/, "");
 const description = "Kaynaklı halka arz ön analizleri, sadeleştirilmiş resmî belgeler, önemli tarihler, lot senaryoları ve şirket gündemi.";
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -34,7 +36,7 @@ export const metadata: Metadata = {
   applicationName: "HalkaArzım",
   manifest: "/manifest.webmanifest",
   keywords: ["halka arz", "halka arz takvimi", "SPK bülteni", "izahname özeti", "kaç lot verir", "halka arz yorum"],
-  alternates: { canonical: "/" },
+  verification: googleSiteVerification ? { google: googleSiteVerification } : undefined,
   openGraph: {
     title: "HalkaArzım — Halka arzı kaynağından anla",
     description,
@@ -64,5 +66,5 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="tr" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("halkaarzim-theme");if(t!=="dark"&&t!=="light")t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){}})();` }} /></head><body><AuthProvider>{children}<ToastHost /><NotificationManager /><CookieBanner /><LegalConsentGate /><MobileBottomNav /></AuthProvider></body></html>;
+  return <html lang="tr" suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: `(function(){try{var t=localStorage.getItem("halkaarzim-theme");if(t!=="dark"&&t!=="light")t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t}catch(e){}})();` }} /></head><body><AuthProvider>{children}<ToastHost /><NotificationManager /><CookieBanner /><LegalConsentGate /><MobileBottomNav /><ConsentAnalytics /></AuthProvider></body></html>;
 }

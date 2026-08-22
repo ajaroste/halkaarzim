@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -29,6 +30,7 @@ function MetricIcon({ type }: { type: "tracking" | "lots" | "bulletin" | "listed
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5c3.2-2.2 6.2-2.5 8-2-0.1 2.8-1.2 6.2-4.7 8.8l-2.7 2.1-3.5-3.5z"/><circle cx="15.6" cy="7.4" r="1.4"/><path d="m10.2 10.8-3.8.4-2.6 2.6 4.5.5M13.2 13.8l-.4 3.8-2.6 2.6-.5-4.5M7.5 17.5l-2.8 2.8"/></svg>;
 }
 
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 export const revalidate = 300;
 
 export default async function HomePage() {

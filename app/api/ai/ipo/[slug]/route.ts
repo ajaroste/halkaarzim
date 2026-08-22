@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getIpoBySlug } from "@/data/ipos";
 import { generateGeminiIpoAnalysis } from "@/lib/gemini-ipo";
-import { getCachedIpoAiAnalysis, storeIpoAiAnalysisOnce } from "@/lib/ipo-ai-cache";
+import { getCachedIpoAiAnalysis, isIpoAiCacheWriteConfigured, storeIpoAiAnalysisOnce } from "@/lib/ipo-ai-cache";
+import { getMergedIpoBySlug } from "@/lib/official-ipos";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,7 +38,7 @@ function safeReason(error: unknown) {
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ipo = getIpoBySlug(slug);
+  const ipo = await getMergedIpoBySlug(slug);
   if (!ipo) return response({ error: "Halka arz bulunamadı." }, 404);
 
   try {
@@ -46,7 +46,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     if (cached) return response(cached, 200, true);
   } catch (error) {
     const reason = safeReason(error);
-    console.error("IPO AI persistent cache read failed; continuing without cache", reason, error instanceof Error ? error.message : error);
+    console.warn("IPO AI persistent cache read unavailable; continuing without cache", reason, error instanceof Error ? error.message : error);
   }
 
   if (!process.env.GEMINI_API_KEY) return response({ error: "AI analizi yapılandırılmadı.", reason: "missing_api_key" }, 503);
@@ -101,12 +101,16 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   try {
     const analysis = await generateGeminiIpoAnalysis(facts);
 
+    if (!isIpoAiCacheWriteConfigured()) {
+      return response(analysis, 200, true);
+    }
+
     try {
       const persisted = await storeIpoAiAnalysisOnce(slug, analysis);
       return response(persisted, 200, true);
     } catch (cacheError) {
       const reason = safeReason(cacheError);
-      console.error("IPO AI persistent cache write failed; caching generated analysis at CDN", reason, cacheError instanceof Error ? cacheError.message : cacheError);
+      console.warn("IPO AI persistent cache write unavailable; caching generated analysis at CDN", reason, cacheError instanceof Error ? cacheError.message : cacheError);
       return response(analysis, 200, true);
     }
   } catch (error) {
