@@ -1,6 +1,6 @@
 create or replace function public.trigger_kap_ipo_enrich(
   p_dry_run boolean default true,
-  p_max_ipos integer default 12
+  p_max_ipos integer default 8
 )
 returns bigint
 language plpgsql
@@ -21,14 +21,15 @@ begin
 
   select net.http_post(
     url := 'https://yjffzuzldlchswaohwyk.supabase.co/functions/v1/kap-ipo-enrich',
+    body := jsonb_build_object(
+      'dryRun', p_dry_run,
+      'maxIpos', greatest(1, least(25, p_max_ipos))
+    ),
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
       'x-sync-secret', v_secret
     ),
-    body := jsonb_build_object(
-      'dryRun', p_dry_run,
-      'maxIpos', greatest(1, least(25, p_max_ipos))
-    )
+    timeout_milliseconds := 60000
   ) into v_request_id;
 
   return v_request_id;
@@ -54,7 +55,7 @@ begin
   perform cron.schedule(
     'official-kap-ipo-enrich',
     '*/30 * * * *',
-    'select public.trigger_kap_ipo_enrich(false, 12);'
+    'select public.trigger_kap_ipo_enrich(false, 8);'
   );
 end;
 $$;
