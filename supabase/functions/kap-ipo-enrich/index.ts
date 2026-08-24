@@ -1,12 +1,15 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
+import { extractText, getDocumentProxy } from "npm:unpdf@1.8.1";
 import { extractKapEnrichment, extractNotificationCandidates } from "./parser.mjs";
 
 const KAP_QUERY_URL = "https://www.kap.org.tr/tr/bildirim-sorgu-sonuc?cat=6&cmp=Y&slf=ALL&srcbar=Y";
 const MAX_INDEX_BYTES = 7 * 1024 * 1024;
 const MAX_DETAIL_BYTES = 2 * 1024 * 1024;
+const MAX_PDF_BYTES = 12 * 1024 * 1024;
 const DEFAULT_MAX_IPOS = 12;
-const MAX_NOTIFICATION_DETAILS_PER_IPO = 5;
+const MAX_NOTIFICATION_DETAILS_PER_IPO = 3;
+const MAX_ATTACHMENTS_PER_NOTIFICATION = 2;
 const LOOKBACK_DAYS = 75;
 
 function json(data: unknown, status = 200) {
@@ -18,16 +21,21 @@ async function sha256(value: string) {
   return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+function assertKapUrl(value: string) {
+  const url = new URL(value);
+  if (url.protocol !== "https:" || !["kap.org.tr", "www.kap.org.tr"].includes(url.hostname)) throw new Error("KAP host validation failed");
+  return url;
+}
+
 async function fetchKap(url: string, maxBytes: number, timeoutMs = 20_000) {
-  const parsed = new URL(url);
-  if (parsed.protocol !== "https:" || !["kap.org.tr", "www.kap.org.tr"].includes(parsed.hostname)) throw new Error("KAP host validation failed");
+  assertKapUrl(url);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, {
       redirect: "error",
       headers: {
-        "user-agent": "HalkaArzim-KAP-Enrichment/1.1 (+https://halkaarzim.vercel.app)",
+        "user-agent": "HalkaArzim-KAP-Enrichment/1.2 (+https://halkaarzim.vercel.app)",
         "accept-language": "tr-TR,tr;q=0.9,en;q=0.5",
         accept: "text/html,application/xhtml+xml",
       },
@@ -40,6 +48,32 @@ async function fetchKap(url: string, maxBytes: number, timeoutMs = 20_000) {
     if (new TextEncoder().encode(text).byteLength > maxBytes) throw new Error("KAP response exceeded size limit");
     return text;
   } finally { clearTimeout(timeout); }
+}
+
+async function fetchKapPdfText(url: string) {
+  assertKapUrl(url);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25_000);
+  try {
+    const response = await fetch(url, { redirect: "error", headers: { "user-agent": "HalkaArzim-KAP-Enrichment/1.2 (+https://halkaarzim.vercel.app)", accept: "application/pdf,*/*" }, signal: controller.signal });
+    if (!response.ok) throw new Error(`KAP PDF HTTP ${response.status}`);
+    const length = Number(response.headers.get("content-length") || 0);
+    if (length > MAX_PDF_BYTES) throw new Error(`KAP PDF too large: ${length}`);
+    const buffer = await response.arrayBuffer();
+    if (buffer.byteLength > MAX_PDF_BYTES) throw new Error(`KAP PDF too large: ${buffer.byteLength}`);
+    const pdf = await getDocumentProxy(new Uint8Array(buffer), { maxImageSize: 16_777_216 });
+    if (pdf.numPages > 120) throw new Error(`Unexpected KAP PDF page count: ${pdf.numPages}`);
+    const extracted = await extractText(pdf, { mergePages: true });
+    return extracted.text;
+  } finally { clearTimeout(timeout); }
+}
+
+function extractAttachmentUrls(html: string) {
+  const urls = new Set<string>();
+  const decoded = String(html || "").replace(/\\+"/g, '"').replace(/&amp;/g, "&");
+  const re = /href=["'](https:\/\/(?:www\.)?kap\.org\.tr\/tr\/api\/file\/download\/[a-zA-Z0-9_-]+)["']/gi;
+  for (const match of decoded.matchAll(re)) urls.add(match[1]);
+  return [...urls];
 }
 
 function stringValue(value: unknown) { return typeof value === "string" ? value.trim() : ""; }
@@ -68,7 +102,8 @@ function mergeSources(payload: Record<string, unknown>, additions: Array<Record<
   for (const source of additions) {
     const url = stringValue(source.url);
     if (!url || urls.has(url)) continue;
-    result.push(source); urls.add(url);
+    result.push(source);
+    urls.add(url);
   }
   return result;
 }
@@ -113,8 +148,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { data: rows, error: rowsError } = await admin
-      .from("ipos")
+    const { data: rows, error: rowsError } = await admin.from("ipos")
       .select("id,status,published_at,source_payload,companies!inner(id,legal_name,slug,ticker)")
       .not("source_key", "is", null).not("published_at", "is", null)
       .order("published_at", { ascending: false }).limit(50);
@@ -138,7 +172,8 @@ Deno.serve(async (req: Request) => {
     for (const row of targets) {
       const company = pickCompany(row.companies);
       if (!company) continue;
-      const companyName = stringValue(company.legal_name), slug = stringValue(company.slug);
+      const companyName = stringValue(company.legal_name);
+      const slug = stringValue(company.slug);
       const payload = asObject(row.source_payload);
       const approvalDate = stringValue(payload.approvalDate || row.published_at).slice(0, 10);
       const existingTicker = stringValue(payload.ticker) || stringValue(company.ticker);
@@ -150,6 +185,7 @@ Deno.serve(async (req: Request) => {
         let newestScheduleDate = stringValue(payload.schedulePublishedAt).slice(0, 10);
         const enrichment: Record<string, unknown> = {};
         const kapSources: Array<Record<string, unknown>> = [];
+        const attachmentErrors: Array<{ url: string; error: string }> = [];
 
         for (const candidate of candidates) {
           if (candidate.ticker && !stringValue(enrichment.ticker)) enrichment.ticker = candidate.ticker;
@@ -159,7 +195,18 @@ Deno.serve(async (req: Request) => {
           }
 
           const detailHtml = await fetchKap(candidate.url, MAX_DETAIL_BYTES, 15_000);
-          const parsed = extractKapEnrichment(detailHtml, companyName, approvalDate, candidate.context) as Record<string, unknown> | null;
+          let sourceText = detailHtml;
+          const attachmentUrls = extractAttachmentUrls(detailHtml).slice(0, MAX_ATTACHMENTS_PER_NOTIFICATION);
+          for (const attachmentUrl of attachmentUrls) {
+            try {
+              sourceText += `\n${await fetchKapPdfText(attachmentUrl)}`;
+              kapSources.push({ title: `KAP eki — ${companyName}`, page: candidate.title || "Halka arz eki", kind: "KAP / resmî PDF", url: attachmentUrl });
+            } catch (error) {
+              attachmentErrors.push({ url: attachmentUrl, error: error instanceof Error ? error.message : String(error) });
+            }
+          }
+
+          const parsed = extractKapEnrichment(sourceText, companyName, approvalDate, candidate.context) as Record<string, unknown> | null;
           if (parsed) {
             const parsedPublished = stringValue(parsed.schedulePublishedAt).slice(0, 10);
             const canReplaceSchedule = !newestScheduleDate || !parsedPublished || parsedPublished >= newestScheduleDate;
@@ -168,7 +215,9 @@ Deno.serve(async (req: Request) => {
             if (parsed.firstTradeDate && !stringValue(enrichment.firstTradeDate)) enrichment.firstTradeDate = parsed.firstTradeDate;
             if (parsed.participantCount && !Number(enrichment.participantCount || 0)) enrichment.participantCount = parsed.participantCount;
             if (parsed.collectionStart && parsed.collectionEnd && canReplaceSchedule) {
-              enrichment.collectionStart = parsed.collectionStart; enrichment.collectionEnd = parsed.collectionEnd; enrichment.dates = parsed.dates;
+              enrichment.collectionStart = parsed.collectionStart;
+              enrichment.collectionEnd = parsed.collectionEnd;
+              enrichment.dates = parsed.dates;
               if (parsedPublished) { enrichment.schedulePublishedAt = parsedPublished; newestScheduleDate = parsedPublished; }
             }
           }
@@ -182,10 +231,13 @@ Deno.serve(async (req: Request) => {
         if (!existingTicker && candidateTicker) { nextPayload.ticker = candidateTicker; changed = true; }
 
         if (enrichment.collectionStart && enrichment.collectionEnd) {
-          const incomingPublished = stringValue(enrichment.schedulePublishedAt), existingPublished = stringValue(payload.schedulePublishedAt);
+          const incomingPublished = stringValue(enrichment.schedulePublishedAt);
+          const existingPublished = stringValue(payload.schedulePublishedAt);
           if (!hadSchedule || !existingPublished || !incomingPublished || incomingPublished >= existingPublished) {
             if (payload.collectionStart !== enrichment.collectionStart || payload.collectionEnd !== enrichment.collectionEnd) changed = true;
-            nextPayload.collectionStart = enrichment.collectionStart; nextPayload.collectionEnd = enrichment.collectionEnd; nextPayload.dates = enrichment.dates;
+            nextPayload.collectionStart = enrichment.collectionStart;
+            nextPayload.collectionEnd = enrichment.collectionEnd;
+            nextPayload.dates = enrichment.dates;
             if (incomingPublished) nextPayload.schedulePublishedAt = incomingPublished;
           }
         }
@@ -196,10 +248,11 @@ Deno.serve(async (req: Request) => {
         if (kapSources.length) {
           const mergedSources = mergeSources(nextPayload, kapSources);
           if (mergedSources.length !== asArray(payload.additionalSources).length) changed = true;
-          nextPayload.additionalSources = mergedSources; nextPayload.scheduleSourceName = "KAP";
+          nextPayload.additionalSources = mergedSources;
+          nextPayload.scheduleSourceName = "KAP";
         }
         if (changed) {
-          nextPayload.dataNotes = mergeNotes(nextPayload, "KAP halka arz bildirimleri düşük frekanslı otomatik kontrol ile eşleştirildi.");
+          nextPayload.dataNotes = mergeNotes(nextPayload, "KAP halka arz bildirimleri ve resmî ekleri otomatik kontrol ile eşleştirildi.");
           nextPayload.dataCompleteness = completeness(nextPayload, candidateTicker || existingTicker || null);
           nextPayload.kapCheckedAt = new Date().toISOString();
         }
@@ -223,8 +276,11 @@ Deno.serve(async (req: Request) => {
             }, { onConflict: "ipo_id,event_key" });
           }
         }
-        results.push({ slug, company: companyName, candidates: candidates.length, candidateIds: candidates.map((c) => c.id), enrichment, changed, sources: kapSources.map((source) => source.url) });
-      } catch (error) { errors.push({ slug, error: error instanceof Error ? error.message : String(error) }); }
+
+        results.push({ slug, company: companyName, candidates: candidates.length, candidateIds: candidates.map((c) => c.id), enrichment, changed, attachmentErrors, sources: kapSources.map((source) => source.url) });
+      } catch (error) {
+        errors.push({ slug, error: error instanceof Error ? error.message : String(error) });
+      }
     }
 
     const status = errors.length ? (updated || matched ? "partial" : "failed") : "success";
