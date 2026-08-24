@@ -1,4 +1,4 @@
-import type { Ipo } from "@/data/ipos";
+import type { Ipo, IpoSource, IpoStatus } from "@/data/ipos";
 import { ipos as staticIpos } from "@/data/ipos";
 
 type OfficialRow = {
@@ -26,22 +26,104 @@ type OfficialRow = {
   }>;
 };
 
+const STATUS_LABELS: Record<IpoStatus, string> = {
+  active: "Talep topluyor",
+  upcoming: "Yaklaşan",
+  approved: "SPK onaylı",
+  completed: "Arzı tamamlandı",
+  listed: "İşlem görüyor",
+  delayed: "Ertelendi",
+  draft: "Taslak",
+};
+
 function numberValue(value: unknown): number {
   const parsed = Number(value || 0);
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function stringValue(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function nullableString(value: unknown): string | null {
+  const result = stringValue(value);
+  return result || null;
+}
+
+function stringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string" && Boolean(item.trim())).map((item) => item.trim());
 }
 
 function companyFrom(row: OfficialRow) {
   return Array.isArray(row.companies) ? row.companies[0] : row.companies;
 }
 
+function istanbulBoundary(value: unknown, endOfDay = false): number {
+  const date = stringValue(value).slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return Number.NaN;
+  return new Date(`${date}${endOfDay ? "T23:59:59+03:00" : "T00:00:00+03:00"}`).getTime();
+}
+
+function deriveStatus(payload: Record<string, unknown>, rowStatus: string): IpoStatus {
+  const raw = stringValue(payload.status || rowStatus || "approved").toLocaleLowerCase("tr-TR");
+  if (["draft", "taslak"].some((value) => raw.includes(value))) return "draft";
+  if (["delayed", "postponed", "ertelen"].some((value) => raw.includes(value))) return "delayed";
+
+  const firstTrade = istanbulBoundary(payload.firstTradeDate);
+  if (Number.isFinite(firstTrade) && firstTrade <= Date.now()) return "listed";
+  if (["listed", "trading", "işlem gör"].some((value) => raw.includes(value))) return "listed";
+
+  const start = istanbulBoundary(payload.collectionStart);
+  const end = istanbulBoundary(payload.collectionEnd, true);
+  if (Number.isFinite(start) && Number.isFinite(end)) {
+    const now = Date.now();
+    if (now < start) return "upcoming";
+    if (now <= end) return "active";
+    return "completed";
+  }
+
+  if (["active", "collecting", "talep topluyor"].some((value) => raw.includes(value))) return "active";
+  if (["upcoming", "yaklaş"].some((value) => raw.includes(value))) return "upcoming";
+  if (["completed", "tamamlan"].some((value) => raw.includes(value))) return "completed";
+  return "approved";
+}
+
+function sourceArray(payload: Record<string, unknown>, bulletinNo: string, sourceUrl: string): IpoSource[] {
+  const sources: IpoSource[] = [{
+    title: `SPK Bülteni ${bulletinNo}`,
+    page: "İlk Halka Arzlar tablosu",
+    kind: "Resmî belge",
+    url: sourceUrl || undefined,
+  }];
+
+  const additional = payload.additionalSources;
+  if (Array.isArray(additional)) {
+    for (const item of additional) {
+      if (!item || typeof item !== "object") continue;
+      const record = item as Record<string, unknown>;
+      const title = stringValue(record.title);
+      const url = stringValue(record.url);
+      if (!title || !url || sources.some((source) => source.url === url)) continue;
+      sources.push({
+        title,
+        page: stringValue(record.page) || "Halka arz duyurusu",
+        kind: stringValue(record.kind) || "Resmî / birincil kaynak",
+        url,
+      });
+    }
+  }
+
+  return sources;
+}
+
 function officialRowToIpo(row: OfficialRow): Ipo | null {
   const company = companyFrom(row);
   if (!company?.legal_name || !company.slug) return null;
   const payload = row.source_payload || {};
-  const approvalDate = String(payload.approvalDate || row.published_at || "").slice(0, 10);
-  const bulletinNo = String(payload.bulletinNo || row.spk_bulletin_no || "SPK");
-  const sourceUrl = String(payload.sourceUrl || row.spk_source_url || "");
+  const approvalDate = stringValue(payload.approvalDate || row.published_at).slice(0, 10);
+  const bulletinNo = stringValue(payload.bulletinNo || row.spk_bulletin_no) || "SPK";
+  const sourceUrl = stringValue(payload.sourceUrl || row.spk_source_url);
   const capitalIncrease = numberValue(payload.capitalIncreaseShares ?? row.capital_increase_lots);
   const shareholderSale = numberValue(payload.shareholderSaleShares ?? row.shareholder_sale_lots);
   const lotCount = numberValue(payload.lotCount ?? row.total_lots);
@@ -49,63 +131,90 @@ function officialRowToIpo(row: OfficialRow): Ipo | null {
   const price = numberValue(payload.price ?? row.offer_price);
   if (!approvalDate || !lotCount || !price) return null;
 
+  const status = deriveStatus(payload, row.status);
+  const collectionStart = nullableString(payload.collectionStart);
+  const collectionEnd = nullableString(payload.collectionEnd);
+  const firstTradeDate = nullableString(payload.firstTradeDate);
+  const ticker = nullableString(payload.ticker) || company.ticker;
+  const sector = nullableString(payload.sector) || company.sector || "Henüz açıklanmadı";
+  const intermediary = nullableString(payload.intermediary);
+  const market = nullableString(payload.market) || undefined;
+  const distribution = stringValue(payload.distribution) || "Henüz açıklanmadı";
+  const dates = stringValue(payload.dates) || (collectionStart && collectionEnd ? `${collectionStart} - ${collectionEnd}` : "Talep toplama tarihi bekleniyor");
+  const sources = sourceArray(payload, bulletinNo, sourceUrl);
+  const dataNotes = stringArray(payload.dataNotes);
+  const completeness = numberValue(payload.dataCompleteness) || (sources.length > 1 || ticker || collectionStart ? 67 : 45);
+
   return {
     id: row.id,
     slug: company.slug,
-    ticker: company.ticker,
+    ticker,
     company: company.legal_name,
-    sector: company.sector || "Henüz açıklanmadı",
-    status: "approved",
-    statusLabel: "SPK onaylı",
+    sector,
+    status,
+    statusLabel: STATUS_LABELS[status],
     price,
-    dates: "Talep toplama tarihi bekleniyor",
-    collectionStart: null,
-    collectionEnd: null,
-    firstTradeDate: null,
+    dates,
+    collectionStart,
+    collectionEnd,
+    firstTradeDate,
+    participantCount: numberValue(payload.participantCount) || undefined,
+    offerSize: numberValue(payload.offerSize) || undefined,
+    intermediary,
+    publicFloat: numberValue(payload.publicFloat) || undefined,
+    market,
+    priceStability: nullableString(payload.priceStability) || undefined,
+    allocationText: nullableString(payload.allocationText) || undefined,
     lotCount,
     maxLotCount,
-    retailLots: 0,
-    distribution: "Henüz açıklanmadı",
+    retailLots: numberValue(payload.retailLots),
+    distribution,
     aiScore: 0,
     risk: "Belirsiz",
-    aiSummary: `${company.legal_name}, ${bulletinNo} numaralı SPK bülteninde ilk halka arz olarak yayımlandı. Talep toplama ve dağıtım bilgileri resmî olarak açıklandıkça güncellenecektir.`,
+    aiSummary: `${company.legal_name}, ${bulletinNo} numaralı SPK bülteninde ilk halka arz olarak yayımlandı.${collectionStart ? ` Talep toplama takvimi ${dates} olarak birincil kaynaklardan doğrulandı.` : " Talep toplama ve dağıtım bilgileri resmî olarak açıklandıkça güncellenecektir."}`,
     aiProvider: "rules-v1",
-    reportVersion: "spk-resmi-1",
+    reportVersion: sources.length > 1 ? "spk-kap-resmi-1" : "spk-resmi-1",
     reportDate: approvalDate,
     humanReviewed: false,
     analysisStatus: "preliminary",
-    analysisScope: "SPK İlk Halka Arzlar tablosundaki doğrulanmış temel alanlar",
+    analysisScope: sources.length > 1 ? "SPK onayı ile KAP/aracı kurum halka arz duyurularındaki doğrulanmış alanlar" : "SPK İlk Halka Arzlar tablosundaki doğrulanmış temel alanlar",
     capitalBefore: numberValue(payload.currentCapital),
     capitalAfter: numberValue(payload.newCapital),
     capitalIncreaseShares: capitalIncrease,
     shareholderSaleShares: shareholderSale,
     extraSaleShares: numberValue(payload.extraSaleShares),
-    fundUse: [],
+    fundUse: Array.isArray(payload.fundUse) ? payload.fundUse as Ipo["fundUse"] : [],
     highlights: capitalIncrease > shareholderSale ? ["Temel arzın büyük bölümü sermaye artırımı kaynaklıdır."] : [],
     risks: shareholderSale > capitalIncrease ? ["Temel arzda mevcut ortak satışı payı yüksektir."] : [],
-    sources: [{
-      title: `SPK Bülteni ${bulletinNo}`,
-      page: "İlk Halka Arzlar tablosu",
-      kind: "Resmî belge",
-      url: sourceUrl || undefined,
-    }],
-    agenda: [{
-      date: approvalDate,
-      category: "Resmî",
-      title: "Halka arz SPK bülteninde yayımlandı",
-      summary: `${company.legal_name} ilk halka arz bilgileri ${bulletinNo} numaralı SPK bülteninde yer aldı.`,
-      source: "SPK",
-      sourceUrl: sourceUrl || undefined,
-      impact: "neutral",
-    }],
+    sources,
+    agenda: [
+      {
+        date: approvalDate,
+        category: "Resmî",
+        title: "Halka arz SPK bülteninde yayımlandı",
+        summary: `${company.legal_name} ilk halka arz bilgileri ${bulletinNo} numaralı SPK bülteninde yer aldı.`,
+        source: "SPK",
+        sourceUrl: sourceUrl || undefined,
+        impact: "neutral",
+      },
+      ...(collectionStart && sources[1] ? [{
+        date: stringValue(payload.schedulePublishedAt).slice(0, 10) || collectionStart,
+        category: "Resmî",
+        title: "Talep toplama takvimi yayımlandı",
+        summary: `${company.legal_name} için talep toplama tarihleri ${dates} olarak açıklandı${ticker ? `; işlem kodu ${ticker}.` : "."}`,
+        source: stringValue(payload.scheduleSourceName) || "KAP / aracı kurum",
+        sourceUrl: sources[1].url,
+        impact: "neutral" as const,
+      }] : []),
+    ],
     promises: [],
     financials: [],
     performance: null,
     bulletinNo,
     approvalDate,
     sourceUpdatedAt: row.source_checked_at || row.published_at || new Date(approvalDate).toISOString(),
-    dataCompleteness: 45,
-    dataNotes: ["Kayıt doğrudan SPK bültenindeki İlk Halka Arzlar tablosundan oluşturulmuştur."],
+    dataCompleteness: completeness,
+    dataNotes: dataNotes.length ? dataNotes : [sources.length > 1 ? "SPK onayı sonrası yayımlanan halka arz takvimi birincil kaynakla zenginleştirilmiştir." : "Kayıt doğrudan SPK bültenindeki İlk Halka Arzlar tablosundan oluşturulmuştur."],
   };
 }
 
